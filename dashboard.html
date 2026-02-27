@@ -8,7 +8,7 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', sans-serif; background: #f0f2f5; color: #1a2744; }
-        .sidebar { position: fixed; left: 0; top: 0; width: 240px; height: 100vh; background: #1a2744; color: white; padding: 24px 0; z-index: 100; }
+        .sidebar { position: fixed; left: 0; top: 0; width: 240px; height: 100vh; background: #1a2744; color: white; padding: 24px 0; z-index: 100; overflow-y: auto; }
         .sidebar-logo { font-size: 20px; font-weight: 700; padding: 0 24px 24px; border-bottom: 1px solid rgba(255,255,255,0.1); }
         .sidebar-logo span { color: #4a90d9; }
         .sidebar-nav { margin-top: 16px; }
@@ -31,6 +31,9 @@
         .btn-archive:hover { background: #4b5563; }
         .btn-success { background: #22c55e; color: white; }
         .btn-success:hover { background: #16a34a; }
+        .btn-kyc { background: #7c3aed; color: white; }
+        .btn-kyc:hover { background: #6d28d9; }
+        .btn-sm { padding: 6px 12px; font-size: 12px; }
         .stats-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; margin-bottom: 24px; }
         .stat-card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
         .stat-card .label { font-size: 12px; color: #6b7280; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
@@ -97,6 +100,7 @@
         .status-badge.blue { background: #dbeafe; color: #1e40af; }
         .status-badge.yellow { background: #fef3c7; color: #92400e; }
         .status-badge.red { background: #fee2e2; color: #991b1b; }
+        .status-badge.purple { background: #ede9fe; color: #5b21b6; }
         .dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; }
         .dot.green { background: #22c55e; }
         .dot.blue { background: #3b82f6; }
@@ -109,22 +113,55 @@
         .rule-box strong { color: #4a90d9; }
         .ref-format { font-size: 11px; color: #6b7280; background: #f3f4f6; border-radius: 6px; padding: 8px 12px; margin-top: 8px; }
         .ref-format code { font-weight: 600; color: #4a90d9; }
-        #archiveView { display: none; }
+        #archiveView, #kycView { display: none; }
         #pipelineView { display: block; }
-        .archive-table { width: 100%; border-collapse: collapse; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
-        .archive-table th { background: #1a2744; color: white; padding: 14px 16px; text-align: left; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
-        .archive-table td { padding: 14px 16px; border-bottom: 1px solid #e5e7eb; font-size: 13px; }
-        .archive-table tr:hover { background: #f9fafb; }
-        .archive-table .ref { font-family: monospace; font-weight: 600; color: #4a90d9; }
+        .archive-table, .kyc-table { width: 100%; border-collapse: collapse; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+        .archive-table th, .kyc-table th { background: #1a2744; color: white; padding: 14px 16px; text-align: left; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+        .archive-table td, .kyc-table td { padding: 14px 16px; border-bottom: 1px solid #e5e7eb; font-size: 13px; }
+        .archive-table tr:hover, .kyc-table tr:hover { background: #f9fafb; }
+        .archive-table .ref, .kyc-table .ref { font-family: monospace; font-weight: 600; color: #4a90d9; }
         .archive-table .outcome-dealt { color: #22c55e; font-weight: 600; }
         .archive-table .outcome-referred { color: #f59e0b; font-weight: 600; }
         .archive-table .outcome-declined { color: #ef4444; font-weight: 600; }
         .archive-empty { text-align: center; padding: 60px; color: #9ca3af; }
         .archive-empty h3 { font-size: 18px; margin-bottom: 8px; color: #6b7280; }
         .archive-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+        /* KYC Styles */
+        .kyc-banner { background: linear-gradient(135deg, #7c3aed, #5b21b6); color: white; border-radius: 12px; padding: 24px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center; }
+        .kyc-banner h3 { font-size: 16px; margin-bottom: 4px; }
+        .kyc-banner p { font-size: 13px; opacity: 0.85; }
+        .kyc-banner .kyc-logo { font-size: 32px; background: rgba(255,255,255,0.15); border-radius: 12px; padding: 12px 16px; }
+        .kyc-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+        .kyc-progress { width: 100%; height: 6px; background: #e5e7eb; border-radius: 3px; overflow: hidden; margin-top: 4px; }
+        .kyc-progress-bar { height: 100%; border-radius: 3px; transition: width 0.3s; }
+        .kyc-progress-bar.green { background: #22c55e; }
+        .kyc-progress-bar.yellow { background: #f59e0b; }
+        .kyc-progress-bar.red { background: #ef4444; }
+        .doc-checklist { list-style: none; padding: 0; margin: 0; }
+        .doc-checklist li { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid #e5e7eb; font-size: 13px; }
+        .doc-checklist li:last-child { border: none; }
+        .doc-check { width: 20px; height: 20px; border-radius: 4px; border: 2px solid #d1d5db; display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0; }
+        .doc-check.received { background: #22c55e; border-color: #22c55e; color: white; }
+        .doc-check.missing { background: white; border-color: #d1d5db; }
+        .doc-label { flex: 1; }
+        .doc-label .doc-name { font-weight: 600; }
+        .doc-label .doc-desc { font-size: 11px; color: #9ca3af; }
+        .doc-status { font-size: 11px; font-weight: 600; }
+        .doc-status.received { color: #22c55e; }
+        .doc-status.missing { color: #ef4444; }
+        .doc-status.na { color: #9ca3af; }
+        .gdrive-link { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: #4a90d9; text-decoration: none; font-weight: 600; padding: 4px 10px; background: #eff6ff; border-radius: 6px; }
+        .gdrive-link:hover { background: #dbeafe; }
+        .kyc-case-card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); margin-bottom: 16px; border: 1px solid #e5e7eb; }
+        .kyc-case-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; cursor: pointer; }
+        .kyc-case-header h3 { font-size: 15px; display: flex; align-items: center; gap: 10px; }
+        .kyc-case-body { display: none; }
+        .kyc-case-body.open { display: block; }
+        .kyc-id-verified { background: #d1fae5; color: #065f46; padding: 12px 16px; border-radius: 8px; font-size: 13px; display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+        .kyc-id-pending { background: #fef3c7; color: #92400e; padding: 12px 16px; border-radius: 8px; font-size: 13px; display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+        .kyc-actions { display: flex; gap: 8px; margin-top: 16px; }
     </style>
-</head>
-<body>
+</head><body>
 <div class="sidebar">
     <div class="sidebar-logo">itsa<span>decline</span></div>
     <nav class="sidebar-nav">
@@ -135,11 +172,13 @@
         <a href="#"><span class="nav-icon">&#127974;</span> X Lender</a>
         <a href="#"><span class="nav-icon">&#128203;</span> Offers</a>
         <a href="#"><span class="nav-icon">&#129309;</span> Broker Referrals</a>
+        <a onclick="showView('kyc')" id="nav-kyc"><span class="nav-icon">&#128274;</span> KYC &amp; Docs</a>
         <a onclick="showView('archive')" id="nav-archive"><span class="nav-icon">&#128451;&#65039;</span> Archive</a>
         <a href="#"><span class="nav-icon">&#9881;&#65039;</span> Settings</a>
     </nav>
 </div>
 <div class="main">
+    <!-- PIPELINE VIEW -->
     <div id="pipelineView">
         <div class="top-bar">
             <h1>Lead Pipeline</h1>
@@ -159,6 +198,7 @@
             <div class="stat-card"><div class="label">Broker Referrals</div><div class="value" style="color:#f59e0b;">6</div><div class="change">3 this week</div></div>
         </div>
         <div class="pipeline">
+            <!-- Column 1: New Leads -->
             <div class="pipeline-col col-new">
                 <div class="pipeline-header">New Leads <span class="count">4</span></div>
                 <div class="pipeline-cards">
@@ -196,6 +236,7 @@
                     </div>
                 </div>
             </div>
+            <!-- Column 2: HMLR Title -->
             <div class="pipeline-col col-hmlr">
                 <div class="pipeline-header">HMLR Title <span class="count">3</span></div>
                 <div class="pipeline-cards">
@@ -228,6 +269,7 @@
                     </div>
                 </div>
             </div>
+            <!-- Column 3: Valuation -->
             <div class="pipeline-col col-valuation">
                 <div class="pipeline-header">Valuation <span class="count">2</span></div>
                 <div class="pipeline-cards">
@@ -271,6 +313,7 @@
                     </div>
                 </div>
             </div>
+            <!-- Column 4: X Lender -->
             <div class="pipeline-col col-xl">
                 <div class="pipeline-header">X Lender <span class="count">2</span></div>
                 <div class="pipeline-cards">
@@ -294,6 +337,7 @@
                     </div>
                 </div>
             </div>
+            <!-- Column 5: Offer -->
             <div class="pipeline-col col-offer">
                 <div class="pipeline-header">Offer <span class="count">2</span></div>
                 <div class="pipeline-cards">
@@ -319,6 +363,218 @@
             </div>
         </div>
     </div>
+
+    <!-- KYC & DOCUMENTS VIEW -->
+    <div id="kycView">
+        <div class="top-bar">
+            <h1>&#128274; KYC &amp; Documents</h1>
+            <div class="top-bar-right">
+                <button class="btn btn-outline" onclick="showView('pipeline')">&#8592; Back to Pipeline</button>
+                <button class="btn btn-kyc" onclick="alert('Credas/SmartSearch integration coming soon')">&#9889; Run KYC Check</button>
+            </div>
+        </div>
+        <div class="kyc-banner">
+            <div>
+                <h3>KYC Provider: Credas / SmartSearch</h3>
+                <p>Biometric ID verification, AML screening, source of funds &mdash; certified under UK Gov Digital Identity Trust Framework</p>
+                <p style="margin-top:8px;font-size:11px;opacity:0.7;">Integration pending &mdash; connect via Settings to enable automated checks</p>
+            </div>
+            <div class="kyc-logo">&#128737;&#65039;</div>
+        </div>
+        <div class="kyc-stats">
+            <div class="stat-card"><div class="label">Total Cases</div><div class="value">13</div></div>
+            <div class="stat-card"><div class="label">KYC Complete</div><div class="value" style="color:#22c55e;">3</div></div>
+            <div class="stat-card"><div class="label">Docs Pending</div><div class="value" style="color:#f59e0b;">7</div></div>
+            <div class="stat-card"><div class="label">Not Started</div><div class="value" style="color:#ef4444;">3</div></div>
+        </div>
+
+        <!-- Case: William Chen - Full docs (demo complete case) -->
+        <div class="kyc-case-card">
+            <div class="kyc-case-header" onclick="toggleKycCase('chen-kyc')">
+                <h3><span class="ref-num">E9CHE0226</span> William Chen <span class="status-badge green" style="margin-left:8px;"><span class="dot green"></span> KYC Complete</span></h3>
+                <div style="display:flex;align-items:center;gap:12px;">
+                    <span class="gdrive-link" onclick="event.stopPropagation();alert('Opens G Drive folder: itsadecline Cases / E9CHE0226')">&#128193; G Drive Folder</span>
+                    <span style="font-size:13px;font-weight:600;color:#22c55e;">8/8 docs</span>
+                    <span style="font-size:18px;color:#6b7280;">&#9660;</span>
+                </div>
+            </div><div class="kyc-case-body" id="chen-kyc">
+                <div class="kyc-id-verified">&#9989; <strong>ID Verified via Credas</strong> &mdash; Biometric match confirmed 24 Feb 2026 &middot; AML Clear &middot; PEP/Sanctions Clear</div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                    <div>
+                        <ul class="doc-checklist">
+                            <li><div class="doc-check received">&#10003;</div><div class="doc-label"><div class="doc-name">Proof of ID</div><div class="doc-desc">Passport</div></div><span class="doc-status received">Received</span></li>
+                            <li><div class="doc-check received">&#10003;</div><div class="doc-label"><div class="doc-name">Proof of Address</div><div class="doc-desc">Council tax bill &mdash; Jan 2026</div></div><span class="doc-status received">Received</span></li>
+                            <li><div class="doc-check received">&#10003;</div><div class="doc-label"><div class="doc-name">Latest P60</div><div class="doc-desc">Tax year 2024/25</div></div><span class="doc-status received">Received</span></li>
+                            <li><div class="doc-check received">&#10003;</div><div class="doc-label"><div class="doc-name">3 Months Payslips</div><div class="doc-desc">Dec 2025, Jan &amp; Feb 2026</div></div><span class="doc-status received">Received</span></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <ul class="doc-checklist">
+                            <li><div class="doc-check received">&#10003;</div><div class="doc-label"><div class="doc-name">6 Months Bank Statements</div><div class="doc-desc">Sept 2025 &ndash; Feb 2026</div></div><span class="doc-status received">Received</span></li>
+                            <li><div class="doc-check received">&#10003;</div><div class="doc-label"><div class="doc-name">12 Months Statements (Purchase)</div><div class="doc-desc">Not applicable &mdash; existing property</div></div><span class="doc-status na">N/A</span></li>
+                            <li><div class="doc-check received">&#10003;</div><div class="doc-label"><div class="doc-name">Gifted Deposit Evidence</div><div class="doc-desc">Not applicable</div></div><span class="doc-status na">N/A</span></li>
+                            <li><div class="doc-check received">&#10003;</div><div class="doc-label"><div class="doc-name">Self-Employed Accounts</div><div class="doc-desc">Not applicable &mdash; PAYE employed</div></div><span class="doc-status na">N/A</span></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="kyc-actions">
+                    <button class="btn btn-outline btn-sm" onclick="alert('Opens G Drive folder: itsadecline Cases / E9CHE0226')">&#128193; Open G Drive Folder</button>
+                    <button class="btn btn-outline btn-sm" onclick="alert('Downloads compliance pack as PDF')">&#128196; Download Compliance Pack</button>
+                    <button class="btn btn-kyc btn-sm" onclick="alert('Re-running Credas check...')">&#9889; Re-run KYC</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Case: Nadia Hussain - Partial docs -->
+        <div class="kyc-case-card">
+            <div class="kyc-case-header" onclick="toggleKycCase('hussain-kyc')">
+                <h3><span class="ref-num">M1HUS0226</span> Nadia Hussain <span class="status-badge yellow" style="margin-left:8px;"><span class="dot yellow"></span> Docs Pending</span></h3>
+                <div style="display:flex;align-items:center;gap:12px;">
+                    <span class="gdrive-link" onclick="event.stopPropagation();alert('Opens G Drive folder: itsadecline Cases / M1HUS0226')">&#128193; G Drive Folder</span>
+                    <span style="font-size:13px;font-weight:600;color:#f59e0b;">5/8 docs</span>
+                    <span style="font-size:18px;color:#6b7280;">&#9660;</span>
+                </div>
+            </div>
+            <div class="kyc-case-body" id="hussain-kyc">
+                <div class="kyc-id-verified">&#9989; <strong>ID Verified via Credas</strong> &mdash; Biometric match confirmed 20 Feb 2026 &middot; AML Clear &middot; PEP/Sanctions Clear</div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                    <div>
+                        <ul class="doc-checklist">
+                            <li><div class="doc-check received">&#10003;</div><div class="doc-label"><div class="doc-name">Proof of ID</div><div class="doc-desc">Driving licence</div></div><span class="doc-status received">Received</span></li>
+                            <li><div class="doc-check received">&#10003;</div><div class="doc-label"><div class="doc-name">Proof of Address</div><div class="doc-desc">Utility bill &mdash; Feb 2026</div></div><span class="doc-status received">Received</span></li>
+                            <li><div class="doc-check received">&#10003;</div><div class="doc-label"><div class="doc-name">Latest P60</div><div class="doc-desc">Tax year 2024/25</div></div><span class="doc-status received">Received</span></li>
+                            <li><div class="doc-check received">&#10003;</div><div class="doc-label"><div class="doc-name">3 Months Payslips</div><div class="doc-desc">Dec 2025, Jan &amp; Feb 2026</div></div><span class="doc-status received">Received</span></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <ul class="doc-checklist">
+                            <li><div class="doc-check received">&#10003;</div><div class="doc-label"><div class="doc-name">6 Months Bank Statements</div><div class="doc-desc">Sept 2025 &ndash; Feb 2026</div></div><span class="doc-status received">Received</span></li>
+                            <li><div class="doc-check missing"></div><div class="doc-label"><div class="doc-name">12 Months Statements (Purchase)</div><div class="doc-desc">Not applicable</div></div><span class="doc-status na">N/A</span></li>
+                            <li><div class="doc-check missing"></div><div class="doc-label"><div class="doc-name">Gifted Deposit Evidence</div><div class="doc-desc">Not applicable</div></div><span class="doc-status na">N/A</span></li>
+                            <li><div class="doc-check missing"></div><div class="doc-label"><div class="doc-name">Self-Employed Accounts</div><div class="doc-desc"><strong style="color:#ef4444;">OUTSTANDING</strong> &mdash; Nadia is self-employed, awaiting SA302s &amp; 2yr accounts</div></div><span class="doc-status missing">Missing</span></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="kyc-actions">
+                    <button class="btn btn-outline btn-sm" onclick="alert('Opens G Drive folder: itsadecline Cases / M1HUS0226')">&#128193; Open G Drive Folder</button>
+                    <button class="btn btn-refer btn-sm" onclick="alert('Sending doc request email to Nadia...')">&#9993; Chase Missing Docs</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Case: James Okonkwo - In progress -->
+        <div class="kyc-case-card">
+            <div class="kyc-case-header" onclick="toggleKycCase('okonkwo-kyc')">
+                <h3><span class="ref-num">E14OKO0226</span> James Okonkwo <span class="status-badge yellow" style="margin-left:8px;"><span class="dot yellow"></span> Docs Pending</span></h3>
+                <div style="display:flex;align-items:center;gap:12px;">
+                    <span class="gdrive-link" onclick="event.stopPropagation();alert('Opens G Drive folder: itsadecline Cases / E14OKO0226')">&#128193; G Drive Folder</span>
+                    <span style="font-size:13px;font-weight:600;color:#f59e0b;">3/8 docs</span>
+                    <span style="font-size:18px;color:#6b7280;">&#9660;</span>
+                </div>
+            </div>
+            <div class="kyc-case-body" id="okonkwo-kyc">
+                <div class="kyc-id-verified">&#9989; <strong>ID Verified via Credas</strong> &mdash; Biometric match confirmed 22 Feb 2026 &middot; AML Clear &middot; PEP/Sanctions Clear</div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                    <div>
+                        <ul class="doc-checklist">
+                            <li><div class="doc-check received">&#10003;</div><div class="doc-label"><div class="doc-name">Proof of ID</div><div class="doc-desc">Passport</div></div><span class="doc-status received">Received</span></li>
+                            <li><div class="doc-check received">&#10003;</div><div class="doc-label"><div class="doc-name">Proof of Address</div><div class="doc-desc">Bank statement header</div></div><span class="doc-status received">Received</span></li>
+                            <li><div class="doc-check received">&#10003;</div><div class="doc-label"><div class="doc-name">Latest P60</div><div class="doc-desc">Tax year 2024/25</div></div><span class="doc-status received">Received</span></li>
+                            <li><div class="doc-check missing"></div><div class="doc-label"><div class="doc-name">3 Months Payslips</div><div class="doc-desc"><strong style="color:#ef4444;">OUTSTANDING</strong> &mdash; Chased 25 Feb</div></div><span class="doc-status missing">Missing</span></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <ul class="doc-checklist">
+                            <li><div class="doc-check missing"></div><div class="doc-label"><div class="doc-name">6 Months Bank Statements</div><div class="doc-desc"><strong style="color:#ef4444;">OUTSTANDING</strong> &mdash; Chased 25 Feb</div></div><span class="doc-status missing">Missing</span></li>
+                            <li><div class="doc-check missing"></div><div class="doc-label"><div class="doc-name">12 Months Statements (Purchase)</div><div class="doc-desc">Not applicable</div></div><span class="doc-status na">N/A</span></li>
+                            <li><div class="doc-check missing"></div><div class="doc-label"><div class="doc-name">Gifted Deposit Evidence</div><div class="doc-desc">Not applicable</div></div><span class="doc-status na">N/A</span></li>
+                            <li><div class="doc-check missing"></div><div class="doc-label"><div class="doc-name">Self-Employed Accounts</div><div class="doc-desc">Not applicable &mdash; PAYE employed</div></div><span class="doc-status na">N/A</span></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="kyc-actions">
+                    <button class="btn btn-outline btn-sm" onclick="alert('Opens G Drive folder: itsadecline Cases / E14OKO0226')">&#128193; Open G Drive Folder</button>
+                    <button class="btn btn-refer btn-sm" onclick="alert('Sending doc request email to James...')">&#9993; Chase Missing Docs</button>
+                </div>
+            </div>
+        </div>
+        <!-- Case: Anil Kumar - Not started -->
+        <div class="kyc-case-card">
+            <div class="kyc-case-header" onclick="toggleKycCase('kumar-kyc')">
+                <h3><span class="ref-num">SW1KUM0226</span> Anil Kumar <span class="status-badge red" style="margin-left:8px;"><span class="dot" style="background:#ef4444;"></span> Not Started</span></h3>
+                <div style="display:flex;align-items:center;gap:12px;">
+                    <span class="gdrive-link" onclick="event.stopPropagation();alert('Opens G Drive folder: itsadecline Cases / SW1KUM0226')">&#128193; G Drive Folder</span>
+                    <span style="font-size:13px;font-weight:600;color:#ef4444;">0/8 docs</span>
+                    <span style="font-size:18px;color:#6b7280;">&#9660;</span>
+                </div>
+            </div>
+            <div class="kyc-case-body" id="kumar-kyc">
+                <div class="kyc-id-pending">&#9888;&#65039; <strong>KYC Not Started</strong> &mdash; Send Credas verification link to client</div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                    <div>
+                        <ul class="doc-checklist">
+                            <li><div class="doc-check missing"></div><div class="doc-label"><div class="doc-name">Proof of ID</div><div class="doc-desc">Passport / Driving Licence</div></div><span class="doc-status missing">Missing</span></li>
+                            <li><div class="doc-check missing"></div><div class="doc-label"><div class="doc-name">Proof of Address</div><div class="doc-desc">Utility bill / Bank statement</div></div><span class="doc-status missing">Missing</span></li>
+                            <li><div class="doc-check missing"></div><div class="doc-label"><div class="doc-name">Latest P60</div><div class="doc-desc">From employer</div></div><span class="doc-status missing">Missing</span></li>
+                            <li><div class="doc-check missing"></div><div class="doc-label"><div class="doc-name">3 Months Payslips</div><div class="doc-desc">If employed</div></div><span class="doc-status missing">Missing</span></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <ul class="doc-checklist">
+                            <li><div class="doc-check missing"></div><div class="doc-label"><div class="doc-name">6 Months Bank Statements</div><div class="doc-desc">Current account</div></div><span class="doc-status missing">Missing</span></li>
+                            <li><div class="doc-check missing"></div><div class="doc-label"><div class="doc-name">12 Months Statements (Purchase)</div><div class="doc-desc">If purchasing &mdash; showing deposit build-up</div></div><span class="doc-status missing">Missing</span></li>
+                            <li><div class="doc-check missing"></div><div class="doc-label"><div class="doc-name">Gifted Deposit Evidence</div><div class="doc-desc">If deposit gifted &mdash; giftor ID, address, 3mo statements, gift letter</div></div><span class="doc-status missing">Missing</span></li>
+                            <li><div class="doc-check missing"></div><div class="doc-label"><div class="doc-name">Self-Employed Accounts</div><div class="doc-desc">If self-employed &mdash; 2yr accounts, SA302s, tax overviews</div></div><span class="doc-status missing">Missing</span></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="kyc-actions">
+                    <button class="btn btn-kyc btn-sm" onclick="alert('Sending Credas verification link to anil.kumar@gmail.com...')">&#9889; Send KYC Link</button>
+                    <button class="btn btn-refer btn-sm" onclick="alert('Sending full doc request email to Anil...')">&#9993; Request All Docs</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Remaining cases summary -->
+        <div class="kyc-case-card" style="background:#f9fafb;">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+                <div>
+                    <h3 style="font-size:15px;margin-bottom:4px;">+ 9 more cases</h3>
+                    <p style="font-size:13px;color:#6b7280;">Deepak Patel, Helen Wright, Michael O'Brien, Claire Edwards, Rob Taylor, Fiona Campbell, Priya Singh, George Adeyemi, Sarah Mitchell</p>
+                </div>
+                <div style="display:flex;gap:8px;">
+                    <span class="status-badge green"><span class="dot green"></span> 0 complete</span>
+                    <span class="status-badge yellow"><span class="dot yellow"></span> 4 pending</span>
+                    <span class="status-badge red"><span class="dot" style="background:#ef4444;"></span> 5 not started</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- G Drive Folder Structure -->
+        <div style="background:white;border-radius:12px;padding:24px;margin-top:24px;box-shadow:0 1px 3px rgba(0,0,0,0.08);border:1px solid #e5e7eb;">
+            <h3 style="font-size:16px;margin-bottom:16px;display:flex;align-items:center;gap:8px;">&#128193; Google Drive Folder Structure</h3>
+            <div style="background:#f9fafb;border-radius:8px;padding:16px;font-family:monospace;font-size:13px;line-height:2;">
+                <div><strong>itsadecline Cases/</strong></div>
+                <div style="padding-left:24px;">&#128193; E9CHE0226 &mdash; William Chen/</div>
+                <div style="padding-left:48px;color:#6b7280;">&#128196; 01 &mdash; Proof of ID/</div>
+                <div style="padding-left:48px;color:#6b7280;">&#128196; 02 &mdash; Proof of Address/</div>
+                <div style="padding-left:48px;color:#6b7280;">&#128196; 03 &mdash; P60/</div>
+                <div style="padding-left:48px;color:#6b7280;">&#128196; 04 &mdash; Payslips (3 months)/</div>
+                <div style="padding-left:48px;color:#6b7280;">&#128196; 05 &mdash; Bank Statements (6 months)/</div>
+                <div style="padding-left:48px;color:#6b7280;">&#128196; 06 &mdash; Bank Statements (12 months &mdash; Purchase)/</div>
+                <div style="padding-left:48px;color:#6b7280;">&#128196; 07 &mdash; Gifted Deposit Evidence/</div>
+                <div style="padding-left:48px;color:#6b7280;">&#128196; 08 &mdash; Self-Employed Accounts/</div>
+                <div style="padding-left:24px;">&#128193; M1HUS0226 &mdash; Nadia Hussain/</div>
+                <div style="padding-left:24px;">&#128193; E14OKO0226 &mdash; James Okonkwo/</div>
+                <div style="padding-left:24px;color:#9ca3af;">&#128193; ... (auto-created per case)</div>
+            </div>
+            <div style="margin-top:12px;padding:12px;background:#eff6ff;border-radius:8px;font-size:12px;color:#4a90d9;">
+                <strong>&#9432; Auto-folder creation:</strong> When a new lead enters the pipeline, a G Drive folder is auto-created with all 8 sub-folders using the reference number. Connect Google Drive in Settings to enable.
+            </div>
+        </div>
+    </div>
+
+    <!-- ARCHIVE VIEW -->
     <div id="archiveView">
         <div class="top-bar">
             <h1>&#128451;&#65039; Archived Cases</h1>
@@ -341,24 +597,36 @@
         <div class="archive-empty" id="archiveEmpty"><h3>No archived cases yet</h3><p>Cases will appear here once they are archived from the pipeline.</p></div>
     </div>
 </div>
+
 <div class="modal-overlay" id="modalOverlay">
     <div class="modal" id="modalContent"></div>
 </div>
-<script>
-let archivedCases = [];
+
+<\/script>
+var archivedCases = [];
+
 function showView(view) {
     document.getElementById('pipelineView').style.display = view === 'pipeline' ? 'block' : 'none';
     document.getElementById('archiveView').style.display = view === 'archive' ? 'block' : 'none';
+    document.getElementById('kycView').style.display = view === 'kyc' ? 'block' : 'none';
     document.getElementById('nav-pipeline').classList.toggle('active', view === 'pipeline');
     document.getElementById('nav-archive').classList.toggle('active', view === 'archive');
+    document.getElementById('nav-kyc').classList.toggle('active', view === 'kyc');
     if (view === 'archive') renderArchive();
 }
+
+function toggleKycCase(id) {
+    var el = document.getElementById(id);
+    el.classList.toggle('open');
+}
+
 function archiveCase(ref, name, property, type, amount, outcome) {
     var now = new Date();
-    archivedCases.push({ ref:ref, name:name, property:property, type:type, amount:amount, outcome:outcome, date: now.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}) });
+    archivedCases.push({ ref:ref, name:name, property:property, type:type, amount:amount, outcome:outcome, date:now.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}) });
     closeModal();
     alert('Case ' + ref + ' archived as ' + outcome);
 }
+
 function renderArchive() {
     var body = document.getElementById('archiveBody');
     var empty = document.getElementById('archiveEmpty');
@@ -366,155 +634,33 @@ function renderArchive() {
     if (archivedCases.length === 0) { empty.style.display = 'block'; } else {
         empty.style.display = 'none';
         archivedCases.forEach(function(c) {
-            var oc = c.outcome==='Completed'?'outcome-dealt':c.outcome==='Referred'?'outcome-referred':'outcome-declined';
-            body.innerHTML += '<tr><td class="ref">'+c.ref+'</td><td>'+c.name+'</td><td>'+c.property+'</td><td>'+c.type+'</td><td>'+c.amount+'</td><td class="'+oc+'">'+c.outcome+'</td><td>'+c.date+'</td></tr>';
+            var cls = c.outcome === 'Completed' ? 'outcome-dealt' : c.outcome === 'Referred' ? 'outcome-referred' : 'outcome-declined';
+            body.innerHTML += '<tr><td class="ref">' + c.ref + '</td><td>' + c.name + '</td><td>' + c.property + '</td><td>' + c.type + '</td><td>' + c.amount + '</td><td class="' + cls + '">' + c.outcome + '</td><td>' + c.date + '</td></tr>';
         });
     }
     document.getElementById('archiveCount').textContent = archivedCases.length;
     document.getElementById('archiveCompleted').textContent = archivedCases.filter(function(c){return c.outcome==='Completed'}).length;
     document.getElementById('archiveReferred').textContent = archivedCases.filter(function(c){return c.outcome==='Referred'}).length;
     document.getElementById('archiveDeclined').textContent = archivedCases.filter(function(c){return c.outcome==='Declined'}).length;
-}
-function openModal(type) {
+}function openModal(type) {
     var overlay = document.getElementById('modalOverlay');
     var content = document.getElementById('modalContent');
     if (type === 'sarah') {
-        content.innerHTML = '<button class="modal-close" onclick="closeModal()">x</button>' +
-            '<div class="ref-num" style="margin-bottom:8px;">B15MIT0226</div>' +
-            '<h2>Sarah Mitchell</h2>' +
-            '<div class="sub">42 Oakwood Drive, Birmingham B15 &middot; Submitted 12 mins ago</div>' +
-            '<div class="refer-banner"><h4>Broker Referral Required</h4><p>Sarah is looking for a primary remortgage (&pound;285K). This is not a secondary equity release &mdash; refer to mortgage broker partner.</p></div>' +
-            '<div class="detail-grid" style="margin-top:20px;"><div class="detail-section section-full"><h3>Lead Details &mdash; From Website Form</h3>' +
-            '<div class="detail-row"><span class="label">Reference</span><span class="val" style="color:#4a90d9;font-family:monospace;">B15MIT0226</span></div>' +
-            '<div class="detail-row"><span class="label">Full Name</span><span class="val">Sarah Mitchell</span></div>' +
-            '<div class="detail-row"><span class="label">Email</span><span class="val">sarah.mitchell@outlook.com</span></div>' +
-            '<div class="detail-row"><span class="label">Phone</span><span class="val">07123 456789</span></div>' +
-            '<div class="detail-row"><span class="label">Property</span><span class="val">42 Oakwood Drive, Birmingham B15 2TT</span></div>' +
-            '<div class="detail-row"><span class="label">Request</span><span class="val">Remortgage &mdash; &pound;285,000 (declined by Halifax)</span></div>' +
-            '<div class="detail-row"><span class="label">Why not for us?</span><span class="val" style="color:#f59e0b;">Primary mortgage &mdash; we only do 2nd charge equity release</span></div></div></div>' +
-            '<div class="modal-actions"><button class="btn btn-outline" onclick="closeModal()">Back</button><button class="btn btn-archive" onclick="archiveCase(' + "'" + 'B15MIT0226' + "'" + ',' + "'" + 'Sarah Mitchell' + "'" + ',' + "'" + '42 Oakwood Drive, B15' + "'" + ',' + "'" + 'Mortgage' + "'" + ',' + "'" + '&pound;285,000' + "'" + ',' + "'" + 'Referred' + "'" + ')">Archive &amp; Refer</button><button class="btn btn-refer" onclick="alert(' + "'" + 'Referring to broker partner...' + "'" + ')">Refer to Broker Partner</button></div>';
-    }
-    else if (type === 'kumar') {
-        content.innerHTML = '<button class="modal-close" onclick="closeModal()">x</button>' +
-            '<div class="ref-num" style="margin-bottom:8px;">SW1KUM0226</div>' +
-            '<h2>Anil Kumar</h2>' +
-            '<div class="sub">14 Belgravia Court, London SW1 &middot; 2nd Charge &middot; Submitted 45 mins ago</div>' +
-            '<div class="steps"><div class="step active"><div class="step-num">1</div><br>Lead In</div><div class="step"><div class="step-num">2</div><br>HMLR Title</div><div class="step"><div class="step-num">3</div><br>Valuation</div><div class="step"><div class="step-num">4</div><br>X Lender</div><div class="step"><div class="step-num">5</div><br>Offer</div></div>' +
-            '<div class="detail-grid"><div class="detail-section section-full"><h3>New Lead &mdash; Secondary Equity Release</h3>' +
-            '<div class="detail-row"><span class="label">Reference</span><span class="val" style="color:#4a90d9;font-family:monospace;">SW1KUM0226</span></div>' +
-            '<div class="detail-row"><span class="label">Full Name</span><span class="val">Anil Kumar</span></div>' +
-            '<div class="detail-row"><span class="label">Email</span><span class="val">anil.kumar@gmail.com</span></div>' +
-            '<div class="detail-row"><span class="label">Phone</span><span class="val">07890 123456</span></div>' +
-            '<div class="detail-row"><span class="label">Property</span><span class="val">14 Belgravia Court, London SW1X 8PH</span></div>' +
-            '<div class="detail-row"><span class="label">Existing Mortgage</span><span class="val">~&pound;400K with Barclays</span></div>' +
-            '<div class="detail-row"><span class="label">Estimated Value</span><span class="val">~&pound;850K (client estimate)</span></div>' +
-            '<div class="detail-row"><span class="label">Amount Needed</span><span class="val">&pound;100,000 &mdash; home improvements</span></div>' +
-            '<div class="detail-row"><span class="label">Source</span><span class="val">itsadecline.com &mdash; Contact Form</span></div></div></div>' +
-            '<div class="rule-box"><strong>Quick calc (client figures):</strong> &pound;850K &times; 70% = &pound;595K max &middot; minus &pound;400K mortgage = <strong>&pound;195K available</strong> &middot; Requesting &pound;100K &mdash; looks viable, needs HMLR + valuation to confirm</div>' +
-            '<div class="modal-actions"><button class="btn btn-outline" onclick="closeModal()">Back</button><button class="btn btn-primary" onclick="alert('Pulling HMLR title for 14 Belgravia Court...')">Pull HMLR Title</button></div>';
-    }
-    else if (type === 'patel') {
-        content.innerHTML = '<button class="modal-close" onclick="closeModal()">x</button>' +
-            '<div class="ref-num" style="margin-bottom:8px;">W8PAT0226</div>' +
-            '<h2>Deepak Patel</h2>' +
-            '<div class="sub">22 Kensington High St, London W8 &middot; 2nd Charge &middot; Submitted 1 day ago</div>' +
-            '<div class="steps"><div class="step done"><div class="step-num">1</div><br>Lead In</div><div class="step active"><div class="step-num">2</div><br>HMLR Title</div><div class="step"><div class="step-num">3</div><br>Valuation</div><div class="step"><div class="step-num">4</div><br>X Lender</div><div class="step"><div class="step-num">5</div><br>Offer</div></div>' +
-            '<div class="detail-grid"><div class="detail-section"><h3>Applicant</h3>' +
-            '<div class="detail-row"><span class="label">Reference</span><span class="val" style="color:#4a90d9;font-family:monospace;">W8PAT0226</span></div>' +
-            '<div class="detail-row"><span class="label">Full Name</span><span class="val">Deepak Patel</span></div>' +
-            '<div class="detail-row"><span class="label">Email</span><span class="val">d.patel@outlook.com</span></div>' +
-            '<div class="detail-row"><span class="label">Phone</span><span class="val">07456 789012</span></div>' +
-            '<div class="detail-row"><span class="label">Amount Needed</span><span class="val">&pound;150,000</span></div>' +
-            '<div class="detail-row"><span class="label">Purpose</span><span class="val">Business investment</span></div></div>' +
-            '<div class="detail-section"><h3>HMLR Title Deed</h3>' +
-            '<div class="detail-row"><span class="label">Title Number</span><span class="val" style="color:#8b5cf6;">NGL456789</span></div>' +
-            '<div class="detail-row"><span class="label">Registered Owner</span><span class="val">Deepak R Patel</span></div>' +
-            '<div class="detail-row"><span class="label">Tenure</span><span class="val">Leasehold (112 yrs remaining)</span></div>' +
-            '<div class="detail-row"><span class="label">1st Charge</span><span class="val">HSBC UK &mdash; &pound;380K outstanding</span></div>' +
-            '<div class="detail-row"><span class="label">Status</span><span class="val"><span class="status-badge green"><span class="dot green"></span> Verified</span></span></div>' +
-            '<div style="margin-top:12px;"><button class="btn btn-primary" style="width:100%;" onclick="alert('Running Zoopla and Rightmove checks...')">Run Valuation Checks</button></div></div></div>' +
-            '<div class="modal-actions"><button class="btn btn-outline" onclick="closeModal()">Back to Pipeline</button></div>';
-    }
-    else if (type === 'full') {
-        content.innerHTML = '<button class="modal-close" onclick="closeModal()">x</button>' +
-            '<div class="ref-num" style="margin-bottom:8px;">E14OKO0226</div>' +
-            '<h2>James Okonkwo</h2>' +
-            '<div class="sub">Flat 12, Riverside Tower, London E14 &middot; 2nd Charge &middot; Submitted 3 days ago</div>' +
-            '<div class="steps"><div class="step done"><div class="step-num">1</div><br>Lead In</div><div class="step done"><div class="step-num">2</div><br>HMLR Title</div><div class="step active"><div class="step-num">3</div><br>Valuation</div><div class="step"><div class="step-num">4</div><br>X Lender</div><div class="step"><div class="step-num">5</div><br>Offer</div></div>' +
-            '<div class="detail-grid"><div class="detail-section"><h3>Applicant</h3>' +
-            '<div class="detail-row"><span class="label">Reference</span><span class="val" style="color:#4a90d9;font-family:monospace;">E14OKO0226</span></div>' +
-            '<div class="detail-row"><span class="label">Full Name</span><span class="val">James Okonkwo</span></div>' +
-            '<div class="detail-row"><span class="label">Email</span><span class="val">j.okonkwo@email.com</span></div>' +
-            '<div class="detail-row"><span class="label">Phone</span><span class="val">07891 234567</span></div>' +
-            '<div class="detail-row"><span class="label">Amount Needed</span><span class="val">&pound;100,000</span></div>' +
-            '<div class="detail-row"><span class="label">Purpose</span><span class="val">Debt consolidation</span></div></div>' +
-            '<div class="detail-section"><h3>HMLR Title Deed</h3>' +
-            '<div class="detail-row"><span class="label">Title Number</span><span class="val" style="color:#8b5cf6;">EGL789012</span></div>' +
-            '<div class="detail-row"><span class="label">Registered Owner</span><span class="val">James A Okonkwo</span></div>' +
-            '<div class="detail-row"><span class="label">Tenure</span><span class="val">Leasehold (985 yrs remaining)</span></div>' +
-            '<div class="detail-row"><span class="label">1st Charge</span><span class="val">Nationwide &mdash; &pound;350K outstanding</span></div>' +
-            '<div class="detail-row"><span class="label">Status</span><span class="val"><span class="status-badge green"><span class="dot green"></span> Verified</span></span></div></div>' +
-            '<div class="detail-section section-full"><h3>Property Valuation</h3>' +
-            '<div class="val-compare"><div class="val-box zoopla lowest"><div class="source">Zoopla Estimate</div><div class="price">&pound;720,000</div><div style="font-size:11px;color:#6b7280;margin-top:4px;">Range: &pound;690K - &pound;750K</div><div style="font-size:11px;color:#6b7280;">Last sold: &pound;580K (2018)</div></div>' +
-            '<div class="val-box rightmove"><div class="source">Rightmove Estimate</div><div class="price">&pound;750,000</div><div style="font-size:11px;color:#6b7280;margin-top:4px;">Based on 8 comparable sales</div><div style="font-size:11px;color:#6b7280;">Area avg: &pound;695K</div></div></div>' +
-            '<div class="rule-box" style="margin-top:16px;"><strong>Rule:</strong> Always use the <strong>lowest valuation</strong> (Zoopla &pound;720K)</div>' +
-            '<div style="display:flex;justify-content:space-between;margin-top:16px;padding:12px;background:white;border-radius:8px;border:1px solid #e5e7eb;">' +
-            '<div><span style="font-size:12px;color:#6b7280;">Lowest Valuation</span><br><span style="font-size:20px;font-weight:800;">&pound;720,000</span></div>' +
-            '<div><span style="font-size:12px;color:#6b7280;">70% of Value</span><br><span style="font-size:20px;font-weight:800;">&pound;504,000</span></div>' +
-            '<div><span style="font-size:12px;color:#6b7280;">1st Charge (Nationwide)</span><br><span style="font-size:20px;font-weight:800;color:#ef4444;">-&pound;350,000</span></div>' +
-            '<div><span style="font-size:12px;color:#6b7280;">Max 2nd Charge</span><br><span style="font-size:20px;font-weight:800;color:#22c55e;">&pound;154,000</span></div></div>' +
-            '<div style="margin-top:12px;padding:12px;background:#f0fdf4;border-radius:8px;border:1px solid #bbf7d0;text-align:center;">' +
-            '<span style="font-size:13px;color:#6b7280;">Requesting</span><br><span style="font-size:24px;font-weight:800;">&pound;100,000</span><br>' +
-            '<span style="font-size:13px;color:#22c55e;font-weight:600;">Within limit &mdash; &pound;54K headroom</span></div></div></div>' +
-            '<div class="modal-actions"><button class="btn btn-outline" onclick="closeModal()">Back to Pipeline</button><button class="btn btn-primary" onclick="alert('Submitting to X Lender...')">Submit to X Lender</button></div>';
-    }
-    else if (type === 'hussain') {
-        content.innerHTML = '<button class="modal-close" onclick="closeModal()">x</button>' +
-            '<div class="ref-num" style="margin-bottom:8px;">M1HUS0226</div>' +
-            '<h2>Nadia Hussain</h2>' +
-            '<div class="sub">Penthouse 3, Albert Dock, Manchester M1 &middot; 2nd Charge &middot; Offer Sent</div>' +
-            '<div class="steps"><div class="step done"><div class="step-num">1</div><br>Lead In</div><div class="step done"><div class="step-num">2</div><br>HMLR Title</div><div class="step done"><div class="step-num">3</div><br>Valuation</div><div class="step done"><div class="step-num">4</div><br>X Lender</div><div class="step active"><div class="step-num">5</div><br>Offer</div></div>' +
-            '<div class="detail-grid"><div class="detail-section"><h3>Offer Summary</h3>' +
-            '<div class="detail-row"><span class="label">Reference</span><span class="val" style="color:#4a90d9;font-family:monospace;">M1HUS0226</span></div>' +
-            '<div class="detail-row"><span class="label">Loan Amount</span><span class="val" style="color:#22c55e;">&pound;140,000</span></div>' +
-            '<div class="detail-row"><span class="label">Rate</span><span class="val">7.9% fixed</span></div>' +
-            '<div class="detail-row"><span class="label">Term</span><span class="val">15 years</span></div>' +
-            '<div class="detail-row"><span class="label">Type</span><span class="val">2nd charge secured</span></div>' +
-            '<div class="detail-row"><span class="label">Monthly Payment</span><span class="val">&pound;1,334</span></div>' +
-            '<div class="detail-row"><span class="label">Status</span><span class="val"><span class="status-badge green"><span class="dot green"></span> Offer Sent</span></span></div></div>' +
-            '<div class="detail-section"><h3>Property</h3>' +
-            '<div class="detail-row"><span class="label">Address</span><span class="val">Penthouse 3, Albert Dock, M1</span></div>' +
-            '<div class="detail-row"><span class="label">Valuation (lowest)</span><span class="val">&pound;680,000</span></div>' +
-            '<div class="detail-row"><span class="label">1st Charge</span><span class="val">&pound;310,000</span></div>' +
-            '<div class="detail-row"><span class="label">Max 2nd Charge</span><span class="val">&pound;166,000</span></div>' +
-            '<div class="detail-row"><span class="label">XL Ref</span><span class="val" style="color:#06b6d4;">XL-2026-0839</span></div></div></div>' +
-            '<div class="modal-actions"><button class="btn btn-outline" onclick="closeModal()">Back</button><button class="btn btn-archive" onclick="archiveCase('M1HUS0226','Nadia Hussain','Albert Dock, M1','2nd Charge','&pound;140,000','Completed')">Archive Case</button><button class="btn btn-success">Mark Accepted</button></div>';
-    }
-    else if (type === 'chen') {
-        content.innerHTML = '<button class="modal-close" onclick="closeModal()">x</button>' +
-            '<div class="ref-num" style="margin-bottom:8px;">E9CHE0226</div>' +
-            '<h2>William Chen</h2>' +
-            '<div class="sub">45 Victoria Park, London E9 &middot; 2nd Charge &middot; Offer Accepted</div>' +
-            '<div class="steps"><div class="step done"><div class="step-num">1</div><br>Lead In</div><div class="step done"><div class="step-num">2</div><br>HMLR Title</div><div class="step done"><div class="step-num">3</div><br>Valuation</div><div class="step done"><div class="step-num">4</div><br>X Lender</div><div class="step done"><div class="step-num">5</div><br>Offer</div></div>' +
-            '<div class="detail-grid"><div class="detail-section"><h3>Offer Summary &mdash; ACCEPTED</h3>' +
-            '<div class="detail-row"><span class="label">Reference</span><span class="val" style="color:#4a90d9;font-family:monospace;">E9CHE0226</span></div>' +
-            '<div class="detail-row"><span class="label">Loan Amount</span><span class="val" style="color:#22c55e;">&pound;85,000</span></div>' +
-            '<div class="detail-row"><span class="label">Rate</span><span class="val">8.2% fixed</span></div>' +
-            '<div class="detail-row"><span class="label">Term</span><span class="val">10 years</span></div>' +
-            '<div class="detail-row"><span class="label">Type</span><span class="val">2nd charge secured</span></div>' +
-            '<div class="detail-row"><span class="label">Monthly Payment</span><span class="val">&pound;1,045</span></div>' +
-            '<div class="detail-row"><span class="label">Status</span><span class="val"><span class="status-badge green"><span class="dot green"></span> Accepted</span></span></div></div>' +
-            '<div class="detail-section"><h3>Property</h3>' +
-            '<div class="detail-row"><span class="label">Address</span><span class="val">45 Victoria Park, London E9</span></div>' +
-            '<div class="detail-row"><span class="label">Valuation (lowest)</span><span class="val">&pound;490,000</span></div>' +
-            '<div class="detail-row"><span class="label">1st Charge</span><span class="val">&pound;220,000</span></div>' +
-            '<div class="detail-row"><span class="label">Max 2nd Charge</span><span class="val">&pound;123,000</span></div>' +
-            '<div class="detail-row"><span class="label">XL Ref</span><span class="val" style="color:#06b6d4;">XL-2026-0831</span></div></div></div>' +
-            '<div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:20px;margin-top:16px;text-align:center;"><span style="font-size:32px;">&#9989;</span><h3 style="margin-top:8px;color:#22c55e;">Case Complete &mdash; Ready to Archive</h3><p style="font-size:13px;color:#6b7280;margin-top:4px;">All 5 steps completed. Offer accepted by client.</p></div>' +
-            '<div class="modal-actions"><button class="btn btn-outline" onclick="closeModal()">Back</button><button class="btn btn-archive" onclick="archiveCase('E9CHE0226','William Chen','45 Victoria Park, E9','2nd Charge','&pound;85,000','Completed')">Archive Case</button></div>';
+        content.innerHTML = '<button class="modal-close" onclick="closeModal()">x</button><div class="ref-num" style="margin-bottom:8px;">B15MIT0226</div><h2>Sarah Mitchell</h2><div class="sub">42 Oakwood Drive, Birmingham B15 &middot; Submitted 12 mins ago</div><div class="refer-banner"><h4>Broker Referral Required</h4><p>Sarah is looking for a primary remortgage (&pound;285K). This is not a secondary equity release &mdash; refer to mortgage broker partner.</p></div><div class="detail-grid" style="margin-top:20px;"><div class="detail-section section-full"><h3>Lead Details</h3><div class="detail-row"><span class="label">Reference</span><span class="val" style="color:#4a90d9;font-family:monospace;">B15MIT0226</span></div><div class="detail-row"><span class="label">Full Name</span><span class="val">Sarah Mitchell</span></div><div class="detail-row"><span class="label">Email</span><span class="val">sarah.mitchell@outlook.com</span></div><div class="detail-row"><span class="label">Phone</span><span class="val">07123 456789</span></div><div class="detail-row"><span class="label">Property</span><span class="val">42 Oakwood Drive, Birmingham B15 2TT</span></div><div class="detail-row"><span class="label">Request</span><span class="val">Remortgage &mdash; &pound;285,000 (declined by Halifax)</span></div><div class="detail-row"><span class="label">Why not for us?</span><span class="val" style="color:#f59e0b;">Primary mortgage &mdash; we only do 2nd charge equity release</span></div></div></div><div class="modal-actions"><button class="btn btn-outline" onclick="closeModal()">Back</button><button class="btn btn-archive" onclick="archiveCase('B15MIT0226','Sarah Mitchell','42 Oakwood Drive, B15','Mortgage','&pound;285,000','Referred')">Archive &amp; Refer</button><button class="btn btn-refer" onclick="alert('Referring to broker partner...')">Refer to Broker Partner</button></div>';
+    } else if (type === 'kumar') {
+        content.innerHTML = '<button class="modal-close" onclick="closeModal()">x</button><div class="ref-num" style="margin-bottom:8px;">SW1KUM0226</div><h2>Anil Kumar</h2><div class="sub">14 Belgravia Court, London SW1 &middot; 2nd Charge &middot; Submitted 45 mins ago</div><div class="steps"><div class="step active"><div class="step-num">1</div><br>Lead In</div><div class="step"><div class="step-num">2</div><br>HMLR Title</div><div class="step"><div class="step-num">3</div><br>Valuation</div><div class="step"><div class="step-num">4</div><br>X Lender</div><div class="step"><div class="step-num">5</div><br>Offer</div></div><div class="detail-grid"><div class="detail-section section-full"><h3>New Lead &mdash; Secondary Equity Release</h3><div class="detail-row"><span class="label">Reference</span><span class="val" style="color:#4a90d9;font-family:monospace;">SW1KUM0226</span></div><div class="detail-row"><span class="label">Full Name</span><span class="val">Anil Kumar</span></div><div class="detail-row"><span class="label">Email</span><span class="val">anil.kumar@gmail.com</span></div><div class="detail-row"><span class="label">Phone</span><span class="val">07890 123456</span></div><div class="detail-row"><span class="label">Property</span><span class="val">14 Belgravia Court, London SW1X 8PH</span></div><div class="detail-row"><span class="label">Existing Mortgage</span><span class="val">~&pound;400K with Barclays</span></div><div class="detail-row"><span class="label">Estimated Value</span><span class="val">~&pound;850K (client estimate)</span></div><div class="detail-row"><span class="label">Amount Needed</span><span class="val">&pound;100,000 &mdash; home improvements</span></div><div class="detail-row"><span class="label">Source</span><span class="val">itsadecline.com &mdash; Contact Form</span></div></div></div><div class="rule-box"><strong>Quick calc (client figures):</strong> &pound;850K x 70% = &pound;595K max &middot; minus &pound;400K mortgage = <strong>&pound;195K available</strong> &middot; Requesting &pound;100K &mdash; looks viable, needs HMLR + valuation to confirm</div><div class="modal-actions"><button class="btn btn-outline" onclick="closeModal()">Back</button><button class="btn btn-kyc btn-sm" onclick="alert('Sending Credas KYC link to anil.kumar@gmail.com')">&#9889; Send KYC Link</button><button class="btn btn-primary" onclick="alert('Pulling HMLR title for 14 Belgravia Court, London SW1...')">Pull HMLR Title</button></div>';
+    } else if (type === 'patel') {
+        content.innerHTML = '<button class="modal-close" onclick="closeModal()">x</button><div class="ref-num" style="margin-bottom:8px;">W8PAT0226</div><h2>Deepak Patel</h2><div class="sub">22 Kensington High St, London W8 &middot; 2nd Charge &middot; Submitted 1 day ago</div><div class="steps"><div class="step done"><div class="step-num">1</div><br>Lead In</div><div class="step active"><div class="step-num">2</div><br>HMLR Title</div><div class="step"><div class="step-num">3</div><br>Valuation</div><div class="step"><div class="step-num">4</div><br>X Lender</div><div class="step"><div class="step-num">5</div><br>Offer</div></div><div class="detail-grid"><div class="detail-section"><h3>Applicant</h3><div class="detail-row"><span class="label">Reference</span><span class="val" style="color:#4a90d9;font-family:monospace;">W8PAT0226</span></div><div class="detail-row"><span class="label">Full Name</span><span class="val">Deepak Patel</span></div><div class="detail-row"><span class="label">Email</span><span class="val">d.patel@outlook.com</span></div><div class="detail-row"><span class="label">Phone</span><span class="val">07456 789012</span></div><div class="detail-row"><span class="label">Amount Needed</span><span class="val">&pound;150,000</span></div><div class="detail-row"><span class="label">Purpose</span><span class="val">Business investment</span></div></div><div class="detail-section"><h3>HMLR Title Deed</h3><div class="detail-row"><span class="label">Title Number</span><span class="val" style="color:#8b5cf6;">NGL456789</span></div><div class="detail-row"><span class="label">Registered Owner</span><span class="val">Deepak R Patel</span></div><div class="detail-row"><span class="label">Tenure</span><span class="val">Leasehold (112 yrs remaining)</span></div><div class="detail-row"><span class="label">1st Charge</span><span class="val">HSBC UK &mdash; &pound;380K outstanding</span></div><div class="detail-row"><span class="label">Status</span><span class="val"><span class="status-badge green"><span class="dot green"></span> Verified</span></span></div><div style="margin-top:12px;"><button class="btn btn-primary" style="width:100%;" onclick="alert('Running Zoopla and Rightmove checks...')">Run Valuation Checks</button></div></div></div><div class="modal-actions"><button class="btn btn-outline" onclick="closeModal()">Back to Pipeline</button></div>';
+    } else if (type === 'full') {
+        content.innerHTML = '<button class="modal-close" onclick="closeModal()">x</button><div class="ref-num" style="margin-bottom:8px;">E14OKO0226</div><h2>James Okonkwo</h2><div class="sub">Flat 12, Riverside Tower, London E14 &middot; 2nd Charge &middot; Submitted 3 days ago</div><div class="steps"><div class="step done"><div class="step-num">1</div><br>Lead In</div><div class="step done"><div class="step-num">2</div><br>HMLR Title</div><div class="step active"><div class="step-num">3</div><br>Valuation</div><div class="step"><div class="step-num">4</div><br>X Lender</div><div class="step"><div class="step-num">5</div><br>Offer</div></div><div class="detail-grid"><div class="detail-section"><h3>Applicant</h3><div class="detail-row"><span class="label">Reference</span><span class="val" style="color:#4a90d9;font-family:monospace;">E14OKO0226</span></div><div class="detail-row"><span class="label">Full Name</span><span class="val">James Okonkwo</span></div><div class="detail-row"><span class="label">Email</span><span class="val">j.okonkwo@email.com</span></div><div class="detail-row"><span class="label">Phone</span><span class="val">07891 234567</span></div><div class="detail-row"><span class="label">Amount Needed</span><span class="val">&pound;100,000</span></div><div class="detail-row"><span class="label">Purpose</span><span class="val">Debt consolidation</span></div></div><div class="detail-section"><h3>HMLR Title Deed</h3><div class="detail-row"><span class="label">Title Number</span><span class="val" style="color:#8b5cf6;">EGL789012</span></div><div class="detail-row"><span class="label">Registered Owner</span><span class="val">James A Okonkwo</span></div><div class="detail-row"><span class="label">Tenure</span><span class="val">Leasehold (985 yrs remaining)</span></div><div class="detail-row"><span class="label">1st Charge</span><span class="val">Nationwide &mdash; &pound;350K outstanding</span></div><div class="detail-row"><span class="label">Status</span><span class="val"><span class="status-badge green"><span class="dot green"></span> Verified</span></span></div></div><div class="detail-section section-full"><h3>Property Valuation</h3><div class="val-compare"><div class="val-box zoopla lowest"><div class="source">Zoopla Estimate</div><div class="price">&pound;720,000</div><div style="font-size:11px;color:#6b7280;margin-top:4px;">Range: &pound;690K - &pound;750K</div><div style="font-size:11px;color:#6b7280;">Last sold: &pound;580K (2018)</div></div><div class="val-box rightmove"><div class="source">Rightmove Estimate</div><div class="price">&pound;750,000</div><div style="font-size:11px;color:#6b7280;margin-top:4px;">Based on 8 comparable sales</div><div style="font-size:11px;color:#6b7280;">Area avg: &pound;695K</div></div></div><div class="rule-box" style="margin-top:16px;"><strong>Rule:</strong> Always use the <strong>lowest valuation</strong> (Zoopla &pound;720K)</div><div style="display:flex;justify-content:space-between;margin-top:16px;padding:12px;background:white;border-radius:8px;border:1px solid #e5e7eb;"><div><span style="font-size:12px;color:#6b7280;">Lowest Valuation</span><br><span style="font-size:20px;font-weight:800;">&pound;720,000</span></div><div><span style="font-size:12px;color:#6b7280;">70% of Value</span><br><span style="font-size:20px;font-weight:800;">&pound;504,000</span></div><div><span style="font-size:12px;color:#6b7280;">1st Charge (Nationwide)</span><br><span style="font-size:20px;font-weight:800;color:#ef4444;">-&pound;350,000</span></div><div><span style="font-size:12px;color:#6b7280;">Max 2nd Charge</span><br><span style="font-size:20px;font-weight:800;color:#22c55e;">&pound;154,000</span></div></div><div style="margin-top:12px;padding:12px;background:#f0fdf4;border-radius:8px;border:1px solid #bbf7d0;text-align:center;"><span style="font-size:13px;color:#6b7280;">Requesting</span><br><span style="font-size:24px;font-weight:800;">&pound;100,000</span><br><span style="font-size:13px;color:#22c55e;font-weight:600;">Within limit &mdash; &pound;54K headroom</span></div></div></div><div class="modal-actions"><button class="btn btn-outline" onclick="closeModal()">Back to Pipeline</button><button class="btn btn-primary" onclick="alert('Submitting to X Lender...')">Submit to X Lender</button></div>';
+    } else if (type === 'hussain') {
+        content.innerHTML = '<button class="modal-close" onclick="closeModal()">x</button><div class="ref-num" style="margin-bottom:8px;">M1HUS0226</div><h2>Nadia Hussain</h2><div class="sub">Penthouse 3, Albert Dock, Manchester M1 &middot; 2nd Charge &middot; Offer Sent</div><div class="steps"><div class="step done"><div class="step-num">1</div><br>Lead In</div><div class="step done"><div class="step-num">2</div><br>HMLR Title</div><div class="step done"><div class="step-num">3</div><br>Valuation</div><div class="step done"><div class="step-num">4</div><br>X Lender</div><div class="step active"><div class="step-num">5</div><br>Offer</div></div><div class="detail-grid"><div class="detail-section"><h3>Offer Summary</h3><div class="detail-row"><span class="label">Reference</span><span class="val" style="color:#4a90d9;font-family:monospace;">M1HUS0226</span></div><div class="detail-row"><span class="label">Loan Amount</span><span class="val" style="color:#22c55e;">&pound;140,000</span></div><div class="detail-row"><span class="label">Rate</span><span class="val">7.9% fixed</span></div><div class="detail-row"><span class="label">Term</span><span class="val">15 years</span></div><div class="detail-row"><span class="label">Type</span><span class="val">2nd charge secured</span></div><div class="detail-row"><span class="label">Monthly Payment</span><span class="val">&pound;1,334</span></div><div class="detail-row"><span class="label">Status</span><span class="val"><span class="status-badge green"><span class="dot green"></span> Offer Sent</span></span></div></div><div class="detail-section"><h3>Property</h3><div class="detail-row"><span class="label">Address</span><span class="val">Penthouse 3, Albert Dock, M1</span></div><div class="detail-row"><span class="label">Valuation (lowest)</span><span class="val">&pound;680,000</span></div><div class="detail-row"><span class="label">1st Charge</span><span class="val">&pound;310,000</span></div><div class="detail-row"><span class="label">Max 2nd Charge</span><span class="val">&pound;166,000</span></div><div class="detail-row"><span class="label">XL Ref</span><span class="val" style="color:#06b6d4;">XL-2026-0839</span></div></div></div><div class="modal-actions"><button class="btn btn-outline" onclick="closeModal()">Back</button><button class="btn btn-archive" onclick="archiveCase('M1HUS0226','Nadia Hussain','Albert Dock, M1','2nd Charge','&pound;140,000','Completed')">Archive Case</button><button class="btn btn-success">Mark Accepted</button></div>';
+    } else if (type === 'chen') {
+        content.innerHTML = '<button class="modal-close" onclick="closeModal()">x</button><div class="ref-num" style="margin-bottom:8px;">E9CHE0226</div><h2>William Chen</h2><div class="sub">45 Victoria Park, London E9 &middot; 2nd Charge &middot; Offer Accepted</div><div class="steps"><div class="step done"><div class="step-num">1</div><br>Lead In</div><div class="step done"><div class="step-num">2</div><br>HMLR Title</div><div class="step done"><div class="step-num">3</div><br>Valuation</div><div class="step done"><div class="step-num">4</div><br>X Lender</div><div class="step done"><div class="step-num">5</div><br>Offer</div></div><div class="detail-grid"><div class="detail-section"><h3>Offer Summary &mdash; ACCEPTED</h3><div class="detail-row"><span class="label">Reference</span><span class="val" style="color:#4a90d9;font-family:monospace;">E9CHE0226</span></div><div class="detail-row"><span class="label">Loan Amount</span><span class="val" style="color:#22c55e;">&pound;85,000</span></div><div class="detail-row"><span class="label">Rate</span><span class="val">8.2% fixed</span></div><div class="detail-row"><span class="label">Term</span><span class="val">10 years</span></div><div class="detail-row"><span class="label">Type</span><span class="val">2nd charge secured</span></div><div class="detail-row"><span class="label">Monthly Payment</span><span class="val">&pound;1,045</span></div><div class="detail-row"><span class="label">Status</span><span class="val"><span class="status-badge green"><span class="dot green"></span> Accepted</span></span></div></div><div class="detail-section"><h3>Property</h3><div class="detail-row"><span class="label">Address</span><span class="val">45 Victoria Park, London E9</span></div><div class="detail-row"><span class="label">Valuation (lowest)</span><span class="val">&pound;490,000</span></div><div class="detail-row"><span class="label">1st Charge</span><span class="val">&pound;220,000</span></div><div class="detail-row"><span class="label">Max 2nd Charge</span><span class="val">&pound;123,000</span></div><div class="detail-row"><span class="label">XL Ref</span><span class="val" style="color:#06b6d4;">XL-2026-0831</span></div></div></div><div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:20px;margin-top:16px;text-align:center;"><span style="font-size:32px;">&#9989;</span><h3 style="margin-top:8px;color:#22c55e;">Case Complete &mdash; Ready to Archive</h3><p style="font-size:13px;color:#6b7280;margin-top:4px;">All 5 steps completed. Offer accepted by client.</p></div><div class="modal-actions"><button class="btn btn-outline" onclick="closeModal()">Back</button><button class="btn btn-archive" onclick="archiveCase('E9CHE0226','William Chen','45 Victoria Park, E9','2nd Charge','&pound;85,000','Completed')">Archive Case</button></div>';
     }
     overlay.classList.add('active');
 }
+
 function closeModal() { document.getElementById('modalOverlay').classList.remove('active'); }
 document.getElementById('modalOverlay').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
 </script>
