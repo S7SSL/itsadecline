@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>itsadecline Admin Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #f0f2f5; color: #1a2744; }
+        .sidebar { position: fixed; left: 0; top: 0; width: 240px; height: 100vh; background: #1a2744; color: white; padding: 24px 0; z-index: 100; }
+        .sidebar-logo { font-size: 20px; font-weight: 700; padding: 0 24px 24px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .sidebar-logo span { color: #4a90d9; }
+        .sidebar-nav { margin-top: 16px; }
+        .sidebar-nav a { display: flex; align-items: center; gap: 12px; padding: 12px 24px; color: rgba(255,255,255,0.6); text-decoration: none; font-size: 14px; font-weight: 500; transition: all 0.2s; }
+        .sidebar-nav a:hover, .sidebar-nav a.active { color: white; background: rgba(255,255,255,0.08); }
+        .sidebar-nav a.active { border-left: 3px solid #4a90d9; }
+        .nav-icon { width: 20px; text-align: center; }
+        .main { margin-left: 240px; padding: 24px 32px; }
+        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+        .top-bar h1 { font-size: 24px; font-weight: 700; }
+        .top-bar-right { display: flex; align-items: center; gap: 16px; }
+        .btn { padding: 10px 20px; border-radius: 8px; border: none; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 14px; cursor: pointer; transition: all 0.2s; }
+        .btn-primary { background: #4a90d9; color: white; }
+        .btn-primary:hover { background: #3a7bc8; }
+        .btn-outline { background: white; color: #1a2744; border: 1px solid #d1d5db; }
+        .btn-outline:hover { background: #f9fafb; }
+        .stats-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; margin-bottom: 24px; }
+        .stat-card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+        .stat-card .label { font-size: 12px; color: #6b7280; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
+        .stat-card .value { font-size: 28px; font-weight: 700; margin-top: 4px; }
+        .stat-card .change { font-size: 12px; margin-top: 4px; }
+        .stat-card .change.up { color: #22c55e; }
+        .pipeline { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; margin-bottom: 24px; }
+        .pipeline-col { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.08); min-height: 500px; }
+        .pipeline-header { padding: 16px; font-weight: 700; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid; }
+        .pipeline-header .count { background: rgba(0,0,0,0.08); border-radius: 12px; padding: 2px 10px; font-size: 12px; }
+        .col-new .pipeline-header { color: #4a90d9; border-color: #4a90d9; }
+        .col-hmlr .pipeline-header { color: #8b5cf6; border-color: #8b5cf6; }
+        .col-valuation .pipeline-header { color: #f59e0b; border-color: #f59e0b; }
+        .col-wb .pipeline-header { color: #06b6d4; border-color: #06b6d4; }
+        .col-offer .pipeline-header { color: #22c55e; border-color: #22c55e; }
+        .pipeline-cards { padding: 12px; display: flex; flex-direction: column; gap: 10px; }
+        .lead-card { background: #f9fafb; border-radius: 10px; padding: 14px; border: 1px solid #e5e7eb; cursor: pointer; transition: all 0.2s; }
+        .lead-card:hover { border-color: #4a90d9; box-shadow: 0 2px 8px rgba(74,144,217,0.15); }
+        .lead-card .name { font-weight: 600; font-size: 14px; margin-bottom: 4px; }
+        .lead-card .detail { font-size: 12px; color: #6b7280; margin-bottom: 2px; }
+        .lead-card .tags { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+        .tag { font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.3px; }
+        .tag-bridging { background: #dbeafe; color: #1d4ed8; }
+        .tag-second { background: #fef3c7; color: #92400e; }
+        .tag-remortgage { background: #d1fae5; color: #065f46; }
+        .tag-commercial { background: #ede9fe; color: #5b21b6; }
+        .tag-urgent { background: #fee2e2; color: #991b1b; }
+        .lead-card .amount { font-weight: 700; font-size: 15px; color: #1a2744; margin-top: 6px; }
+        .lead-card .time { font-size: 11px; color: #9ca3af; margin-top: 6px; }
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 200; justify-content: center; align-items: center; }
+        .modal-overlay.active { display: flex; }
+        .modal { background: white; border-radius: 16px; width: 900px; max-height: 85vh; overflow-y: auto; padding: 32px; position: relative; }
+        .modal-close { position: absolute; top: 16px; right: 16px; width: 32px; height: 32px; border-radius: 8px; border: none; background: #f3f4f6; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; }
+        .modal h2 { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+        .modal .sub { font-size: 14px; color: #6b7280; margin-bottom: 24px; }
+        .steps { display: flex; gap: 0; margin-bottom: 28px; }
+        .step { flex: 1; text-align: center; padding: 14px 8px; font-size: 12px; font-weight: 600; color: #9ca3af; border-bottom: 3px solid #e5e7eb; }
+        .step.done { color: #22c55e; border-color: #22c55e; }
+        .step.active { color: #4a90d9; border-color: #4a90d9; }
+        .step .step-num { display: inline-flex; width: 24px; height: 24px; border-radius: 50%; align-items: center; justify-content: center; font-size: 11px; margin-bottom: 4px; border: 2px solid #e5e7eb; color: #9ca3af; }
+        .step.done .step-num { background: #22c55e; border-color: #22c55e; color: white; }
+        .step.active .step-num { background: #4a90d9; border-color: #4a90d9; color: white; }
+        .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+        .detail-section { background: #f9fafb; border-radius: 12px; padding: 20px; border: 1px solid #e5e7eb; }
+        .detail-section h3 { font-size: 14px; font-weight: 700; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+        .detail-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #e5e7eb; font-size: 13px; }
+        .detail-row:last-child { border: none; }
+        .detail-row .label { color: #6b7280; }
+        .detail-row .val { font-weight: 600; }
+        .section-full { grid-column: 1 / -1; }
+        .val-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
+        .val-box { border-radius: 10px; padding: 16px; text-align: center; }
+        .val-box.zoopla { background: #eff6ff; border: 1px solid #bfdbfe; }
+        .val-box.rightmove { background: #fef3c7; border: 1px solid #fde68a; }
+        .val-box .source { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .val-box .price { font-size: 22px; font-weight: 800; }
+        .val-box.zoopla .source { color: #7c3aed; }
+        .val-box.rightmove .source { color: #d97706; }
+        .status-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 600; }
+        .status-badge.green { background: #d1fae5; color: #065f46; }
+        .status-badge.blue { background: #dbeafe; color: #1e40af; }
+        .status-badge.yellow { background: #fef3c7; color: #92400e; }
+        .status-badge.red { background: #fee2e2; color: #991b1b; }
+        .dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; }
+        .dot.green { background: #22c55e; }
+        .dot.blue { background: #3b82f6; }
+        .dot.yellow { background: #f59e0b; }
+        .modal-actions { display: flex; gap: 12px; margin-top: 24px; justify-content: flex-end; }
+    </style>
+</head>
+<body>
+<div class="sidebar">
+    <div class="sidebar-logo">itsa<span>decline</span></div>
+    <nav class="sidebar-nav">
+        <a href="#" class="active"><span class="nav-icon">📊</span> Dashboard</a>
+        <a href="#"><span class="nav-icon">📥</span> New Leads</a>
+        <a href="#"><span class="nav-icon">🏠</span> HMLR Lookup</a>
+        <a href="#"><span class="nav-icon">💷</span> Valuations</a>
+        <a href="#"><span class="nav-icon">🏦</span> Westbridge</a>
+        <a href="#"><span class="nav-icon">📋</span> Offers</a>
+        <a href="#"><span class="nav-icon">📞</span> Contacts</a>
+        <a href="#"><span class="nav-icon">⚙️</span> Settings</a>
+    </nav>
+</div>
+<div class="main">
+    <div class="top-bar">
+        <h1>Lead Pipeline</h1>
+        <div class="top-bar-right">
+            <span style="font-size:13px;color:#6b7280;">Last sync: 2 mins ago</span>
+            <button class="btn btn-outline">Export CSV</button>
+            <button class="btn btn-primary">+ New Lead</button>
+        </div>
+    </div>
+    <div class="stats-row">
+        <div class="stat-card"><div class="label">New Leads</div><div class="value">12</div><div class="change up">+3 today</div></div>
+        <div class="stat-card"><div class="label">Title Checks</div><div class="value">8</div><div class="change up">5 cleared</div></div>
+        <div class="stat-card"><div class="label">Valuations</div><div class="value">6</div><div class="change">3 pending</div></div>
+        <div class="stat-card"><div class="label">With WB</div><div class="value">4</div><div class="change up">2 approved</div></div>
+        <div class="stat-card"><div class="label">Offers Out</div><div class="value" style="color:#22c55e;">3</div><div class="change up">£1.2M total</div></div>
+    </div>
+    <div class="pipeline">
+        <div class="pipeline-col col-new">
+            <div class="pipeline-header">New Leads <span class="count">4</span></div>
+            <div class="pipeline-cards">
+                <div class="lead-card" onclick="openModal('sarah')"><div class="name">Sarah Mitchell</div><div class="detail">42 Oakwood Drive, Birmingham B15</div><div class="tags"><span class="tag tag-remortgage">Remortgage</span><span class="tag tag-urgent">Urgent</span></div><div class="amount">£285,000</div><div class="time">12 mins ago</div></div>
+                <div class="lead-card"><div class="name">James Patel</div><div class="detail">8 Riverside Way, Leeds LS1</div><div class="tags"><span class="tag tag-bridging">Bridging</span></div><div class="amount">£450,000</div><div class="time">1 hour ago</div></div>
+                <div class="lead-card"><div class="name">Maria Santos</div><div class="detail">15 Kings Road, London SW3</div><div class="tags"><span class="tag tag-second">2nd Charge</span></div><div class="amount">£120,000</div><div class="time">3 hours ago</div></div>
+                <div class="lead-card"><div class="name">David Chen</div><div class="detail">91 Victoria Street, Manchester M1</div><div class="tags"><span class="tag tag-commercial">Commercial</span></div><div class="amount">£780,000</div><div class="time">Yesterday</div></div>
+            </div>
+        </div>
+        <div class="pipeline-col col-hmlr">
+            <div class="pipeline-header">HMLR Title <span class="count">3</span></div>
+            <div class="pipeline-cards">
+                <div class="lead-card" onclick="openModal('thompson')"><div class="name">Alan Thompson</div><div class="detail">7 Cedar Lane, Bristol BS1</div><div class="tags"><span class="tag tag-remortgage">Remortgage</span></div><div class="detail" style="color:#8b5cf6;font-weight:600;margin-top:6px;">Title: BD123456</div><div class="amount">£340,000</div><div class="time"><span class="status-badge green"><span class="dot green"></span> Title Verified</span></div></div>
+                <div class="lead-card"><div class="name">Rachel Green</div><div class="detail">22 Park Avenue, Oxford OX1</div><div class="tags"><span class="tag tag-bridging">Bridging</span><span class="tag tag-urgent">Urgent</span></div><div class="detail" style="color:#f59e0b;font-weight:600;margin-top:6px;">Pulling title...</div><div class="amount">£520,000</div><div class="time"><span class="status-badge yellow"><span class="dot yellow"></span> In Progress</span></div></div>
+                <div class="lead-card"><div class="name">Tom Baker</div><div class="detail">3 Mill Street, Nottingham NG1</div><div class="tags"><span class="tag tag-second">2nd Charge</span></div><div class="detail" style="color:#8b5cf6;font-weight:600;margin-top:6px;">Title: NT789012</div><div class="amount">£95,000</div><div class="time"><span class="status-badge green"><span class="dot green"></span> Title Verified</span></div></div>
+            </div>
+        </div>
+        <div class="pipeline-col col-valuation">
+            <div class="pipeline-header">Valuation <span class="count">3</span></div>
+            <div class="pipeline-cards">
+                <div class="lead-card" onclick="openModal('full')"><div class="name">Mark Johnson</div><div class="detail">18 Elm Court, Liverpool L1</div><div class="tags"><span class="tag tag-remortgage">Remortgage</span></div><div style="display:flex;gap:8px;margin-top:8px;"><div style="flex:1;background:#eff6ff;border-radius:6px;padding:6px;text-align:center;"><div style="font-size:9px;color:#7c3aed;font-weight:700;">ZOOPLA</div><div style="font-size:13px;font-weight:700;">£425K</div></div><div style="flex:1;background:#fef3c7;border-radius:6px;padding:6px;text-align:center;"><div style="font-size:9px;color:#d97706;font-weight:700;">RIGHTMOVE</div><div style="font-size:13px;font-weight:700;">£440K</div></div></div><div class="amount">£380,000</div><div class="time"><span class="status-badge green"><span class="dot green"></span> LTV 88%</span></div></div>
+                <div class="lead-card"><div class="name">Karen Williams</div><div class="detail">5 Church Road, Edinburgh EH1</div><div class="tags"><span class="tag tag-bridging">Bridging</span></div><div style="display:flex;gap:8px;margin-top:8px;"><div style="flex:1;background:#eff6ff;border-radius:6px;padding:6px;text-align:center;"><div style="font-size:9px;color:#7c3aed;font-weight:700;">ZOOPLA</div><div style="font-size:13px;font-weight:700;">£610K</div></div><div style="flex:1;background:#fef3c7;border-radius:6px;padding:6px;text-align:center;"><div style="font-size:9px;color:#d97706;font-weight:700;">RIGHTMOVE</div><div style="font-size:13px;font-weight:700;">£595K</div></div></div><div class="amount">£500,000</div><div class="time"><span class="status-badge green"><span class="dot green"></span> LTV 83%</span></div></div>
+                <div class="lead-card"><div class="name">Steve Clarke</div><div class="detail">29 High Street, Bath BA1</div><div class="tags"><span class="tag tag-second">2nd Charge</span></div><div style="display:flex;gap:8px;margin-top:8px;"><div style="flex:1;background:#fee2e2;border-radius:6px;padding:6px;text-align:center;"><div style="font-size:9px;color:#991b1b;font-weight:700;">ZOOPLA</div><div style="font-size:13px;font-weight:700;">£180K</div></div><div style="flex:1;background:#fee2e2;border-radius:6px;padding:6px;text-align:center;"><div style="font-size:9px;color:#991b1b;font-weight:700;">RIGHTMOVE</div><div style="font-size:13px;font-weight:700;">£175K</div></div></div><div class="amount">£160,000</div><div class="time"><span class="status-badge red"><span class="dot" style="background:#ef4444;"></span> LTV 91% — Review</span></div></div>
+            </div>
+        </div>
+        <div class="pipeline-col col-wb">
+            <div class="pipeline-header">Westbridge <span class="count">2</span></div>
+            <div class="pipeline-cards">
+                <div class="lead-card"><div class="name">Lisa Ahmed</div><div class="detail">44 Queens Gate, London SW7</div><div class="tags"><span class="tag tag-remortgage">Remortgage</span></div><div class="amount">£650,000</div><div class="detail" style="color:#06b6d4;font-weight:600;margin-top:6px;">WB Ref: WB-2026-1847</div><div class="time"><span class="status-badge green"><span class="dot green"></span> Approved</span></div></div>
+                <div class="lead-card"><div class="name">Peter Morrison</div><div class="detail">12 Castle Road, Cardiff CF1</div><div class="tags"><span class="tag tag-bridging">Bridging</span><span class="tag tag-urgent">Urgent</span></div><div class="amount">£310,000</div><div class="detail" style="color:#06b6d4;font-weight:600;margin-top:6px;">WB Ref: WB-2026-1852</div><div class="time"><span class="status-badge blue"><span class="dot blue"></span> Under Review</span></div></div>
+            </div>
+        </div>
+        <div class="pipeline-col col-offer">
+            <div class="pipeline-header">Offer <span class="count">2</span></div>
+            <div class="pipeline-cards">
+                <div class="lead-card" style="border-color:#22c55e;background:#f0fdf4;"><div class="name">Angela Foster</div><div class="detail">9 Riverside Apartments, London E14</div><div class="tags"><span class="tag tag-remortgage">Remortgage</span></div><div class="amount" style="color:#22c55e;">£520,000</div><div class="detail" style="font-weight:600;margin-top:4px;">4.2% · 25yr · £2,780/mo</div><div class="time"><span class="status-badge green"><span class="dot green"></span> Offer Sent</span></div></div>
+                <div class="lead-card" style="border-color:#22c55e;background:#f0fdf4;"><div class="name">Raj Sharma</div><div class="detail">67 Lime Street, Manchester M2</div><div class="tags"><span class="tag tag-bridging">Bridging</span></div><div class="amount" style="color:#22c55e;">£275,000</div><div class="detail" style="font-weight:600;margin-top:4px;">0.85%/mo · 12mo · Exit: Sale</div><div class="time"><span class="status-badge green"><span class="dot green"></span> Offer Accepted</span></div></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-overlay" id="modalOverlay">
+    <div class="modal" id="modalContent"></div>
+</div>
+<script>
+function openModal(type) {
+    const overlay = document.getElementById('modalOverlay');
+    const content = document.getElementById('modalContent');
+    if (type === 'full') {
+        content.innerHTML = '<button class="modal-close" onclick="closeModal()">x</button><h2>Mark Johnson</h2><div class="sub">18 Elm Court, Liverpool L1 · Remortgage · Submitted 2 days ago</div><div class="steps"><div class="step done"><div class="step-num">1</div><br>Lead In</div><div class="step done"><div class="step-num">2</div><br>HMLR Title</div><div class="step active"><div class="step-num">3</div><br>Valuation</div><div class="step"><div class="step-num">4</div><br>Westbridge</div><div class="step"><div class="step-num">5</div><br>Offer</div></div><div class="detail-grid"><div class="detail-section"><h3>Applicant</h3><div class="detail-row"><span class="label">Full Name</span><span class="val">Mark Johnson</span></div><div class="detail-row"><span class="label">Email</span><span class="val">mark.j@email.com</span></div><div class="detail-row"><span class="label">Phone</span><span class="val">07891 234567</span></div><div class="detail-row"><span class="label">Loan Required</span><span class="val">£380,000</span></div><div class="detail-row"><span class="label">Type</span><span class="val">Remortgage — Declined by NatWest</span></div></div><div class="detail-section"><h3>HMLR Title Deed</h3><div class="detail-row"><span class="label">Title Number</span><span class="val" style="color:#8b5cf6;">MS456789</span></div><div class="detail-row"><span class="label">Registered Owner</span><span class="val">Mark A Johnson</span></div><div class="detail-row"><span class="label">Tenure</span><span class="val">Freehold</span></div><div class="detail-row"><span class="label">Charges</span><span class="val">NatWest PLC — £310K outstanding</span></div><div class="detail-row"><span class="label">Status</span><span class="val"><span class="status-badge green"><span class="dot green"></span> Verified</span></span></div></div><div class="detail-section section-full"><h3>Property Valuation</h3><div class="val-compare"><div class="val-box zoopla"><div class="source">Zoopla Estimate</div><div class="price">£425,000</div><div style="font-size:11px;color:#6b7280;margin-top:4px;">Range: £405K – £445K</div><div style="font-size:11px;color:#6b7280;">Last sold: £320K (2019)</div></div><div class="val-box rightmove"><div class="source">Rightmove Estimate</div><div class="price">£440,000</div><div style="font-size:11px;color:#6b7280;margin-top:4px;">Based on 6 comparable sales</div><div style="font-size:11px;color:#6b7280;">Area avg: £415K</div></div></div><div style="display:flex;justify-content:space-between;margin-top:16px;padding:12px;background:white;border-radius:8px;border:1px solid #e5e7eb;"><div><span style="font-size:12px;color:#6b7280;">Average Valuation</span><br><span style="font-size:20px;font-weight:800;">£432,500</span></div><div><span style="font-size:12px;color:#6b7280;">Loan Amount</span><br><span style="font-size:20px;font-weight:800;">£380,000</span></div><div><span style="font-size:12px;color:#6b7280;">LTV Ratio</span><br><span style="font-size:20px;font-weight:800;color:#22c55e;">87.9%</span></div><div><span style="font-size:12px;color:#6b7280;">Equity</span><br><span style="font-size:20px;font-weight:800;">£52,500</span></div></div></div></div><div class="modal-actions"><button class="btn btn-outline" onclick="closeModal()">Back to Pipeline</button><button class="btn btn-primary" onclick="alert(\'Submitting to Westbridge...\')">Submit to Westbridge</button></div>';
+    } else if (type === 'sarah') {
+        content.innerHTML = '<button class="modal-close" onclick="closeModal()">x</button><h2>Sarah Mitchell</h2><div class="sub">42 Oakwood Drive, Birmingham B15 · Remortgage · Submitted 12 mins ago</div><div class="steps"><div class="step active"><div class="step-num">1</div><br>Lead In</div><div class="step"><div class="step-num">2</div><br>HMLR Title</div><div class="step"><div class="step-num">3</div><br>Valuation</div><div class="step"><div class="step-num">4</div><br>Westbridge</div><div class="step"><div class="step-num">5</div><br>Offer</div></div><div class="detail-grid"><div class="detail-section section-full"><h3>New Lead — From Website Form</h3><div class="detail-row"><span class="label">Full Name</span><span class="val">Sarah Mitchell</span></div><div class="detail-row"><span class="label">Email</span><span class="val">sarah.mitchell@outlook.com</span></div><div class="detail-row"><span class="label">Phone</span><span class="val">07123 456789</span></div><div class="detail-row"><span class="label">Property</span><span class="val">42 Oakwood Drive, Birmingham B15 2TT</span></div><div class="detail-row"><span class="label">Message</span><span class="val">Been declined by Halifax for remortgage. Need £285K, property worth around £350K.</span></div><div class="detail-row"><span class="label">Source</span><span class="val">itsadecline.com — Contact Form</span></div></div></div><div class="modal-actions"><button class="btn btn-outline" style="color:#ef4444;border-color:#ef4444;">Decline Lead</button><button class="btn btn-outline" onclick="closeModal()">Back</button><button class="btn btn-primary" onclick="alert(\'Pulling HMLR title for 42 Oakwood Drive, Birmingham B15...\')">Pull HMLR Title</button></div>';
+    } else if (type === 'thompson') {
+        content.innerHTML = '<button class="modal-close" onclick="closeModal()">x</button><h2>Alan Thompson</h2><div class="sub">7 Cedar Lane, Bristol BS1 · Remortgage · Submitted 1 day ago</div><div class="steps"><div class="step done"><div class="step-num">1</div><br>Lead In</div><div class="step active"><div class="step-num">2</div><br>HMLR Title</div><div class="step"><div class="step-num">3</div><br>Valuation</div><div class="step"><div class="step-num">4</div><br>Westbridge</div><div class="step"><div class="step-num">5</div><br>Offer</div></div><div class="detail-grid"><div class="detail-section"><h3>Applicant</h3><div class="detail-row"><span class="label">Full Name</span><span class="val">Alan Thompson</span></div><div class="detail-row"><span class="label">Email</span><span class="val">alan.t@gmail.com</span></div><div class="detail-row"><span class="label">Phone</span><span class="val">07456 789012</span></div><div class="detail-row"><span class="label">Loan Required</span><span class="val">£340,000</span></div><div class="detail-row"><span class="label">Type</span><span class="val">Remortgage — Declined by Barclays</span></div></div><div class="detail-section"><h3>HMLR Title Deed</h3><div class="detail-row"><span class="label">Title Number</span><span class="val" style="color:#8b5cf6;">BD123456</span></div><div class="detail-row"><span class="label">Registered Owner</span><span class="val">Alan J Thompson</span></div><div class="detail-row"><span class="label">Tenure</span><span class="val">Freehold</span></div><div class="detail-row"><span class="label">Charges</span><span class="val">Barclays Bank — £280K outstanding</span></div><div class="detail-row"><span class="label">Status</span><span class="val"><span class="status-badge green"><span class="dot green"></span> Verified</span></span></div><div style="margin-top:12px;"><button class="btn btn-primary" style="width:100%;" onclick="alert(\'Running Zoopla and Rightmove checks...\')">Run Valuation Checks</button></div></div></div><div class="modal-actions"><button class="btn btn-outline" onclick="closeModal()">Back to Pipeline</button></div>';
+    }
+    overlay.classList.add('active');
+}
+function closeModal() { document.getElementById('modalOverlay').classList.remove('active'); }
+document.getElementById('modalOverlay').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
+</script>
+</body>
+</html>
