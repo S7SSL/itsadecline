@@ -795,7 +795,11 @@
             <div class="hero-form-card">
                 <h3>Get a free consultation</h3>
                 <p class="form-subtitle">No obligation &mdash; we&rsquo;ll review your situation and find the best option.</p>
-                <form class="contact-form" id="contactForm">
+                <form class="contact-form" id="contactForm" action="https://formsubmit.co/sl@itsadecline.com" method="POST">
+                    <input type="hidden" name="_subject" value="New Enquiry from itsadecline.com">
+                    <input type="hidden" name="_captcha" value="false">
+                    <input type="hidden" name="_next" value="https://itsadecline.com/#contact">
+                    <input type="text" name="_honey" style="display:none">
                     <div class="form-group">
                         <label for="name">Full Name</label>
                         <input type="text" id="name" name="name" placeholder="John Smith" required>
@@ -1002,7 +1006,7 @@
         </div>
         <div class="footer-bottom">
             <span>&copy; 2026 Its A Decline. All rights reserved.</span>
-            <a href="#">Privacy Policy</a>
+            <a href="#" onclick="document.getElementById('privacyModal').style.display='flex';return false;">Privacy Policy</a>
         </div>
     </footer>
 
@@ -1051,9 +1055,52 @@
         // Form handler
         document.getElementById('contactForm').addEventListener('submit', function (e) {
             e.preventDefault();
-            this.reset();
-            alert('Thank you! We will be in touch shortly.');
-        });
+            const form = this;
+            const btn = form.querySelector('button[type="submit"]');
+            const originalText = btn.textContent;
+            btn.textContent = 'Sending...';
+            btn.disabled = true;
+            fetch(form.action, {
+                method: 'POST',
+                body: new FormData(form),
+                headers: { 'Accept': 'application/json' }
+            }).then(response => {
+                if (response.ok) {
+                    form.reset();
+                    btn.textContent = 'Message Sent!';
+                    btn.style.background = '#22c55e';
+                    setTimeout(() => { btn.textContent = originalText; btn.style.background = ''; btn.disabled = false; }, 3000);
+                } else {
+                    btn.textContent = 'Error - Try Again';
+                    btn.style.background = '#ef4444';
+                    setTimeout(() => { btn.textContent = originalText; btn.style.background = ''; btn.disabled = false; }, 3000);
+                }
+            }).catch(() => {
+                btn.textContent = 'Error - Try Again';
+                btn.style.background = '#ef4444';
+                setTimeout(() => { btn.textContent = originalText; btn.style.background = ''; btn.disabled = false; }, 3000);
+            });
+        })
     </script>
+
+    <!-- Privacy Policy Modal -->
+    <div id="privacyModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:10000;justify-content:center;align-items:center;padding:20px;">
+        <div style="background:white;border-radius:16px;max-width:700px;width:100%;max-height:80vh;overflow-y:auto;padding:40px;position:relative;">
+            <button onclick="document.getElementById('privacyModal').style.display='none'" style="position:absolute;top:15px;right:20px;background:none;border:none;font-size:24px;cursor:pointer;color:#666;">&times;</button>
+            <h2 style="color:#1a2332;margin-bottom:20px;font-size:24px;">Privacy Policy</h2>
+            <p style="color:#555;line-height:1.8;margin-bottom:15px;">Its A Decline is committed to protecting your privacy. This policy explains how we collect, use and safeguard your personal information.</p>
+            <h3 style="color:#1a2332;margin:20px 0 10px;font-size:18px;">Information We Collect</h3>
+            <p style="color:#555;line-height:1.8;margin-bottom:15px;">We collect information you provide directly, including your name, email address, phone number and details about your financial enquiry when you submit our contact form.</p>
+            <h3 style="color:#1a2332;margin:20px 0 10px;font-size:18px;">How We Use Your Information</h3>
+            <p style="color:#555;line-height:1.8;margin-bottom:15px;">Your information is used solely to respond to your enquiry, match you with suitable lending options and provide our advisory services. We will never sell your data to third parties.</p>
+            <h3 style="color:#1a2332;margin:20px 0 10px;font-size:18px;">Data Protection</h3>
+            <p style="color:#555;line-height:1.8;margin-bottom:15px;">We take appropriate measures to protect your personal data in accordance with the UK Data Protection Act 2018 and UK GDPR. Your data is stored securely and only accessed by authorised personnel.</p>
+            <h3 style="color:#1a2332;margin:20px 0 10px;font-size:18px;">Your Rights</h3>
+            <p style="color:#555;line-height:1.8;margin-bottom:15px;">You have the right to access, correct or delete your personal data at any time. To exercise these rights, contact us at sl@itsadecline.com.</p>
+            <h3 style="color:#1a2332;margin:20px 0 10px;font-size:18px;">Contact</h3>
+            <p style="color:#555;line-height:1.8;">For any privacy-related questions, please email sl@itsadecline.com.</p>
+        </div>
+    </div>
+
 </body>
 </html>
