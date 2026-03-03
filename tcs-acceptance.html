@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Terms & Conditions | ItsADecline</title>
+<style>
+  :root {
+    --navy: #0F172A;
+    --dark-navy: #0A0F1E;
+    --card-bg: #141E30;
+    --coral: #B84040;
+    --coral-dim: #9E3434;
+    --coral-glow: rgba(184,64,64,0.12);
+    --light-gray: #B0BECC;
+    --mid-gray: #6B7B8D;
+    --semi-navy: #1A2744;
+    --red: #EF4444;
+    --white: #FFFFFF;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--navy);
+    color: var(--white);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  .top-bar { height: 4px; background: var(--coral); }
+
+  .container {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* ── Header ── */
+  .header {
+    text-align: center;
+    padding: 40px 0 28px;
+  }
+  .header h1 {
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin-bottom: 6px;
+  }
+  .header h1 span { color: var(--coral); }
+  .header .subtitle {
+    color: var(--light-gray);
+    font-size: 0.95rem;
+  }
+  .header .version {
+    color: var(--mid-gray);
+    font-size: 0.8rem;
+    margin-top: 4px;
+    font-style: italic;
+  }
+
+  /* ── Important notice ── */
+  .notice {
+    background: rgba(184,64,64,0.08);
+    border: 1px solid rgba(184,64,64,0.3);
+    border-radius: 10px;
+    padding: 18px 22px;
+    margin-bottom: 28px;
+    text-align: center;
+  }
+  .notice strong {
+    color: var(--coral);
+    font-size: 0.9rem;
+    display: block;
+    margin-bottom: 6px;
+  }
+  .notice p {
+    color: var(--light-gray);
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+
+  /* ── T&C Sections ── */
+  .tcs-scroll {
+    background: var(--card-bg);
+    border-radius: 12px;
+    border: 1px solid var(--semi-navy);
+    max-height: 480px;
+    overflow-y: auto;
+    padding: 32px 28px;
+    margin-bottom: 28px;
+    scroll-behavior: smooth;
+  }
+  .tcs-scroll::-webkit-scrollbar { width: 6px; }
+  .tcs-scroll::-webkit-scrollbar-track { background: var(--dark-navy); border-radius: 3px; }
+  .tcs-scroll::-webkit-scrollbar-thumb { background: var(--semi-navy); border-radius: 3px; }
+  .tcs-scroll::-webkit-scrollbar-thumb:hover { background: var(--mid-gray); }
+
+  .tcs-scroll h2 {
+    font-size: 1.1rem;
+    color: var(--coral);
+    margin: 24px 0 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--semi-navy);
+  }
+  .tcs-scroll h2:first-child { margin-top: 0; }
+
+  .tcs-scroll p {
+    font-size: 0.88rem;
+    color: var(--light-gray);
+    margin-bottom: 10px;
+    line-height: 1.65;
+  }
+  .tcs-scroll p strong { color: var(--white); }
+  .tcs-scroll p.important {
+    color: var(--white);
+    font-weight: 600;
+    background: rgba(184,64,64,0.06);
+    padding: 10px 14px;
+    border-radius: 6px;
+    border-left: 3px solid var(--coral);
+  }
+  .tcs-scroll p.warning {
+    color: var(--white);
+    font-weight: 600;
+    background: rgba(184,64,64,0.06);
+    padding: 10px 14px;
+    border-radius: 6px;
+    border-left: 3px solid var(--coral);
+  }
+
+  .tcs-scroll ul {
+    margin: 8px 0 14px 20px;
+    list-style: none;
+  }
+  .tcs-scroll ul li {
+    font-size: 0.86rem;
+    color: var(--light-gray);
+    margin-bottom: 6px;
+    padding-left: 16px;
+    position: relative;
+    line-height: 1.55;
+  }
+  .tcs-scroll ul li::before {
+    content: "\2713";
+    color: var(--coral);
+    font-weight: 700;
+    position: absolute;
+    left: 0;
+  }
+  .tcs-scroll ul.excluded li::before {
+    content: "\2717";
+    color: var(--red);
+  }
+
+  .scroll-indicator {
+    text-align: center;
+    font-size: 0.78rem;
+    color: var(--mid-gray);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+  .scroll-indicator .arrow {
+    display: inline-block;
+    animation: bounce 1.5s infinite;
+  }
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(3px); }
+  }
+
+  /* ── Acceptance section ── */
+  .acceptance-section {
+    background: var(--card-bg);
+    border-radius: 12px;
+    border: 2px solid var(--semi-navy);
+    padding: 32px 28px;
+    margin-bottom: 28px;
+  }
+  .acceptance-section h3 {
+    font-size: 1.15rem;
+    margin-bottom: 18px;
+    color: var(--white);
+  }
+  .acceptance-section h3 span { color: var(--coral); }
+
+  /* Checkboxes */
+  .checkbox-group { margin-bottom: 22px; }
+  .checkbox-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    padding: 10px 14px;
+    border-radius: 8px;
+    transition: background 0.2s;
+    border: 1px solid transparent;
+  }
+  .checkbox-item:hover { background: rgba(184,64,64,0.04); }
+  .checkbox-item.checked {
+    background: var(--coral-glow);
+    border-color: rgba(184,64,64,0.2);
+  }
+  .checkbox-item input[type="checkbox"] { display: none; }
+  .check-box {
+    width: 22px; height: 22px;
+    border: 2px solid var(--mid-gray);
+    border-radius: 5px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    margin-top: 1px;
+    font-size: 0.75rem;
+  }
+  .checkbox-item.checked .check-box {
+    background: var(--coral);
+    border-color: var(--coral);
+    color: var(--white);
+  }
+  .check-label {
+    font-size: 0.88rem;
+    color: var(--light-gray);
+    line-height: 1.45;
+  }
+  .checkbox-item.checked .check-label { color: var(--white); }
+
+  /* Form fields */
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .form-group { margin-bottom: 16px; }
+  .form-group label {
+    display: block;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--light-gray);
+    margin-bottom: 5px;
+  }
+  .form-group label .required { color: var(--red); }
+  .form-group input, .form-group select {
+    width: 100%;
+    padding: 11px 14px;
+    border-radius: 8px;
+    border: 2px solid var(--semi-navy);
+    background: var(--navy);
+    color: var(--white);
+    font-size: 0.92rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .form-group input:focus, .form-group select:focus {
+    border-color: var(--coral);
+  }
+  .form-group input::placeholder { color: var(--mid-gray); }
+  .form-group input.error { border-color: var(--coral); }
+  .form-group .error-msg {
+    font-size: 0.75rem;
+    color: var(--coral);
+    margin-top: 4px;
+    display: none;
+  }
+  .form-group.has-error .error-msg { display: block; }
+
+  /* Signature pad */
+  .signature-section {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+  .signature-section label {
+    display: block;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--light-gray);
+    margin-bottom: 8px;
+  }
+  .signature-pad-wrapper {
+    background: var(--white);
+    border-radius: 8px;
+    border: 2px solid var(--semi-navy);
+    position: relative;
+    overflow: hidden;
+  }
+  .signature-pad-wrapper.error { border-color: var(--coral); }
+  #signaturePad {
+    width: 100%;
+    height: 140px;
+    cursor: crosshair;
+    display: block;
+    touch-action: none;
+  }
+  .signature-placeholder {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    color: #999;
+    font-size: 0.9rem;
+    pointer-events: none;
+    transition: opacity 0.3s;
+  }
+  .signature-placeholder.hidden { opacity: 0; }
+  .signature-line {
+    position: absolute;
+    bottom: 30px;
+    left: 20px;
+    right: 20px;
+    height: 1px;
+    background: #DDD;
+    pointer-events: none;
+  }
+  .clear-sig {
+    position: absolute;
+    top: 8px; right: 8px;
+    background: var(--navy);
+    color: var(--light-gray);
+    border: none;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+  }
+  .clear-sig:hover { opacity: 1; }
+
+  /* Auto-date */
+  .date-display {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    background: var(--navy);
+    border-radius: 8px;
+    border: 2px solid var(--semi-navy);
+    margin-bottom: 8px;
+  }
+  .date-display .icon { color: var(--coral); font-size: 1.1rem; }
+  .date-display .date-text {
+    font-size: 0.92rem;
+    color: var(--white);
+    font-weight: 600;
+  }
+  .date-display .date-note {
+    font-size: 0.75rem;
+    color: var(--mid-gray);
+    margin-left: auto;
+  }
+
+  /* Submit button */
+  .btn-accept {
+    width: 100%;
+    padding: 16px;
+    background: var(--coral);
+    color: var(--white);
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 8px;
+    letter-spacing: 0.3px;
+  }
+  .btn-accept:hover { background: var(--coral-dim); transform: translateY(-1px); }
+  .btn-accept:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+    transform: none;
+  }
+  .btn-accept:active { transform: translateY(0); }
+
+  .legal-note {
+    text-align: center;
+    font-size: 0.73rem;
+    color: var(--mid-gray);
+    margin-top: 12px;
+    line-height: 1.5;
+  }
+
+  /* ── Confirmation / Success ── */
+  .confirmation {
+    display: none;
+    text-align: center;
+    padding: 48px 24px 60px;
+    animation: fadeIn 0.5s ease;
+  }
+  .confirmation.active { display: block; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .success-icon {
+    width: 80px; height: 80px;
+    background: var(--coral-glow);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    font-size: 2.2rem;
+    color: var(--coral);
+  }
+  .confirmation h2 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+  }
+  .confirmation h2 span { color: var(--coral); }
+  .confirmation p {
+    color: var(--light-gray);
+    font-size: 0.95rem;
+    margin-bottom: 8px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .confirmation-details {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 24px;
+    margin: 28px auto;
+    max-width: 440px;
+    text-align: left;
+  }
+  .conf-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--semi-navy);
+    font-size: 0.88rem;
+  }
+  .conf-row:last-child { border-bottom: none; }
+  .conf-row .label { color: var(--mid-gray); }
+  .conf-row .value { color: var(--white); font-weight: 600; }
+
+  .btn-download {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--coral);
+    color: var(--white);
+    padding: 14px 32px;
+    border-radius: 10px;
+    border: none;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 24px;
+    transition: background 0.2s;
+  }
+  .btn-download:hover { background: var(--coral-dim); }
+
+  .next-steps {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 24px;
+    margin-top: 28px;
+    text-align: left;
+    max-width: 440px;
+    margin-left: auto;
+    margin-right: auto;
+    border-left: 4px solid var(--coral);
+  }
+  .next-steps h4 {
+    color: var(--coral);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+  }
+  .next-steps p {
+    font-size: 0.88rem;
+    text-align: left;
+    margin-bottom: 6px;
+  }
+
+  /* ── Footer ── */
+  .footer {
+    text-align: center;
+    padding: 28px 24px;
+    color: var(--mid-gray);
+    font-size: 0.78rem;
+    border-top: 1px solid var(--semi-navy);
+    max-width: 780px;
+    margin: 0 auto;
+  }
+  .footer a { color: var(--coral); text-decoration: none; }
+
+  /* ── Responsive ── */
+  @media (max-width: 520px) {
+    .header h1 { font-size: 1.4rem; }
+    .form-row { grid-template-columns: 1fr; }
+    .tcs-scroll { padding: 20px 16px; max-height: 380px; }
+    .acceptance-section { padding: 24px 18px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="top-bar"></div>
+
+<div class="container">
+  <!-- ── Main content (hidden on success) ── -->
+  <div id="mainContent">
+    <div class="header">
+      <h1>Terms & <span>Conditions</span></h1>
+      <p class="subtitle">ItsADecline — Finance Placement for Declined Mortgage & Finance Applicants</p>
+      <p class="version" id="versionDate"></p>
+    </div>
+
+    <div class="notice">
+      <strong>IMPORTANT: Please read these terms carefully before making payment.</strong>
+      <p>By making payment for the Application Fee (£295), you confirm that you have read, understood, and agree to be bound by these Terms and Conditions. Payment constitutes acceptance.</p>
+    </div>
+
+    <div class="scroll-indicator">
+      <span class="arrow">&#9660;</span> Scroll to read all terms before accepting
+    </div>
+
+    <!-- ── Scrollable T&Cs ── -->
+    <div class="tcs-scroll" id="tcsScroll">
+
+      <h2>1. Definitions and Interpretation</h2>
+      <p><strong>"Company", "We", "Us", "Our"</strong> refers to ItsADecline, trading from 3rd Floor, 86-90 Paul Street, London, EC2A 4NE, and is operated under the umbrella of Kaizen Finance Ltd.</p>
+      <p><strong>"Client", "You", "Your"</strong> refers to the individual or business entity purchasing our finance placement services.</p>
+      <p><strong>"Application Fee"</strong> refers to the £295 non-refundable charge for our finance placement service assessment and initiation.</p>
+      <p><strong>"Finance Placement Service"</strong> refers to our service of matching clients who have been declined for mortgages, remortgages, equity release, secured loans, or home improvement finance with appropriate private credit funders capable of providing solutions.</p>
+      <p><strong>"Private Credit Funders"</strong> refers to third-party lending institutions, private lenders, and alternative finance providers that we have relationships with and may place your application with.</p>
+      <p><strong>"Services"</strong> refers collectively to the application assessment, finance matching, and placement coordination with Private Credit Funders.</p>
+      <p><strong>"Agreement"</strong> refers to these Terms and Conditions together with any written confirmation of service.</p>
+      <p><strong>"Business Day"</strong> means Monday to Friday, excluding UK public holidays.</p>
+
+      <h2>2. Scope of the Finance Placement Service (£295)</h2>
+      <p>2.1 The Finance Placement Service includes:</p>
+      <ul>
+        <li>Assessment of your property, financial situation, and declined finance circumstances.</li>
+        <li>Matching your profile with appropriate Private Credit Funders.</li>
+        <li>Submission of your application details to selected funders.</li>
+        <li>Coordination and support throughout the funding process.</li>
+        <li>Covering mortgages, remortgages, equity release, secured loans, and home improvement finance solutions.</li>
+      </ul>
+
+      <p>2.2 The Finance Placement Service does NOT include:</p>
+      <ul class="excluded">
+        <li>Guarantee of finance approval or specific lending terms.</li>
+        <li>Full mortgage brokerage services or independent financial advice.</li>
+        <li>Legal services or conveyancing.</li>
+        <li>Valuations or surveys (Client responsible for obtaining independently).</li>
+        <li>Warranty that any lender will approve your application.</li>
+      </ul>
+
+      <p>2.3 By paying the Application Fee, you authorize us to share your personal and financial information with Private Credit Funders for the purpose of assessing your finance eligibility.</p>
+      <p>2.4 Payment of the Application Fee does not obligate any lender to approve your application, nor does it guarantee any specific outcome.</p>
+
+      <h2>3. Payment Terms</h2>
+      <p>3.1 The fee is £295 (two hundred and ninety-five pounds sterling), payable in full prior to commencement of any services. All prices are inclusive of VAT where applicable.</p>
+      <p>3.2 By making payment, you confirm that:</p>
+      <ul>
+        <li>You have read and accepted these Terms and Conditions in their entirety.</li>
+        <li>You are authorised to make payment and enter into this Agreement.</li>
+        <li>You understand the scope of the Finance Placement Service as described in Section 2.</li>
+        <li>You have been declined for finance elsewhere and are seeking alternative funders.</li>
+        <li>You consent to your data being shared with Private Credit Funders.</li>
+      </ul>
+
+      <h2>4. Refund and Cancellation Policy</h2>
+      <p class="warning">4.1 The fee of £295 is non-refundable once work has commenced. Work is deemed to have commenced upon the earlier of: (a) review of your application; (b) initial contact with Private Credit Funders; or (c) 48 hours after receipt of payment.</p>
+      <p class="warning">4.2 Under the Consumer Contracts Regulations 2013, you have a statutory 14-day cooling-off period. However, by accepting these Terms and making payment, you expressly request that work begins immediately and acknowledge you will lose your right to cancel once work commences.</p>
+      <p>4.3 To cancel (where applicable), contact us in writing at sat@installsmart.ai within 14 days of payment and before work commencement.</p>
+      <p>4.4 No refunds shall be issued once applications have been submitted to Private Credit Funders.</p>
+      <p>4.5 If the Company is unable to deliver due to circumstances within its control, a full refund will be provided.</p>
+
+      <h2>5. Finance Placement and Credit Funders</h2>
+      <p class="important">5.1 By accepting these Terms, you acknowledge that: we place your application with third-party Private Credit Funders; these funders have different lending criteria than traditional lenders; finance terms, rates, and conditions are determined solely by the funder; we do not guarantee any specific outcome or approval.</p>
+      <p>5.2 You consent to your personal, financial, and property information being shared with Private Credit Funders for assessment purposes.</p>
+      <p>5.3 Each funder's lending decision is independent and based on their own criteria. Multiple applications may be submitted to increase chances of approval.</p>
+      <p>5.4 If you receive an offer of finance, any subsequent decisions to proceed or decline are entirely at your discretion.</p>
+
+      <h2>6. Chargeback Prevention and Dispute Resolution</h2>
+      <p class="important">6.1 By accepting these Terms, you acknowledge that: payment was made voluntarily with full knowledge of these Terms; you consented to immediate commencement of services; filing a bad-faith chargeback after services have been delivered constitutes a breach of this Agreement.</p>
+      <p>6.2 In the event of a chargeback, the Company reserves the right to: present these accepted Terms as evidence; suspend all services; recover costs including processor fees, admin costs, and legal fees; pursue legal action; report to credit reference agencies where appropriate.</p>
+      <p>6.3 Before filing any payment dispute, you agree to contact us at sat@installsmart.ai. We commit to responding within 5 Business Days.</p>
+      <p>6.4 We maintain detailed records of all communications, service delivery, and payment authorisations.</p>
+
+      <h2>7. Client Obligations</h2>
+      <p>You agree to: provide accurate and truthful information in all applications; disclose all relevant financial and property information; respond promptly to requests for additional information or documentation; notify us immediately of any changes to your circumstances; not submit duplicate or conflicting applications without our knowledge.</p>
+
+      <h2>8. Data Protection and Privacy</h2>
+      <p>8.1 We process your personal data under UK GDPR and the Data Protection Act 2018. Your data will be shared with Private Credit Funders for the purpose of assessing your finance eligibility.</p>
+      <p>8.2 We will not share your data with third parties beyond Private Credit Funders without your explicit consent, except where required by law.</p>
+      <p>8.3 You have the right to request access to, or deletion of, your personal data by contacting sat@installsmart.ai.</p>
+      <p>8.4 We commit to keeping your information secure and confidential.</p>
+
+      <h2>9. Limitation of Liability</h2>
+      <p>9.1 Services are provided on an "as is" basis. We do not guarantee finance approval or specific lending terms.</p>
+      <p>9.2 The Company shall not be liable for indirect, incidental, or consequential damages.</p>
+      <p>9.3 Total aggregate liability shall not exceed £295.</p>
+      <p>9.4 Nothing excludes liability for death/personal injury from negligence, fraud, or any liability that cannot be limited by law.</p>
+
+      <h2>10. Intellectual Property</h2>
+      <p>All materials, documents, and communications created as part of our service remain Company property. Client receives a non-exclusive, non-transferable licence for personal use in pursuing finance. Client shall not share or redistribute materials without written consent.</p>
+
+      <h2>11. Force Majeure</h2>
+      <p>Neither party is liable for failures caused by circumstances beyond reasonable control, including natural disasters, pandemic, government restrictions, power failure, internet disruptions, or lender system failures.</p>
+
+      <h2>12. Governing Law</h2>
+      <p>These Terms are governed by the laws of England and Wales. Disputes are subject to the exclusive jurisdiction of the courts of England and Wales. Both parties agree to attempt good faith negotiation for 30 days before legal proceedings.</p>
+
+      <h2>13. Amendments and Entire Agreement</h2>
+      <p>These Terms constitute the entire agreement and supersede all prior agreements. The Company may amend Terms at any time (not affecting existing agreements). Variations require written agreement from both parties.</p>
+
+      <h2>14. Severability</h2>
+      <p>If any provision is found invalid, it shall be severed and the remaining Terms continue in full force.</p>
+
+    </div><!-- end tcs-scroll -->
+
+    <!-- ── Acceptance & Signature ── -->
+    <div class="acceptance-section" id="acceptanceSection">
+      <h3>Acceptance & <span>Signature</span></h3>
+
+      <div class="checkbox-group">
+        <div class="checkbox-item" onclick="toggleCheck(this, 0)">
+          <input type="checkbox" id="cb0">
+          <div class="check-box"></div>
+          <div class="check-label">I have read and understood these Terms and Conditions</div>
+        </div>
+        <div class="checkbox-item" onclick="toggleCheck(this, 1)">
+          <input type="checkbox" id="cb1">
+          <div class="check-box"></div>
+          <div class="check-label">I agree to be bound by these Terms. I understand the scope of the finance placement service.</div>
+        </div>
+        <div class="checkbox-item" onclick="toggleCheck(this, 2)">
+          <input type="checkbox" id="cb2">
+          <div class="check-box"></div>
+          <div class="check-label">I understand the £295 Application Fee is non-refundable once work has commenced. I request work begins immediately.</div>
+        </div>
+        <div class="checkbox-item" onclick="toggleCheck(this, 3)">
+          <input type="checkbox" id="cb3">
+          <div class="check-box"></div>
+          <div class="check-label">I understand payment does not guarantee finance approval. I will not file a bad-faith chargeback.</div>
+        </div>
+        <div class="checkbox-item" onclick="toggleCheck(this, 4)">
+          <input type="checkbox" id="cb4">
+          <div class="check-box"></div>
+          <div class="check-label">All information I have provided is accurate and truthful. I consent to my data being shared with Private Credit Funders.</div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Full Name <span class="required">*</span></label>
+          <input type="text" id="sigName" placeholder="Your full legal name" oninput="validateForm()">
+          <div class="error-msg">Please enter your full name</div>
+        </div>
+        <div class="form-group">
+          <label>Property Address</label>
+          <input type="text" id="sigProperty" placeholder="Your property address">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Email Address <span class="required">*</span></label>
+          <input type="email" id="sigEmail" placeholder="your@email.co.uk" oninput="validateForm()">
+          <div class="error-msg">Please enter a valid email</div>
+        </div>
+        <div class="form-group">
+          <label>Date</label>
+          <div class="date-display">
+            <span class="icon">&#128197;</span>
+            <span class="date-text" id="autoDate"></span>
+            <span class="date-note">Auto-filled</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="signature-section">
+        <label>Signature <span class="required">*</span></label>
+        <div class="signature-pad-wrapper" id="sigPadWrapper">
+          <canvas id="signaturePad"></canvas>
+          <div class="signature-placeholder" id="sigPlaceholder">Draw your signature here</div>
+          <div class="signature-line"></div>
+          <button class="clear-sig" onclick="clearSignature()" type="button">Clear</button>
+        </div>
+        <div class="error-msg" id="sigError" style="display:none;font-size:0.75rem;color:var(--coral);margin-top:4px;">Please provide your signature</div>
+      </div>
+
+      <button class="btn-accept" id="btnAccept" onclick="submitAcceptance()" disabled>
+        I Accept These Terms & Conditions
+      </button>
+
+      <p class="legal-note">
+        By clicking the button above, you are providing your electronic signature and consent to be bound by these Terms.
+        A copy of your signed acceptance will be available for download.
+      </p>
+    </div>
+  </div><!-- end mainContent -->
+
+  <!-- ── Confirmation page ── -->
+  <div class="confirmation" id="confirmationPage">
+    <div class="success-icon">&#10003;</div>
+    <h2>Terms <span>Accepted</span></h2>
+    <p>Thank you. Your signed acceptance has been recorded.</p>
+
+    <div class="confirmation-details" id="confDetails"></div>
+
+    <button class="btn-download" onclick="downloadSignedCopy()">
+      &#128196; Download Signed Copy (PDF)
+    </button>
+
+    <div class="next-steps">
+      <h4>What Happens Next</h4>
+      <p>1. Complete your payment of £295 to begin.</p>
+      <p>2. We'll review your property and financial information.</p>
+      <p>3. Your application will be submitted to selected Private Credit Funders.</p>
+      <p>4. You'll be contacted by funders directly regarding their assessments.</p>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <p><a href="https://itsadecline.com">ItsADecline</a> — Finance Placement for Declined Mortgage &amp; Finance Applicants</p>
+  <p style="margin-top:4px;">3rd Floor, 86-90 Paul Street, London, EC2A 4NE &bull; <a href="mailto:sat@installsmart.ai">sat@installsmart.ai</a></p>
+  <p style="margin-top:4px; font-size: 0.7rem;">ItsADecline is operated under Kaizen Finance Ltd</p>
+</div>
+
+<script>
+// ── State ──
+const checks = [false, false, false, false, false];
+let hasSigned = false;
+let sigData = null;
+
+// ── Auto-fill date ──
+const now = new Date();
+const dateStr = now.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+document.getElementById('autoDate').textContent = dateStr;
+document.getElementById('versionDate').textContent = 'Version 1.0 — ' + dateStr;
+
+// ── Checkbox handling ──
+function toggleCheck(el, idx) {
+  checks[idx] = !checks[idx];
+  el.classList.toggle('checked', checks[idx]);
+  el.querySelector('.check-box').innerHTML = checks[idx] ? '&#10003;' : '';
+  validateForm();
+}
+
+// ── Signature pad ──
+const canvas = document.getElementById('signaturePad');
+const ctx = canvas.getContext('2d');
+let isDrawing = false;
+let lastX = 0, lastY = 0;
+
+function resizeCanvas() {
+  const wrapper = canvas.parentElement;
+  const rect = wrapper.getBoundingClientRect();
+  canvas.width = rect.width;
+  canvas.height = 140;
+  ctx.strokeStyle = '#1a1a1a';
+  ctx.lineWidth = 2.5;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+}
+
+function getPos(e) {
+  const rect = canvas.getBoundingClientRect();
+  const touch = e.touches ? e.touches[0] : e;
+  return {
+    x: (touch.clientX - rect.left) * (canvas.width / rect.width),
+    y: (touch.clientY - rect.top) * (canvas.height / rect.height)
+  };
+}
+
+canvas.addEventListener('mousedown', (e) => {
+  isDrawing = true;
+  const pos = getPos(e);
+  lastX = pos.x;
+  lastY = pos.y;
+  document.getElementById('sigPlaceholder').classList.add('hidden');
+});
+
+canvas.addEventListener('mousemove', (e) => {
+  if (!isDrawing) return;
+  const pos = getPos(e);
+  ctx.beginPath();
+  ctx.moveTo(lastX, lastY);
+  ctx.lineTo(pos.x, pos.y);
+  ctx.stroke();
+  lastX = pos.x;
+  lastY = pos.y;
+  hasSigned = true;
+  validateForm();
+});
+
+canvas.addEventListener('mouseup', () => { isDrawing = false; });
+canvas.addEventListener('mouseout', () => { isDrawing = false; });
+
+// Touch events
+canvas.addEventListener('touchstart', (e) => {
+  e.preventDefault();
+  isDrawing = true;
+  const pos = getPos(e);
+  lastX = pos.x;
+  lastY = pos.y;
+  document.getElementById('sigPlaceholder').classList.add('hidden');
+});
+
+canvas.addEventListener('touchmove', (e) => {
+  e.preventDefault();
+  if (!isDrawing) return;
+  const pos = getPos(e);
+  ctx.beginPath();
+  ctx.moveTo(lastX, lastY);
+  ctx.lineTo(pos.x, pos.y);
+  ctx.stroke();
+  lastX = pos.x;
+  lastY = pos.y;
+  hasSigned = true;
+  validateForm();
+});
+
+canvas.addEventListener('touchend', () => { isDrawing = false; });
+
+function clearSignature() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  hasSigned = false;
+  document.getElementById('sigPlaceholder').classList.remove('hidden');
+  validateForm();
+}
+
+// ── Validation ──
+function validateForm() {
+  const allChecked = checks.every(c => c);
+  const name = document.getElementById('sigName').value.trim();
+  const email = document.getElementById('sigEmail').value.trim();
+  const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+  const valid = allChecked && name.length > 0 && emailValid && hasSigned;
+  document.getElementById('btnAccept').disabled = !valid;
+}
+
+// ── Submit ──
+function submitAcceptance() {
+  const name = document.getElementById('sigName').value.trim();
+  const email = document.getElementById('sigEmail').value.trim();
+  const property = document.getElementById('sigProperty').value.trim();
+
+  // Validate
+  let hasError = false;
+  if (!name) {
+    document.getElementById('sigName').parentElement.classList.add('has-error');
+    hasError = true;
+  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    document.getElementById('sigEmail').parentElement.classList.add('has-error');
+    hasError = true;
+  }
+  if (!hasSigned) {
+    document.getElementById('sigError').style.display = 'block';
+    document.getElementById('sigPadWrapper').classList.add('error');
+    hasError = true;
+  }
+  if (hasError) return;
+
+  // Save signature data
+  sigData = canvas.toDataURL('image/png');
+
+  // Build confirmation
+  const timestamp = now.toLocaleString('en-GB', {
+    day: 'numeric', month: 'long', year: 'numeric',
+    hour: '2-digit', minute: '2-digit', second: '2-digit'
+  });
+  const refId = 'IAD-' + Date.now().toString(36).toUpperCase();
+
+  document.getElementById('confDetails').innerHTML = `
+    <div class="conf-row"><span class="label">Name</span><span class="value">${name}</span></div>
+    ${property ? `<div class="conf-row"><span class="label">Property</span><span class="value">${property}</span></div>` : ''}
+    <div class="conf-row"><span class="label">Email</span><span class="value">${email}</span></div>
+    <div class="conf-row"><span class="label">Date & Time</span><span class="value">${timestamp}</span></div>
+    <div class="conf-row"><span class="label">Reference</span><span class="value">${refId}</span></div>
+    <div class="conf-row"><span class="label">Service</span><span class="value">Finance Placement (£295)</span></div>
+  `;
+
+  // Store for PDF
+  window._acceptance = { name, email, property, timestamp, refId, sigData };
+
+  // Show confirmation
+  document.getElementById('mainContent').style.display = 'none';
+  document.getElementById('confirmationPage').classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  // Log (in production: POST to your backend / Google Sheets / CRM)
+  console.log('T&C ACCEPTANCE:', window._acceptance);
+}
+
+// ── Download signed copy as printable HTML (opens in new window for PDF save) ──
+function downloadSignedCopy() {
+  const a = window._acceptance;
+  const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Signed T&Cs - ${a.name}</title>
+<style>
+  body{font-family:Arial,sans-serif;max-width:700px;margin:40px auto;color:#333;line-height:1.6;padding:0 20px}
+  h1{font-size:20px;text-align:center;border-bottom:2px solid #B84040;padding-bottom:10px}
+  h2{font-size:14px;color:#9E3434;margin-top:24px}
+  .header{text-align:center;margin-bottom:30px}
+  .header p{color:#666;font-size:12px}
+  .sig-block{margin-top:40px;padding:20px;border:2px solid #B84040;border-radius:8px;background:#faf8f8}
+  .sig-block h3{color:#9E3434;margin-bottom:12px;font-size:14px}
+  .sig-row{display:flex;margin-bottom:8px;font-size:13px}
+  .sig-row .lbl{width:120px;color:#666;font-weight:bold}
+  .sig-row .val{color:#333}
+  .sig-img{margin-top:16px;border-bottom:1px solid #999;padding-bottom:8px}
+  .sig-img img{max-height:80px}
+  .checks{margin-top:20px}
+  .checks p{font-size:12px;margin:4px 0;color:#333}
+  .stamp{text-align:center;margin-top:30px;padding:10px;background:#faf8f8;border-radius:6px;font-size:11px;color:#9E3434}
+  @media print{body{margin:20px}}
+</style></head><body>
+<div class="header">
+  <h1>TERMS AND CONDITIONS — SIGNED ACCEPTANCE</h1>
+  <p>ItsADecline — Finance Placement Service</p>
+  <p>3rd Floor, 86-90 Paul Street, London, EC2A 4NE</p>
+  <p>Operated under Kaizen Finance Ltd</p>
+</div>
+<p style="font-size:13px">This document confirms that the undersigned has read, understood, and agreed to the ItsADecline Terms and Conditions of Service for the Finance Placement Service (£295).</p>
+<div class="sig-block">
+  <h3>Applicant Details</h3>
+  <div class="sig-row"><span class="lbl">Full Name:</span><span class="val">${a.name}</span></div>
+  ${a.property ? `<div class="sig-row"><span class="lbl">Property:</span><span class="val">${a.property}</span></div>` : ''}
+  <div class="sig-row"><span class="lbl">Email:</span><span class="val">${a.email}</span></div>
+  <div class="sig-row"><span class="lbl">Date & Time:</span><span class="val">${a.timestamp}</span></div>
+  <div class="sig-row"><span class="lbl">Reference:</span><span class="val">${a.refId}</span></div>
+  <div class="sig-img"><p style="font-size:11px;color:#666">Signature:</p><img src="${a.sigData}" alt="Signature"></div>
+</div>
+<div class="checks">
+  <p><strong>The applicant confirmed all of the following:</strong></p>
+  <p>&#9745; Read and understood Terms and Conditions</p>
+  <p>&#9745; Agrees to be bound by these Terms and understands scope of service</p>
+  <p>&#9745; Understands £295 fee is non-refundable once work commences</p>
+  <p>&#9745; Understands payment does not guarantee approval and will not file bad-faith chargebacks</p>
+  <p>&#9745; All information provided is accurate and consents to data sharing with Private Credit Funders</p>
+</div>
+<div class="stamp">
+  Electronically signed via ItsADecline T&Cs Acceptance Portal<br>
+  Reference: ${a.refId} | Generated: ${a.timestamp}
+</div>
+</body></html>`;
+
+  const blob = new Blob([html], { type: 'text/html' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = `ItsADecline-Signed-TCs-${a.refId}.html`;
+  link.click();
+  URL.revokeObjectURL(url);
+}
+
+// ── Init ──
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+</script>
+
+</body>
+</html>
