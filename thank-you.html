@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You — itsadecline</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Meta Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', 'YOUR_PIXEL_ID');
+    fbq('track', 'PageView');
+    fbq('track', 'Purchase', {value: 295.00, currency: 'GBP'});
+    </script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f8f9fa;
+            color: #1a1a2e;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        nav {
+            background: #fff;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            text-decoration: none;
+            color: #1B2A4A;
+        }
+        .logo span { color: #4A90D9; }
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+        }
+        nav ul a {
+            text-decoration: none;
+            color: #495057;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+        .btn-nav {
+            background: #1B2A4A;
+            color: #fff !important;
+            padding: 0.6rem 1.5rem;
+            border-radius: 6px;
+        }
+        .hero {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem 2rem;
+        }
+        .card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 3rem 4rem;
+            text-align: center;
+            max-width: 600px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+        }
+        .check-icon {
+            width: 80px;
+            height: 80px;
+            background: #d4edda;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 2.5rem;
+        }
+        .card h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #1B2A4A;
+            margin-bottom: 1rem;
+        }
+        .card p {
+            font-size: 1.1rem;
+            color: #495057;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+        .card .highlight {
+            background: #e8f4fd;
+            border-left: 4px solid #4A90D9;
+            padding: 1rem 1.5rem;
+            border-radius: 0 8px 8px 0;
+            margin: 1.5rem 0;
+            text-align: left;
+        }
+        .card .highlight strong { color: #1B2A4A; }
+        .btn-whatsapp {
+            display: inline-block;
+            background: #25D366;
+            color: #fff;
+            padding: 0.8rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            margin-top: 1rem;
+            transition: background 0.2s;
+        }
+        .btn-whatsapp:hover { background: #1ea952; }
+        footer {
+            background: #1B2A4A;
+            color: #a0aec0;
+            text-align: center;
+            padding: 1.5rem;
+            font-size: 0.85rem;
+        }
+        footer a { color: #4A90D9; text-decoration: none; }
+        @media (max-width: 600px) {
+            .card { padding: 2rem 1.5rem; }
+            .card h1 { font-size: 1.5rem; }
+            nav ul { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="/" class="logo">itsa<span>decline</span></a>
+        <ul>
+            <li><a href="/#services">Services</a></li>
+            <li><a href="/#how-it-works">How It Works</a></li>
+            <li><a href="/#why-us">Why Us</a></li>
+            <li><a href="/#contact" class="btn-nav">Get Started</a></li>
+        </ul>
+    </nav>
+
+    <div class="hero">
+        <div class="card">
+            <div class="check-icon">&#10003;</div>
+            <h1>Payment Received</h1>
+            <p>Thank you for your application fee. Your payment of <strong>&pound;295</strong> has been successfully processed.</p>
+
+            <div class="highlight">
+                <strong>What happens next?</strong><br>
+                You'll receive a confirmation email shortly. Our team will now begin the full underwriting process, including ID verification and property checks. We'll be in touch within 24 hours.
+            </div>
+
+            <p>If you have any questions in the meantime, message us on WhatsApp:</p>
+
+            <a href="https://wa.me/447XXXXXXXXX?text=Hi%2C%20I%27ve%20just%20paid%20my%20application%20fee%20and%20wanted%20to%20check%20on%20next%20steps." class="btn-whatsapp">
+                &#128172; Chat with Us on WhatsApp
+            </a>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 itsadecline. All rights reserved. | <a href="mailto:sl@itsadecline.com">sl@itsadecline.com</a> | <a href="/privacy-policy">Privacy Policy</a></p>
+    </footer>
+</body>
+</html>
