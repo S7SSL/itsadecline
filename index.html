@@ -830,11 +830,7 @@
             <div class="hero-form-card">
                 <h3>Get Your Decision Today</h3>
                 <p class="form-subtitle">Free, no-obligation review &mdash; we&rsquo;ll match you with the right specialist lender.</p>
-                <form class="contact-form" id="contactForm" action="https://formsubmit.co/sl@itsadecline.com" method="POST">
-                    <input type="hidden" name="_subject" value="New Enquiry from itsadecline.com">
-                    <input type="hidden" name="_captcha" value="false">
-                    <input type="hidden" name="_next" value="https://itsadecline.com/#contact">
-                    <input type="text" name="_honey" style="display:none">
+                <form class="contact-form" id="contactForm" action="/api/submit-lead" method="POST">
                     <div class="form-group">
                         <label for="name">Full Name</label>
                         <input type="text" id="name" name="name" placeholder="John Smith" required>
@@ -1135,16 +1131,21 @@
             const originalText = btn.textContent;
             btn.textContent = 'Sending...';
             btn.disabled = true;
-            fetch(form.action, {
+
+            // Collect form data as JSON
+            const formData = new FormData(form);
+            const payload = {};
+            formData.forEach((value, key) => { payload[key] = value; });
+
+            fetch('/api/submit-lead', {
                 method: 'POST',
-                body: new FormData(form),
-                headers: { 'Accept': 'application/json' }
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload),
+                redirect: 'follow'
             }).then(response => {
-                if (response.ok) {
-                    form.reset();
-                    btn.textContent = 'Message Sent!';
-                    btn.style.background = '#22c55e';
-                    setTimeout(() => { btn.textContent = originalText; btn.style.background = ''; btn.disabled = false; }, 3000);
+                if (response.ok || response.redirected) {
+                    // Redirect to T&Cs page on success
+                    window.location.href = '/tcs-acceptance.html';
                 } else {
                     btn.textContent = 'Error - Try Again';
                     btn.style.background = '#ef4444';
