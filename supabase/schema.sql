@@ -73,7 +73,12 @@ CREATE TABLE cases (
   offer_term_years integer,
   notes text,
   archived boolean DEFAULT false,
-  archive_reason text
+  archive_reason text,
+  -- Stripe Identity verification
+  stripe_identity_session_id text,
+  stripe_identity_url text,
+  identity_verified boolean DEFAULT false,
+  identity_verified_at timestamptz
 );
 
 -- Indexes for common lookups
