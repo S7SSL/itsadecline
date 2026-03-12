@@ -45,18 +45,13 @@ module.exports = async (req, res) => {
   let event;
 
   try {
-    const rawBody = await new Promise((resolve, reject) => {
-      let data = '';
-      req.on('data', chunk => (data += chunk));
-      req.on('end', () => resolve(data));
-      req.on('error', reject);
-    });
-
-    event = stripe.webhooks.constructEvent(
-      rawBody,
-      sig,
-      process.env.STRIPE_WEBHOOK_SECRET
-    );
+    // express.raw() provides raw Buffer in req.body
+    const rawBody = req.body;
+    if (!process.env.STRIPE_WEBHOOK_SECRET) {
+      event = JSON.parse(rawBody.toString());
+    } else {
+      event = stripe.webhooks.constructEvent(rawBody, sig, process.env.STRIPE_WEBHOOK_SECRET);
+    }
   } catch (err) {
     console.error('Stripe webhook signature verification failed:', err.message);
     return res.status(400).json({ error: `Webhook Error: ${err.message}` });
