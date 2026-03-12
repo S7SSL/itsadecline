@@ -72,6 +72,25 @@ app.use((err, req, res, next) => {
   next(err);
 });
 
+
+// ISA Lead Capture
+app.post('/api/isa-lead', (req, res) => {
+  const { firstname, company, email } = req.body || {};
+  if (!email) return res.status(400).json({ success: false, message: 'Email required' });
+  const https = require('https');
+  const hsToken = process.env.HUBSPOT_TOKEN;
+  if (!hsToken) { console.error('[isa-lead] HUBSPOT_TOKEN not set'); return res.json({ success: true }); }
+  const payload = JSON.stringify({ properties: { email, firstname: firstname||'', company: company||'', hs_lead_status: 'NEW', lifecyclestage: 'lead' } });
+  const opts = { hostname: 'api.hubspot.com', path: '/crm/v3/objects/contacts', method: 'POST', headers: { 'Authorization': 'Bearer ' + hsToken, 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(payload) } };
+  const hsReq = https.request(opts, (hsRes) => {
+    let body = ''; hsRes.on('data', c => body += c);
+    hsRes.on('end', () => { const r = JSON.parse(body); console.log('[isa-lead]', r.id ? 'contact:'+r.id : 'err:'+body.substring(0,100)); });
+  });
+  hsReq.on('error', e => console.error('[isa-lead]', e.message));
+  hsReq.write(payload); hsReq.end();
+  res.json({ success: true });
+});
+
 app.get('/health', (req, res) => res.json({ status: 'ok', service: 'itsadecline-api' }));
 
 const PORT = process.env.PORT || 3000;
