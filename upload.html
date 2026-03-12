@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Your Documents — itsadecline</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0d1b2a;
+            color: #e2e8f0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 32px 16px;
+        }
+        .card {
+            background: #1a2744;
+            border-radius: 20px;
+            padding: 40px 44px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+        .logo {
+            font-size: 22px;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 28px;
+            letter-spacing: -0.5px;
+        }
+        .logo span { color: #f59e0b; }
+        h1 {
+            font-size: 26px;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 10px;
+            line-height: 1.25;
+        }
+        .subhead {
+            font-size: 14px;
+            color: #94a3b8;
+            line-height: 1.6;
+            margin-bottom: 32px;
+        }
+        /* Step boxes */
+        .step-box {
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin-bottom: 20px;
+        }
+        .step-label {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .step-num {
+            width: 22px; height: 22px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 800;
+            flex-shrink: 0;
+        }
+        /* Step 1 */
+        .step-box-1 {
+            background: rgba(245, 158, 11, 0.08);
+            border: 1px solid rgba(245, 158, 11, 0.25);
+        }
+        .step-box-1 .step-label { color: #f59e0b; }
+        .step-box-1 .step-num { background: #f59e0b; color: #0d1b2a; }
+        .step-box-1 p { font-size: 13px; color: #cbd5e1; line-height: 1.65; }
+        .step-box-1 a { color: #f59e0b; font-weight: 600; text-decoration: none; }
+        .step-box-1 a:hover { text-decoration: underline; }
+        .hmlr-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 14px;
+            background: #f59e0b;
+            color: #0d1b2a;
+            font-weight: 700;
+            font-size: 13px;
+            padding: 9px 18px;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: background 0.15s;
+        }
+        .hmlr-btn:hover { background: #d97706; }
+        /* Step 2 */
+        .step-box-2 {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .step-box-2 .step-label { color: #94a3b8; }
+        .step-box-2 .step-num { background: rgba(255,255,255,0.1); color: #e2e8f0; }
+        /* Drop zone */
+        .dropzone {
+            border: 2px dashed rgba(255,255,255,0.15);
+            border-radius: 10px;
+            padding: 36px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+            background: rgba(255,255,255,0.02);
+        }
+        .dropzone:hover, .dropzone.dragover {
+            border-color: #f59e0b;
+            background: rgba(245,158,11,0.05);
+        }
+        .dropzone.has-file {
+            border-color: #22c55e;
+            background: rgba(34,197,94,0.05);
+        }
+        .dropzone input[type="file"] {
+            position: absolute; top:0; left:0; width:100%; height:100%;
+            opacity:0; cursor:pointer;
+        }
+        .dropzone-icon { font-size: 36px; margin-bottom: 10px; }
+        .dropzone-label { font-size: 14px; color: #94a3b8; font-weight: 500; }
+        .dropzone-sub { font-size: 12px; color: #64748b; margin-top: 4px; }
+        .dropzone .file-chosen { font-size: 14px; color: #22c55e; font-weight: 600; display:none; }
+        /* Case ref */
+        .field-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            margin-top: 20px;
+            display: block;
+        }
+        .case-input {
+            width: 100%;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-family: 'Inter', monospace;
+            font-size: 14px;
+            font-weight: 600;
+            color: white;
+            letter-spacing: 0.5px;
+            outline: none;
+            transition: border 0.15s;
+        }
+        .case-input::placeholder { color: #475569; font-weight: 400; }
+        .case-input:focus { border-color: #f59e0b; }
+        /* Submit */
+        .submit-btn {
+            width: 100%;
+            margin-top: 24px;
+            padding: 15px;
+            background: #f59e0b;
+            color: #0d1b2a;
+            font-family: 'Inter', sans-serif;
+            font-size: 15px;
+            font-weight: 800;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.15s;
+            letter-spacing: 0.3px;
+        }
+        .submit-btn:hover { background: #d97706; }
+        .submit-btn:disabled { background: #475569; color: #94a3b8; cursor: not-allowed; }
+        /* Success */
+        .success-box {
+            display: none;
+            background: rgba(34,197,94,0.08);
+            border: 1px solid rgba(34,197,94,0.3);
+            border-radius: 12px;
+            padding: 28px 24px;
+            text-align: center;
+            margin-top: 24px;
+        }
+        .success-box .icon { font-size: 40px; margin-bottom: 12px; }
+        .success-box h3 { font-size: 18px; font-weight: 700; color: #22c55e; margin-bottom: 8px; }
+        .success-box p { font-size: 14px; color: #94a3b8; line-height: 1.5; }
+        /* Error */
+        .error-msg {
+            display: none;
+            background: rgba(239,68,68,0.08);
+            border: 1px solid rgba(239,68,68,0.3);
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-size: 13px;
+            color: #fca5a5;
+            margin-top: 12px;
+        }
+        /* Progress */
+        .progress-bar-wrap {
+            display: none;
+            height: 4px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 2px;
+            margin-top: 16px;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            background: #f59e0b;
+            border-radius: 2px;
+            width: 0%;
+            transition: width 0.3s;
+        }
+        .footer-note {
+            text-align: center;
+            font-size: 11px;
+            color: #475569;
+            margin-top: 28px;
+        }
+        @media (max-width: 520px) {
+            .card { padding: 28px 20px; }
+            h1 { font-size: 22px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="logo">itsa<span>decline</span></div>
+
+        <h1>Upload Your Property Documents</h1>
+        <p class="subhead">Your case is open. To move forward, we need a copy of your property title register from HM Land Registry.</p>
+
+        <!-- Step 1: Download -->
+        <div class="step-box step-box-1">
+            <div class="step-label">
+                <span class="step-num">1</span>
+                Download your title register
+            </div>
+            <p>Visit the HM Land Registry portal, search for your property address, and download the official <strong>title register PDF</strong>. This costs <strong>£3</strong> and takes around 2 minutes.</p>
+            <a href="https://eservices.landregistry.gov.uk/eservices/FindAProperty/view/QuickEnquiryInit.do" target="_blank" rel="noopener" class="hmlr-btn">
+                &#127963;&#65039; Open HMLR Portal &rarr;
+            </a>
+        </div>
+
+        <!-- Step 2: Upload -->
+        <div class="step-box step-box-2">
+            <div class="step-label">
+                <span class="step-num">2</span>
+                Upload your document
+            </div>
+
+            <form id="uploadForm" novalidate>
+                <div class="dropzone" id="dropzone">
+                    <input type="file" id="fileInput" name="document" accept=".pdf,.jpg,.jpeg,.png">
+                    <div class="dropzone-icon">&#128196;</div>
+                    <div class="dropzone-label">Drop your title register here, or click to browse</div>
+                    <div class="dropzone-sub">PDF, JPG or PNG &middot; Max 20MB</div>
+                    <div class="file-chosen" id="fileChosen">&#9989; <span id="fileChosenName"></span></div>
+                </div>
+
+                <label class="field-label" for="caseRef">Your case reference</label>
+                <input
+                    type="text"
+                    id="caseRef"
+                    name="case_ref"
+                    class="case-input"
+                    placeholder="e.g. NW95EWSMI0326"
+                    autocomplete="off"
+                    spellcheck="false"
+                >
+
+                <div class="progress-bar-wrap" id="progressWrap">
+                    <div class="progress-bar" id="progressBar"></div>
+                </div>
+
+                <div class="error-msg" id="errorMsg"></div>
+
+                <button type="submit" class="submit-btn" id="submitBtn">Upload Document</button>
+            </form>
+
+            <div class="success-box" id="successBox">
+                <div class="icon">&#9989;</div>
+                <h3>Document received — thank you.</h3>
+                <p>We'll review your title register and be in touch within 24 hours. If you have any questions, email us at <strong>hello@itsadecline.com</strong>.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-note">itsadecline.com &mdash; Secured &amp; confidential &middot; All documents encrypted in transit</div>
+
+    <script>
+        var dropzone = document.getElementById('dropzone');
+        var fileInput = document.getElementById('fileInput');
+        var fileChosen = document.getElementById('fileChosen');
+        var fileChosenName = document.getElementById('fileChosenName');
+        var form = document.getElementById('uploadForm');
+        var submitBtn = document.getElementById('submitBtn');
+        var errorMsg = document.getElementById('errorMsg');
+        var successBox = document.getElementById('successBox');
+        var progressWrap = document.getElementById('progressWrap');
+        var progressBar = document.getElementById('progressBar');
+
+        fileInput.addEventListener('change', function() {
+            if (fileInput.files && fileInput.files[0]) {
+                showFile(fileInput.files[0]);
+            }
+        });
+
+        dropzone.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            dropzone.classList.add('dragover');
+        });
+        dropzone.addEventListener('dragleave', function() {
+            dropzone.classList.remove('dragover');
+        });
+        dropzone.addEventListener('drop', function(e) {
+            e.preventDefault();
+            dropzone.classList.remove('dragover');
+            var files = e.dataTransfer.files;
+            if (files && files[0]) {
+                fileInput.files = files;
+                showFile(files[0]);
+            }
+        });
+
+        function showFile(file) {
+            fileChosen.style.display = 'block';
+            fileChosenName.textContent = file.name;
+            dropzone.classList.add('has-file');
+            dropzone.querySelector('.dropzone-icon').style.display = 'none';
+            dropzone.querySelector('.dropzone-label').style.display = 'none';
+            dropzone.querySelector('.dropzone-sub').style.display = 'none';
+        }
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            errorMsg.style.display = 'none';
+
+            var caseRef = document.getElementById('caseRef').value.trim();
+            if (!caseRef) {
+                showError('Please enter your case reference.');
+                return;
+            }
+            if (!fileInput.files || !fileInput.files[0]) {
+                showError('Please select a file to upload.');
+                return;
+            }
+
+            var formData = new FormData();
+            formData.append('case_ref', caseRef);
+            formData.append('document', fileInput.files[0]);
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Uploading\u2026';
+            progressWrap.style.display = 'block';
+
+            // Animate progress bar
+            var pct = 0;
+            var ticker = setInterval(function() {
+                pct = Math.min(pct + Math.random() * 15, 85);
+                progressBar.style.width = pct + '%';
+            }, 200);
+
+            fetch('https://itsadecline-api.onrender.com/api/upload-document', {
+                method: 'POST',
+                body: formData
+            })
+            .then(function(res) {
+                clearInterval(ticker);
+                progressBar.style.width = '100%';
+                if (!res.ok) throw new Error('Server error: ' + res.status);
+                return res.json();
+            })
+            .then(function(data) {
+                if (data.success) {
+                    setTimeout(function() {
+                        form.style.display = 'none';
+                        successBox.style.display = 'block';
+                    }, 400);
+                } else {
+                    throw new Error(data.message || 'Upload failed.');
+                }
+            })
+            .catch(function(err) {
+                clearInterval(ticker);
+                progressBar.style.width = '0%';
+                progressWrap.style.display = 'none';
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Upload Document';
+                showError('Upload failed: ' + err.message + '. Please try again or email hello@itsadecline.com.');
+            });
+        });
+
+        function showError(msg) {
+            errorMsg.textContent = msg;
+            errorMsg.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
