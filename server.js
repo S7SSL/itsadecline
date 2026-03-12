@@ -4,7 +4,7 @@ const multer = require('multer');
 const path = require('path');
 const app = express();
 
-app.use(cors({ origin: ['https://itsadecline.com', 'https://www.itsadecline.com'] }));
+app.use(cors({ origin: ['https://itsadecline.com', 'https://www.itsadecline.com', 'https://installsmart.ai', 'https://www.installsmart.ai', 'https://s7ssl.github.io'] }));
 
 // Raw body for Stripe webhook signature verification
 app.use('/api/stripe-webhook', express.raw({ type: 'application/json' }));
