@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>itsadecline.com — Broker Partner Programme</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy: #0d1b2a;
+      --navy-mid: #1a2f45;
+      --amber: #f59e0b;
+      --amber-light: #fcd34d;
+      --white: #ffffff;
+      --off-white: #f8f9fa;
+      --text: #1e293b;
+      --muted: #64748b;
+      --border: #e2e8f0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #f0f4f8;
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .page {
+      max-width: 794px;
+      margin: 20px auto;
+      background: var(--white);
+      box-shadow: 0 4px 40px rgba(0,0,0,0.12);
+    }
+
+    /* ─── HEADER ─── */
+    .header {
+      background: var(--navy);
+      padding: 36px 48px 32px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header::after {
+      content: '';
+      position: absolute;
+      bottom: 0; right: 0;
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(245,158,11,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 16px;
+    }
+
+    .wordmark {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: -0.5px;
+    }
+
+    .wordmark span {
+      color: var(--amber);
+    }
+
+    .header-meta {
+      text-align: right;
+    }
+
+    .header-meta .badge {
+      display: inline-block;
+      background: var(--amber);
+      color: var(--navy);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 3px;
+      margin-bottom: 6px;
+    }
+
+    .header-meta .date {
+      display: block;
+      color: rgba(255,255,255,0.5);
+      font-size: 12px;
+    }
+
+    .header-tagline {
+      color: rgba(255,255,255,0.7);
+      font-size: 13px;
+      font-weight: 400;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding-top: 14px;
+      margin-top: 4px;
+    }
+
+    .header-tagline strong {
+      color: var(--amber-light);
+      font-weight: 600;
+    }
+
+    /* ─── BODY ─── */
+    .body {
+      padding: 36px 48px;
+    }
+
+    /* ─── SECTION ─── */
+    .section {
+      margin-bottom: 32px;
+    }
+
+    .section-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 8px;
+    }
+
+    .section-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 16px;
+    }
+
+    /* ─── STEP FLOW ─── */
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .step {
+      background: var(--off-white);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 14px;
+      position: relative;
+      text-align: center;
+    }
+
+    .step-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px; height: 28px;
+      background: var(--navy);
+      color: var(--amber);
+      font-size: 12px;
+      font-weight: 800;
+      border-radius: 50%;
+      margin-bottom: 10px;
+    }
+
+    .step-icon {
+      font-size: 20px;
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .step p {
+      font-size: 12px;
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    .step .fee-pill {
+      display: inline-block;
+      background: #fef3c7;
+      color: #92400e;
+      border: 1px solid #fcd34d;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 20px;
+      margin-top: 6px;
+    }
+
+    /* ─── EARNINGS ─── */
+    .earn-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .earn-card {
+      background: var(--off-white);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+    }
+
+    .earn-card.highlight {
+      background: var(--navy);
+      border-color: var(--navy);
+    }
+
+    .earn-card .earn-label {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .earn-card.highlight .earn-label {
+      color: rgba(255,255,255,0.5);
+    }
+
+    .earn-card .earn-value {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--navy);
+      line-height: 1.2;
+    }
+
+    .earn-card.highlight .earn-value {
+      color: var(--amber);
+    }
+
+    .earn-card .earn-note {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .earn-card.highlight .earn-note {
+      color: rgba(255,255,255,0.55);
+    }
+
+    .guarantee-row {
+      display: flex;
+      gap: 16px;
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 8px;
+      padding: 12px 16px;
+    }
+
+    .guarantee-row .g-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #166534;
+    }
+
+    .guarantee-row .g-item::before {
+      content: '✓';
+      font-weight: 800;
+      color: #16a34a;
+    }
+
+    .example-box {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-top: 12px;
+      font-size: 13px;
+      color: #78350f;
+    }
+
+    .example-box strong {
+      font-weight: 700;
+    }
+
+    /* ─── STRIKETHROUGH LIST ─── */
+    .strike-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      list-style: none;
+    }
+
+    .strike-list li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--off-white);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 10px 14px;
+      font-size: 13px;
+      color: var(--muted);
+      text-decoration: line-through;
+      text-decoration-color: #ef4444;
+      text-decoration-thickness: 2px;
+    }
+
+    .strike-list li::before {
+      content: '✗';
+      color: #ef4444;
+      font-size: 12px;
+      font-weight: 700;
+      flex-shrink: 0;
+      text-decoration: none;
+    }
+
+    /* ─── BROKER CODE ─── */
+    .broker-code-box {
+      background: var(--navy);
+      border-radius: 10px;
+      padding: 24px 28px;
+      color: var(--white);
+    }
+
+    .broker-code-box .code-display {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .broker-code-box .code-label {
+      font-size: 12px;
+      color: rgba(255,255,255,0.55);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 600;
+    }
+
+    .broker-code-box .code-value {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--amber);
+      letter-spacing: 2px;
+      background: rgba(245,158,11,0.12);
+      border: 1px dashed rgba(245,158,11,0.4);
+      padding: 6px 18px;
+      border-radius: 6px;
+    }
+
+    .broker-code-points {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .broker-code-points li {
+      font-size: 12.5px;
+      color: rgba(255,255,255,0.75);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .broker-code-points li::before {
+      content: '→';
+      color: var(--amber);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    /* ─── GETTING STARTED ─── */
+    .start-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .start-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      background: var(--off-white);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--amber);
+      border-radius: 0 8px 8px 0;
+      padding: 12px 16px;
+    }
+
+    .start-step .s-num {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px; height: 24px;
+      background: var(--amber);
+      color: var(--navy);
+      font-size: 12px;
+      font-weight: 800;
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .start-step .s-text {
+      font-size: 13px;
+      color: var(--text);
+    }
+
+    .start-step .s-text a {
+      color: var(--navy);
+      font-weight: 600;
+      text-decoration: none;
+      border-bottom: 1px solid var(--amber);
+    }
+
+    /* ─── FOOTER ─── */
+    .footer {
+      background: var(--navy);
+      padding: 18px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-brand {
+      color: rgba(255,255,255,0.9);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .footer-brand span {
+      color: var(--amber);
+    }
+
+    .footer-brand .footer-email {
+      color: rgba(255,255,255,0.5);
+      font-size: 11.5px;
+      font-weight: 400;
+      margin-left: 10px;
+    }
+
+    .footer-conf {
+      font-size: 10.5px;
+      color: rgba(255,255,255,0.35);
+      letter-spacing: 0.5px;
+    }
+
+    /* ─── DIVIDER ─── */
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 0 0 32px;
+    }
+
+    /* ─── PRINT ─── */
+    @media print {
+      @page {
+        size: A4 portrait;
+        margin: 0;
+      }
+
+      body {
+        background: white;
+        font-size: 13px;
+      }
+
+      .page {
+        max-width: 100%;
+        margin: 0;
+        box-shadow: none;
+      }
+
+      .header { padding: 28px 40px 24px; }
+      .body { padding: 28px 40px; }
+      .footer { padding: 14px 40px; }
+
+      .section { margin-bottom: 24px; }
+
+      .steps { gap: 10px; }
+      .earn-cards { gap: 10px; }
+
+      a { text-decoration: none !important; }
+
+      .broker-code-box {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .earn-card.highlight,
+      .header,
+      .footer {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <!-- HEADER -->
+    <header class="header">
+      <div class="header-top">
+        <div class="wordmark">itsadecline<span>.</span>com</div>
+        <div class="header-meta">
+          <span class="badge">Broker Partner Programme</span>
+          <span class="date">March 2026</span>
+        </div>
+      </div>
+      <p class="header-tagline">
+        Automated equity release &amp; 2nd charge mortgage platform —
+        <strong>zero admin for you, serious clients only.</strong>
+      </p>
+    </header>
+
+    <!-- BODY -->
+    <main class="body">
+
+      <!-- SECTION 1: HOW IT WORKS -->
+      <section class="section">
+        <div class="section-label">Section 1</div>
+        <div class="section-title">How It Works for Your Clients</div>
+        <div class="steps">
+          <div class="step">
+            <span class="step-num">1</span>
+            <span class="step-icon">🌐</span>
+            <p>Client submits enquiry at <strong>itsadecline.com</strong></p>
+          </div>
+          <div class="step">
+            <span class="step-num">2</span>
+            <span class="step-icon">💳</span>
+            <p>Pays <strong>£295</strong> commitment fee</p>
+            <span class="fee-pill">Serious clients only</span>
+          </div>
+          <div class="step">
+            <span class="step-num">3</span>
+            <span class="step-icon">🔍</span>
+            <p>Identity verified + <strong>HMLR check</strong> runs automatically</p>
+          </div>
+          <div class="step">
+            <span class="step-num">4</span>
+            <span class="step-icon">🏦</span>
+            <p>Lender offers presented — <strong>you advise</strong> on selection</p>
+          </div>
+        </div>
+      </section>
+
+      <div class="divider"></div>
+
+      <!-- SECTION 2: EARNINGS -->
+      <section class="section">
+        <div class="section-label">Section 2</div>
+        <div class="section-title">What You Earn</div>
+        <div class="earn-cards">
+          <div class="earn-card">
+            <div class="earn-label">Referral Fee</div>
+            <div class="earn-value">£500–£2,500</div>
+            <div class="earn-note">Per completed case, paid on drawdown</div>
+          </div>
+          <div class="earn-card">
+            <div class="earn-label">Volume Bonus</div>
+            <div class="earn-value">+£250</div>
+            <div class="earn-note">Per case above 5 per month</div>
+          </div>
+          <div class="earn-card highlight">
+            <div class="earn-label">Example — 10 cases/mo</div>
+            <div class="earn-value">£15,000</div>
+            <div class="earn-note">10 × £1,500 avg referral fee</div>
+          </div>
+        </div>
+        <div class="guarantee-row">
+          <div class="g-item">No clawbacks</div>
+          <div class="g-item">No splits</div>
+          <div class="g-item">Paid on completion</div>
+          <div class="g-item">No minimum volumes</div>
+        </div>
+      </section>
+
+      <div class="divider"></div>
+
+      <!-- SECTION 3: WHAT YOU DON'T DO -->
+      <section class="section">
+        <div class="section-label">Section 3</div>
+        <div class="section-title">What You Don't Have to Do Anymore</div>
+        <ul class="strike-list">
+          <li>Chase clients for documents</li>
+          <li>Manual ID checks</li>
+          <li>Land Registry searches</li>
+          <li>LTV calculations</li>
+          <li>Lender pre-qualification</li>
+          <li>Phone calls back and forth</li>
+        </ul>
+      </section>
+
+      <div class="divider"></div>
+
+      <!-- SECTION 4: BROKER CODE -->
+      <section class="section">
+        <div class="section-label">Section 4</div>
+        <div class="section-title">Your Broker Code</div>
+        <div class="broker-code-box">
+          <div class="code-display">
+            <div>
+              <div class="code-label">Your unique broker code</div>
+            </div>
+            <div class="code-value">[TO BE ASSIGNED]</div>
+          </div>
+          <ul class="broker-code-points">
+            <li>Share itsadecline.com with your broker code to track your referrals</li>
+            <li>All cases opened via your code are visible in your broker dashboard</li>
+            <li>Real-time visibility on case status and payment pipeline</li>
+          </ul>
+        </div>
+      </section>
+
+      <div class="divider"></div>
+
+      <!-- SECTION 5: GETTING STARTED -->
+      <section class="section" style="margin-bottom: 0;">
+        <div class="section-label">Section 5</div>
+        <div class="section-title">Getting Started</div>
+        <div class="start-steps">
+          <div class="start-step">
+            <div class="s-num">1</div>
+            <div class="s-text">Email <a href="mailto:sl@itsadecline.com">sl@itsadecline.com</a> to register as a broker partner</div>
+          </div>
+          <div class="start-step">
+            <div class="s-num">2</div>
+            <div class="s-text">Receive your unique broker code within <strong>24 hours</strong></div>
+          </div>
+          <div class="start-step">
+            <div class="s-num">3</div>
+            <div class="s-text">Start referring — track every case and payment in your <strong>broker dashboard</strong></div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <div class="footer-brand">
+        <span>itsadecline.com</span>
+        <span class="footer-email">sl@itsadecline.com</span>
+      </div>
+      <div class="footer-conf">Confidential — Broker Partner Document</div>
+    </footer>
+
+  </div>
+</body>
+</html>
