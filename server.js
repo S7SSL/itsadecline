@@ -1,5 +1,7 @@
 const express = require('express');
 const cors = require('cors');
+const multer = require('multer');
+const path = require('path');
 const app = express();
 
 app.use(cors({ origin: ['https://itsadecline.com', 'https://www.itsadecline.com'] }));
@@ -25,6 +27,49 @@ app.post('/api/broker-interest', (req, res) => {
     body: JSON.stringify({ name, company, email, phone, source: 'broker-landing' })
   }).catch(e => console.error('n8n broker webhook error:', e));
   res.json({ success: true, message: 'Thanks, we\'ll be in touch shortly.' });
+});
+
+// --- HMLR Document Upload ---
+// Multer: memory storage (no disk write until full storage integration)
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 20 * 1024 * 1024 }, // 20 MB
+  fileFilter: (req, file, cb) => {
+    const allowed = ['.pdf', '.jpg', '.jpeg', '.png'];
+    const ext = path.extname(file.originalname).toLowerCase();
+    if (allowed.includes(ext)) {
+      cb(null, true);
+    } else {
+      cb(new Error('Only PDF, JPG, and PNG files are accepted.'));
+    }
+  }
+});
+
+app.post('/api/upload-document', upload.single('document'), (req, res) => {
+  const case_ref = (req.body && req.body.case_ref) ? req.body.case_ref.trim() : null;
+  const file = req.file;
+
+  if (!case_ref) {
+    return res.status(400).json({ success: false, message: 'Missing case_ref.' });
+  }
+  if (!file) {
+    return res.status(400).json({ success: false, message: 'No file uploaded.' });
+  }
+
+  // Log receipt (storage integration to follow)
+  console.log(`[upload-document] case_ref=${case_ref} | file=${file.originalname} | size=${file.size} bytes | mime=${file.mimetype}`);
+
+  // TODO: persist file.buffer to S3 / Supabase Storage with key: uploads/{case_ref}/{filename}
+
+  res.json({ success: true, message: 'Document received' });
+});
+
+// Multer error handler
+app.use((err, req, res, next) => {
+  if (err && err.message) {
+    return res.status(400).json({ success: false, message: err.message });
+  }
+  next(err);
 });
 
 app.get('/health', (req, res) => res.json({ status: 'ok', service: 'itsadecline-api' }));
