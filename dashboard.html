@@ -2,7 +2,22 @@
 <html lang="en">
 <head>
         <!-- Google tag (gtag.js) -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17990502106"></script>
+        <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17990502106">
+function handleTitleUpload(input, caseRef) {
+    if (input.files && input.files[0]) {
+        var file = input.files[0];
+        var label = document.getElementById('upload-label-' + caseRef);
+        if (label) {
+            label.classList.add('attached');
+            var txt = label.querySelector('.upload-btn-text');
+            if (txt) txt.textContent = '\u{1F4CE} ' + (file.name.length > 18 ? file.name.substring(0, 18) + '\u2026' : file.name);
+        }
+        var status = document.getElementById('upload-status-' + caseRef);
+        if (status) status.textContent = ' \u2705 Attached';
+    }
+}
+
+</script>
         <script>
                     window.dataLayer = window.dataLayer || [];
                     function gtag(){dataLayer.push(arguments);}
@@ -169,6 +184,16 @@
         .kyc-id-verified { background: #d1fae5; color: #065f46; padding: 12px 16px; border-radius: 8px; font-size: 13px; display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
         .kyc-id-pending { background: #fef3c7; color: #92400e; padding: 12px 16px; border-radius: 8px; font-size: 13px; display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
         .kyc-actions { display: flex; gap: 8px; margin-top: 16px; }
+
+        /* HMLR Manual Workflow */
+        .hmlr-row { display:flex; align-items:center; gap:6px; margin-top:8px; flex-wrap:wrap; }
+        .btn-hmlr { font-size:11px; font-weight:600; padding:3px 9px; border-radius:5px; background:#fef3c7; color:#b45309; border:1px solid #f59e0b; text-decoration:none; cursor:pointer; transition:all 0.15s; white-space:nowrap; }
+        .btn-hmlr:hover { background:#f59e0b; color:white; }
+        .btn-upload-label { font-size:11px; font-weight:600; padding:3px 9px; border-radius:5px; background:#f3f4f6; color:#6b7280; border:1px solid #d1d5db; cursor:pointer; transition:all 0.15s; user-select:none; white-space:nowrap; }
+        .btn-upload-label:hover { background:#e5e7eb; }
+        .btn-upload-label.attached { background:#f0fdf4; color:#16a34a; border-color:#22c55e; }
+        .upload-filename { font-size:11px; color:#16a34a; font-weight:600; max-width:120px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+        .hmlr-notice { background:#fffbeb; border:1px solid #fde68a; border-radius:8px; padding:10px 16px; font-size:12px; color:#92400e; margin-bottom:16px; display:flex; align-items:center; gap:8px; }
     </style>
 </head>
 <body>
@@ -200,6 +225,10 @@
         </div>
         <div class="ref-format">Reference format: <code>POSTCODE</code> + <code>first 3 of SURNAME</code> + <code>MMYY</code> &mdash; e.g. <code>B15MIT0226</code> = B15, Mitchell, Feb 2026</div>
         <div style="height:16px;"></div>
+        <div class="hmlr-notice">
+            <span>&#8505;&#65039;</span>
+            <span><strong>HMLR title checks are manual</strong> &mdash; search Land Registry, download the title register, then upload here for each case.</span>
+        </div>
         <div class="stats-row">
             <div class="stat-card"><div class="label">New Leads</div><div class="value">9</div><div class="change up">+2 today</div></div>
             <div class="stat-card"><div class="label">Title Checks</div><div class="value">5</div><div class="change up">3 cleared</div></div>
@@ -219,6 +248,14 @@
                         <div class="tags"><span class="tag tag-refer">MORTGAGE &mdash; REFER</span></div>
                         <div class="amount">&pound;285,000 remortgage</div>
                         <div class="time">12 mins ago</div>
+                        <div class="hmlr-row">
+                            <a href="https://eservices.landregistry.gov.uk/eservices/FindAProperty/view/QuickEnquiryInit.do" target="_blank" class="btn-hmlr">&#127963;&#65039; HMLR Search</a>
+                            <label class="btn-upload-label" id="upload-label-B15MIT0226">
+                                <span class="upload-btn-text">&#128206; Upload Title</span>
+                                <input type="file" accept=".pdf,.jpg,.jpeg,.png" style="display:none" onchange="handleTitleUpload(this, 'B15MIT0226')">
+                            </label><span class="upload-filename" id="upload-status-B15MIT0226"></span>
+                        </div>
+
                     </div>
                     <div class="lead-card" onclick="openModal('kumar')">
                         <div class="ref-num">SW1KUM0226</div>
@@ -227,6 +264,14 @@
                         <div class="tags"><span class="tag tag-2nd">2nd Charge</span></div>
                         <div class="amount">&pound;100,000 equity release</div>
                         <div class="time">45 mins ago</div>
+                        <div class="hmlr-row">
+                            <a href="https://eservices.landregistry.gov.uk/eservices/FindAProperty/view/QuickEnquiryInit.do" target="_blank" class="btn-hmlr">&#127963;&#65039; HMLR Search</a>
+                            <label class="btn-upload-label" id="upload-label-SW1KUM0226">
+                                <span class="upload-btn-text">&#128206; Upload Title</span>
+                                <input type="file" accept=".pdf,.jpg,.jpeg,.png" style="display:none" onchange="handleTitleUpload(this, 'SW1KUM0226')">
+                            </label><span class="upload-filename" id="upload-status-SW1KUM0226"></span>
+                        </div>
+
                     </div>
                     <div class="lead-card">
                         <div class="ref-num">BN1EDW0226</div>
@@ -235,6 +280,14 @@
                         <div class="tags"><span class="tag tag-2nd">2nd Charge</span><span class="tag tag-urgent">Urgent</span></div>
                         <div class="amount">&pound;80,000 equity release</div>
                         <div class="time">2 hours ago</div>
+                        <div class="hmlr-row">
+                            <a href="https://eservices.landregistry.gov.uk/eservices/FindAProperty/view/QuickEnquiryInit.do" target="_blank" class="btn-hmlr">&#127963;&#65039; HMLR Search</a>
+                            <label class="btn-upload-label" id="upload-label-BN1EDW0226">
+                                <span class="upload-btn-text">&#128206; Upload Title</span>
+                                <input type="file" accept=".pdf,.jpg,.jpeg,.png" style="display:none" onchange="handleTitleUpload(this, 'BN1EDW0226')">
+                            </label><span class="upload-filename" id="upload-status-BN1EDW0226"></span>
+                        </div>
+
                     </div>
                     <div class="lead-card">
                         <div class="ref-num">EH1TAY0226</div>
@@ -243,6 +296,14 @@
                         <div class="tags"><span class="tag tag-refer">MORTGAGE &mdash; REFER</span></div>
                         <div class="amount">&pound;320,000 remortgage</div>
                         <div class="time">Yesterday</div>
+                        <div class="hmlr-row">
+                            <a href="https://eservices.landregistry.gov.uk/eservices/FindAProperty/view/QuickEnquiryInit.do" target="_blank" class="btn-hmlr">&#127963;&#65039; HMLR Search</a>
+                            <label class="btn-upload-label" id="upload-label-EH1TAY0226">
+                                <span class="upload-btn-text">&#128206; Upload Title</span>
+                                <input type="file" accept=".pdf,.jpg,.jpeg,.png" style="display:none" onchange="handleTitleUpload(this, 'EH1TAY0226')">
+                            </label><span class="upload-filename" id="upload-status-EH1TAY0226"></span>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -258,6 +319,14 @@
                         <div class="detail" style="color:#8b5cf6;font-weight:600;margin-top:6px;">Title: NGL456789</div>
                         <div class="amount">&pound;150,000 equity release</div>
                         <div class="time"><span class="status-badge green"><span class="dot green"></span> Title Verified</span></div>
+                        <div class="hmlr-row">
+                            <a href="https://eservices.landregistry.gov.uk/eservices/FindAProperty/view/QuickEnquiryInit.do" target="_blank" class="btn-hmlr">&#127963;&#65039; HMLR Search</a>
+                            <label class="btn-upload-label" id="upload-label-W8PAT0226">
+                                <span class="upload-btn-text">&#128206; Upload Title</span>
+                                <input type="file" accept=".pdf,.jpg,.jpeg,.png" style="display:none" onchange="handleTitleUpload(this, 'W8PAT0226')">
+                            </label><span class="upload-filename" id="upload-status-W8PAT0226"></span>
+                        </div>
+
                     </div>
                     <div class="lead-card">
                         <div class="ref-num">BS1WRI0226</div>
@@ -267,6 +336,14 @@
                         <div class="detail" style="color:#f59e0b;font-weight:600;margin-top:6px;">Pulling title...</div>
                         <div class="amount">&pound;60,000 equity release</div>
                         <div class="time"><span class="status-badge yellow"><span class="dot yellow"></span> In Progress</span></div>
+                        <div class="hmlr-row">
+                            <a href="https://eservices.landregistry.gov.uk/eservices/FindAProperty/view/QuickEnquiryInit.do" target="_blank" class="btn-hmlr">&#127963;&#65039; HMLR Search</a>
+                            <label class="btn-upload-label" id="upload-label-BS1WRI0226">
+                                <span class="upload-btn-text">&#128206; Upload Title</span>
+                                <input type="file" accept=".pdf,.jpg,.jpeg,.png" style="display:none" onchange="handleTitleUpload(this, 'BS1WRI0226')">
+                            </label><span class="upload-filename" id="upload-status-BS1WRI0226"></span>
+                        </div>
+
                     </div>
                     <div class="lead-card">
                         <div class="ref-num">CF1OBR0226</div>
@@ -276,6 +353,14 @@
                         <div class="detail" style="color:#8b5cf6;font-weight:600;margin-top:6px;">Title: CY234567</div>
                         <div class="amount">&pound;90,000 equity release</div>
                         <div class="time"><span class="status-badge green"><span class="dot green"></span> Title Verified</span></div>
+                        <div class="hmlr-row">
+                            <a href="https://eservices.landregistry.gov.uk/eservices/FindAProperty/view/QuickEnquiryInit.do" target="_blank" class="btn-hmlr">&#127963;&#65039; HMLR Search</a>
+                            <label class="btn-upload-label" id="upload-label-CF1OBR0226">
+                                <span class="upload-btn-text">&#128206; Upload Title</span>
+                                <input type="file" accept=".pdf,.jpg,.jpeg,.png" style="display:none" onchange="handleTitleUpload(this, 'CF1OBR0226')">
+                            </label><span class="upload-filename" id="upload-status-CF1OBR0226"></span>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -301,6 +386,14 @@
                         <div class="detail" style="margin-top:6px;font-weight:600;">Mortgage: &pound;350K &middot; Max loan: &pound;154K</div>
                         <div class="amount">Requesting: &pound;100,000</div>
                         <div class="time"><span class="status-badge green"><span class="dot green"></span> Within 70% LTV</span></div>
+                        <div class="hmlr-row">
+                            <a href="https://eservices.landregistry.gov.uk/eservices/FindAProperty/view/QuickEnquiryInit.do" target="_blank" class="btn-hmlr">&#127963;&#65039; HMLR Search</a>
+                            <label class="btn-upload-label" id="upload-label-E14OKO0226">
+                                <span class="upload-btn-text">&#128206; Upload Title</span>
+                                <input type="file" accept=".pdf,.jpg,.jpeg,.png" style="display:none" onchange="handleTitleUpload(this, 'E14OKO0226')">
+                            </label><span class="upload-filename" id="upload-status-E14OKO0226"></span>
+                        </div>
+
                     </div>
                     <div class="lead-card">
                         <div class="ref-num">BA1CAM0226</div>
@@ -320,6 +413,14 @@
                         <div class="detail" style="margin-top:6px;font-weight:600;">Mortgage: &pound;280K &middot; Max loan: &pound;84K</div>
                         <div class="amount">Requesting: &pound;75,000</div>
                         <div class="time"><span class="status-badge green"><span class="dot green"></span> Within 70% LTV</span></div>
+                        <div class="hmlr-row">
+                            <a href="https://eservices.landregistry.gov.uk/eservices/FindAProperty/view/QuickEnquiryInit.do" target="_blank" class="btn-hmlr">&#127963;&#65039; HMLR Search</a>
+                            <label class="btn-upload-label" id="upload-label-BA1CAM0226">
+                                <span class="upload-btn-text">&#128206; Upload Title</span>
+                                <input type="file" accept=".pdf,.jpg,.jpeg,.png" style="display:none" onchange="handleTitleUpload(this, 'BA1CAM0226')">
+                            </label><span class="upload-filename" id="upload-status-BA1CAM0226"></span>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -335,6 +436,14 @@
                         <div class="amount">&pound;120,000</div>
                         <div class="detail" style="color:#06b6d4;font-weight:600;margin-top:6px;">XL Ref: XL-2026-0847</div>
                         <div class="time"><span class="status-badge green"><span class="dot green"></span> Approved</span></div>
+                        <div class="hmlr-row">
+                            <a href="https://eservices.landregistry.gov.uk/eservices/FindAProperty/view/QuickEnquiryInit.do" target="_blank" class="btn-hmlr">&#127963;&#65039; HMLR Search</a>
+                            <label class="btn-upload-label" id="upload-label-W1SIN0226">
+                                <span class="upload-btn-text">&#128206; Upload Title</span>
+                                <input type="file" accept=".pdf,.jpg,.jpeg,.png" style="display:none" onchange="handleTitleUpload(this, 'W1SIN0226')">
+                            </label><span class="upload-filename" id="upload-status-W1SIN0226"></span>
+                        </div>
+
                     </div>
                     <div class="lead-card">
                         <div class="ref-num">L3ADE0226</div>
@@ -344,6 +453,14 @@
                         <div class="amount">&pound;95,000</div>
                         <div class="detail" style="color:#06b6d4;font-weight:600;margin-top:6px;">XL Ref: XL-2026-0852</div>
                         <div class="time"><span class="status-badge blue"><span class="dot blue"></span> Under Review</span></div>
+                        <div class="hmlr-row">
+                            <a href="https://eservices.landregistry.gov.uk/eservices/FindAProperty/view/QuickEnquiryInit.do" target="_blank" class="btn-hmlr">&#127963;&#65039; HMLR Search</a>
+                            <label class="btn-upload-label" id="upload-label-L3ADE0226">
+                                <span class="upload-btn-text">&#128206; Upload Title</span>
+                                <input type="file" accept=".pdf,.jpg,.jpeg,.png" style="display:none" onchange="handleTitleUpload(this, 'L3ADE0226')">
+                            </label><span class="upload-filename" id="upload-status-L3ADE0226"></span>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -359,6 +476,14 @@
                         <div class="amount" style="color:#22c55e;">&pound;140,000</div>
                         <div class="detail" style="font-weight:600;margin-top:4px;">7.9% &middot; 15yr &middot; 2nd charge secured</div>
                         <div class="time"><span class="status-badge green"><span class="dot green"></span> Offer Sent</span></div>
+                        <div class="hmlr-row">
+                            <a href="https://eservices.landregistry.gov.uk/eservices/FindAProperty/view/QuickEnquiryInit.do" target="_blank" class="btn-hmlr">&#127963;&#65039; HMLR Search</a>
+                            <label class="btn-upload-label" id="upload-label-M1HUS0226">
+                                <span class="upload-btn-text">&#128206; Upload Title</span>
+                                <input type="file" accept=".pdf,.jpg,.jpeg,.png" style="display:none" onchange="handleTitleUpload(this, 'M1HUS0226')">
+                            </label><span class="upload-filename" id="upload-status-M1HUS0226"></span>
+                        </div>
+
                     </div>
                     <div class="lead-card" style="border-color:#22c55e;background:#f0fdf4;" onclick="openModal('chen')">
                         <div class="ref-num">E9CHE0226</div>
@@ -368,6 +493,14 @@
                         <div class="amount" style="color:#22c55e;">&pound;85,000</div>
                         <div class="detail" style="font-weight:600;margin-top:4px;">8.2% &middot; 10yr &middot; 2nd charge secured</div>
                         <div class="time"><span class="status-badge green"><span class="dot green"></span> Offer Accepted</span></div>
+                        <div class="hmlr-row">
+                            <a href="https://eservices.landregistry.gov.uk/eservices/FindAProperty/view/QuickEnquiryInit.do" target="_blank" class="btn-hmlr">&#127963;&#65039; HMLR Search</a>
+                            <label class="btn-upload-label" id="upload-label-E9CHE0226">
+                                <span class="upload-btn-text">&#128206; Upload Title</span>
+                                <input type="file" accept=".pdf,.jpg,.jpeg,.png" style="display:none" onchange="handleTitleUpload(this, 'E9CHE0226')">
+                            </label><span class="upload-filename" id="upload-status-E9CHE0226"></span>
+                        </div>
+
                     </div>
                 </div>
             </div>
