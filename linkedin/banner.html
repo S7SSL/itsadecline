@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1584">
+<title>itsadecline.com — LinkedIn Banner</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 1584px;
+    height: 396px;
+    overflow: hidden;
+    background: #0d1b2a;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  }
+
+  .banner {
+    position: relative;
+    width: 1584px;
+    height: 396px;
+    background: #0d1b2a;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  /* Subtle grid pattern */
+  .grid-overlay {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(245,158,11,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(245,158,11,0.04) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+
+  /* Subtle radial glow */
+  .glow {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 60% 80% at 30% 50%, rgba(245,158,11,0.07) 0%, transparent 70%),
+                radial-gradient(ellipse 40% 60% at 80% 50%, rgba(29,78,216,0.08) 0%, transparent 70%);
+  }
+
+  /* Decorative dots */
+  .dots {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  /* Vertical separator line */
+  .separator {
+    position: absolute;
+    left: 56%;
+    top: 15%;
+    height: 70%;
+    width: 1px;
+    background: linear-gradient(to bottom, transparent, rgba(245,158,11,0.3), transparent);
+  }
+
+  /* Left content */
+  .left {
+    position: relative;
+    z-index: 10;
+    flex: 0 0 56%;
+    padding: 0 64px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .brand-line {
+    display: flex;
+    align-items: baseline;
+    gap: 0;
+  }
+
+  .brand-itsa {
+    font-size: 68px;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: -2px;
+    line-height: 1;
+  }
+
+  .brand-decline {
+    font-size: 68px;
+    font-weight: 800;
+    color: #f59e0b;
+    letter-spacing: -2px;
+    line-height: 1;
+  }
+
+  .brand-dotcom {
+    font-size: 68px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.45);
+    letter-spacing: -2px;
+    line-height: 1;
+  }
+
+  .amber-bar {
+    width: 56px;
+    height: 3px;
+    background: #f59e0b;
+    border-radius: 2px;
+    margin: 4px 0;
+  }
+
+  .tagline {
+    font-size: 19px;
+    font-weight: 400;
+    color: rgba(255,255,255,0.72);
+    letter-spacing: 0.3px;
+    line-height: 1.4;
+    max-width: 560px;
+  }
+
+  .tagline span {
+    color: rgba(255,255,255,0.92);
+    font-weight: 600;
+  }
+
+  /* Right stats */
+  .right {
+    position: relative;
+    z-index: 10;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 0 56px 0 60px;
+    justify-content: center;
+  }
+
+  .stat-card {
+    background: rgba(255,255,255,0.045);
+    border: 1px solid rgba(245,158,11,0.2);
+    border-left: 3px solid #f59e0b;
+    border-radius: 6px;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    backdrop-filter: blur(4px);
+  }
+
+  .stat-value {
+    font-size: 28px;
+    font-weight: 800;
+    color: #f59e0b;
+    white-space: nowrap;
+    letter-spacing: -0.5px;
+    min-width: 130px;
+  }
+
+  .stat-label {
+    font-size: 14px;
+    font-weight: 400;
+    color: rgba(255,255,255,0.65);
+    letter-spacing: 0.2px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    font-size: 12px;
+  }
+</style>
+</head>
+<body>
+<div class="banner">
+  <div class="grid-overlay"></div>
+  <div class="dots"></div>
+  <div class="glow"></div>
+  <div class="separator"></div>
+
+  <!-- Left: brand + tagline -->
+  <div class="left">
+    <div class="brand-line">
+      <span class="brand-itsa">itsa</span><span class="brand-decline">decline</span><span class="brand-dotcom">.com</span>
+    </div>
+    <div class="amber-bar"></div>
+    <div class="tagline">
+      <span>Automated</span> Equity Release &amp; 2nd Charge Mortgage Platform
+    </div>
+  </div>
+
+  <!-- Right: stats -->
+  <div class="right">
+    <div class="stat-card">
+      <div class="stat-value">£295</div>
+      <div class="stat-label">to open a case</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">48–72 hrs</div>
+      <div class="stat-label">to first offer</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">100% automated</div>
+      <div class="stat-label">no phone calls</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

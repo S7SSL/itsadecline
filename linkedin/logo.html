@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=300">
+<title>itsadecline.com — Logo</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 300px;
+    height: 300px;
+    overflow: hidden;
+    background: #0d1b2a;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  }
+
+  .logo {
+    position: relative;
+    width: 300px;
+    height: 300px;
+    background: #0d1b2a;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    gap: 6px;
+  }
+
+  /* Subtle grid background */
+  .grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(245,158,11,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(245,158,11,0.05) 1px, transparent 1px);
+    background-size: 30px 30px;
+  }
+
+  /* Radial glow */
+  .glow {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 80% at 50% 50%, rgba(245,158,11,0.08) 0%, transparent 70%);
+  }
+
+  .wordmark {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+  }
+
+  .word-top {
+    display: flex;
+    align-items: baseline;
+    line-height: 1;
+  }
+
+  .itsa {
+    font-size: 52px;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: -1.5px;
+  }
+
+  .decline {
+    font-size: 52px;
+    font-weight: 800;
+    color: #f59e0b;
+    letter-spacing: -1.5px;
+  }
+
+  .amber-bar {
+    width: 40px;
+    height: 2px;
+    background: #f59e0b;
+    border-radius: 1px;
+    margin: 4px auto 2px;
+  }
+
+  .dotcom {
+    font-size: 16px;
+    font-weight: 400;
+    color: rgba(255,255,255,0.38);
+    letter-spacing: 3px;
+    text-transform: lowercase;
+  }
+</style>
+</head>
+<body>
+<div class="logo">
+  <div class="grid"></div>
+  <div class="glow"></div>
+  <div class="wordmark">
+    <div class="word-top">
+      <span class="itsa">itsa</span><span class="decline">decline</span>
+    </div>
+    <div class="amber-bar"></div>
+    <div class="dotcom">.com</div>
+  </div>
+</div>
+</body>
+</html>
