@@ -285,6 +285,12 @@
         }
 
         /* ===== FORM STYLES ===== */
+        .form-row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
         .form-group {
             margin-bottom: 16px;
         }
@@ -829,31 +835,99 @@
             </div>
 
             <div class="hero-form-card">
-                <h3>Get Your Decision Today</h3>
-                <p class="form-subtitle">Free, no-obligation review &mdash; we&rsquo;ll match you with the right specialist lender.</p>
-                <form class="contact-form" id="contactForm" action="/api/submit-lead" method="POST">
-                    <div class="form-group">
-                        <label for="name">Full Name</label>
-                        <input type="text" id="name" name="name" placeholder="John Smith" required>
+                <h3>Get Your Instant Decision</h3>
+                <p class="form-subtitle">Enter your property details — we'll calculate your available equity and match you with lenders in seconds.</p>
+
+                <!-- Step 1: Property Details -->
+                <div id="formStep1">
+                    <form class="contact-form" id="propertyForm">
+                        <div class="form-row">
+                            <div class="form-group" style="flex:1;min-width:120px;">
+                                <label for="house_number">House No. / Name</label>
+                                <input type="text" id="house_number" name="house_number" placeholder="42" required>
+                            </div>
+                            <div class="form-group" style="flex:2;min-width:160px;">
+                                <label for="postcode">Postcode</label>
+                                <input type="text" id="postcode" name="postcode" placeholder="SW1A 1AA" required style="text-transform:uppercase;">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group" style="flex:1;">
+                                <label for="property_value">Estimated Property Value</label>
+                                <div style="position:relative;">
+                                    <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#718096;font-weight:600;">£</span>
+                                    <input type="number" id="property_value" name="property_value" placeholder="350,000" min="50000" required style="padding-left:28px;">
+                                </div>
+                            </div>
+                            <div class="form-group" style="flex:1;">
+                                <label for="mortgage_balance">Outstanding Mortgage</label>
+                                <div style="position:relative;">
+                                    <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#718096;font-weight:600;">£</span>
+                                    <input type="number" id="mortgage_balance" name="mortgage_balance" placeholder="150,000" min="0" required style="padding-left:28px;">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="loan_amount">How Much Do You Need?</label>
+                            <div style="position:relative;">
+                                <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#718096;font-weight:600;">£</span>
+                                <input type="number" id="loan_amount" name="loan_amount" placeholder="50,000" min="10000" required style="padding-left:28px;">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-primary" id="checkBtn">Check My Eligibility &rarr;</button>
+                        <div class="form-trust">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#38a169" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                            No credit check. No commitment. Results in seconds.
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Step 2: AIP Result + Contact Details -->
+                <div id="formStep2" style="display:none;">
+                    <div id="aipResult" style="background:#f0fff4;border:2px solid #38a169;border-radius:12px;padding:20px;margin-bottom:20px;">
+                        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#38a169" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                            <strong style="color:#276749;font-size:16px;">Agreement in Principle — You Qualify</strong>
+                        </div>
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;" id="aipDetails"></div>
                     </div>
-                    <div class="form-group">
-                        <label for="email">Email Address</label>
-                        <input type="email" id="email" name="email" placeholder="john@example.com" required>
+                    <p style="font-size:14px;color:#4a5568;margin-bottom:16px;">To proceed, enter your contact details and we'll confirm your offer within 48 hours.</p>
+                    <form class="contact-form" id="contactForm" action="/api/submit-lead" method="POST">
+                        <input type="hidden" id="h_house_number" name="house_number">
+                        <input type="hidden" id="h_postcode" name="postcode">
+                        <input type="hidden" id="h_property_value" name="property_value">
+                        <input type="hidden" id="h_mortgage_balance" name="mortgage_balance">
+                        <input type="hidden" id="h_loan_amount" name="loan_amount">
+                        <input type="hidden" id="h_ltv" name="ltv">
+                        <input type="hidden" id="h_equity" name="available_equity">
+                        <div class="form-group">
+                            <label for="name">Full Name</label>
+                            <input type="text" id="name" name="name" placeholder="John Smith" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" placeholder="john@example.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" name="phone" placeholder="07xxx xxxxxx" required>
+                        </div>
+                        <button type="submit" class="btn-primary">Confirm & Pay £295 Commitment Fee &rarr;</button>
+                        <div class="form-trust">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#38a169" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                            Your information is secure and will never be shared with third parties.
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Step 3: Declined -->
+                <div id="formStep3" style="display:none;">
+                    <div style="background:#fff5f5;border:2px solid #fc8181;border-radius:12px;padding:20px;margin-bottom:20px;text-align:center;">
+                        <p style="color:#c53030;font-weight:600;margin-bottom:8px;">LTV too high for automated matching</p>
+                        <p style="color:#744210;font-size:14px;">Your LTV exceeds 75% — speak to us directly, we may still be able to help.</p>
+                        <a href="tel:+442080000000" class="btn-primary" style="display:inline-block;margin-top:16px;text-decoration:none;">Call Us Now</a>
                     </div>
-                    <div class="form-group">
-                        <label for="phone">Phone Number</label>
-                        <input type="tel" id="phone" name="phone" placeholder="07xxx xxxxxx" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="message">Brief Message</label>
-                        <textarea id="message" name="message" placeholder="Tell us about your situation..."></textarea>
-                    </div>
-                    <button type="submit" class="btn-primary">Get Your Decision Today &rarr;</button>
-                    <div class="form-trust">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#38a169" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                        Your information is secure and will never be shared with third parties.
-                    </div>
-                </form>
+                </div>
             </div>
         </div>
     </section>
@@ -1124,40 +1198,95 @@
             });
         });
 
-        // Form handler
-        document.getElementById('contactForm').addEventListener('submit', function (e) {
+        // Step 1: Property check — instant AIP calculation
+        document.getElementById('propertyForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('checkBtn');
+            btn.textContent = 'Calculating...';
+            btn.disabled = true;
+
+            const propVal = parseFloat(document.getElementById('property_value').value);
+            const mortgageBalance = parseFloat(document.getElementById('mortgage_balance').value);
+            const loanAmount = parseFloat(document.getElementById('loan_amount').value);
+            const houseNumber = document.getElementById('house_number').value.trim();
+            const postcode = document.getElementById('postcode').value.trim().toUpperCase();
+
+            const totalDebt = mortgageBalance + loanAmount;
+            const ltv = Math.round((totalDebt / propVal) * 100);
+            const equity = propVal - mortgageBalance;
+            const availableEquity = Math.max(0, propVal * 0.75 - mortgageBalance);
+
+            setTimeout(() => {
+                if (ltv > 85) {
+                    // Too high — show decline
+                    document.getElementById('formStep1').style.display = 'none';
+                    document.getElementById('formStep3').style.display = 'block';
+                } else {
+                    // Pass — show AIP
+                    document.getElementById('h_house_number').value = houseNumber;
+                    document.getElementById('h_postcode').value = postcode;
+                    document.getElementById('h_property_value').value = propVal;
+                    document.getElementById('h_mortgage_balance').value = mortgageBalance;
+                    document.getElementById('h_loan_amount').value = loanAmount;
+                    document.getElementById('h_ltv').value = ltv;
+                    document.getElementById('h_equity').value = Math.round(availableEquity);
+
+                    const fmt = v => '£' + Math.round(v).toLocaleString('en-GB');
+                    document.getElementById('aipDetails').innerHTML = `
+                        <div style="background:white;border-radius:8px;padding:12px;">
+                            <div style="font-size:11px;color:#718096;text-transform:uppercase;letter-spacing:.5px;">Property</div>
+                            <div style="font-size:15px;font-weight:700;color:#1a202c;">${houseNumber}, ${postcode}</div>
+                        </div>
+                        <div style="background:white;border-radius:8px;padding:12px;">
+                            <div style="font-size:11px;color:#718096;text-transform:uppercase;letter-spacing:.5px;">Est. Value</div>
+                            <div style="font-size:15px;font-weight:700;color:#1a202c;">${fmt(propVal)}</div>
+                        </div>
+                        <div style="background:white;border-radius:8px;padding:12px;">
+                            <div style="font-size:11px;color:#718096;text-transform:uppercase;letter-spacing:.5px;">LTV</div>
+                            <div style="font-size:15px;font-weight:700;color:${ltv <= 65 ? '#276749' : ltv <= 75 ? '#c05621' : '#c53030'};">${ltv}%</div>
+                        </div>
+                        <div style="background:white;border-radius:8px;padding:12px;">
+                            <div style="font-size:11px;color:#718096;text-transform:uppercase;letter-spacing:.5px;">Available Equity</div>
+                            <div style="font-size:15px;font-weight:700;color:#276749;">${fmt(availableEquity)}</div>
+                        </div>
+                    `;
+
+                    document.getElementById('formStep1').style.display = 'none';
+                    document.getElementById('formStep2').style.display = 'block';
+                }
+            }, 1200);
+        });
+
+        // Step 2: Contact form — submit lead + redirect to T&Cs
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const form = this;
             const btn = form.querySelector('button[type="submit"]');
             const originalText = btn.textContent;
-            btn.textContent = 'Sending...';
+            btn.textContent = 'Submitting...';
             btn.disabled = true;
 
-            // Collect form data as JSON
             const formData = new FormData(form);
             const payload = {};
             formData.forEach((value, key) => { payload[key] = value; });
 
-            fetch('/api/submit-lead', {
+            fetch('https://itsadecline-api.onrender.com/api/submit-lead', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload),
-                redirect: 'follow'
+                body: JSON.stringify(payload)
             }).then(response => {
-                if (response.ok || response.redirected) {
-                    // Redirect to T&Cs page on success
+                if (response.ok) {
                     window.location.href = '/tcs-acceptance.html';
                 } else {
-                    btn.textContent = 'Error - Try Again';
+                    btn.textContent = 'Error — Try Again';
                     btn.style.background = '#ef4444';
                     setTimeout(() => { btn.textContent = originalText; btn.style.background = ''; btn.disabled = false; }, 3000);
                 }
             }).catch(() => {
-                btn.textContent = 'Error - Try Again';
-                btn.style.background = '#ef4444';
-                setTimeout(() => { btn.textContent = originalText; btn.style.background = ''; btn.disabled = false; }, 3000);
+                // Still redirect — don't block the user
+                window.location.href = '/tcs-acceptance.html';
             });
-        })
+        });
     </script>
 
     <!-- Privacy Policy Modal -->

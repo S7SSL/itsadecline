@@ -5,52 +5,44 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_KEY
 );
 
-async function sendConfirmationEmail(lead) {
-  const res = await fetch('https://api.resend.com/emails', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
-    },
-    body: JSON.stringify({
-      from: 'itsadecline <noreply@itsadecline.com>',
-      to: [lead.email],
-      subject: "We've received your enquiry — itsadecline.com",
-      html: `
-        <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;color:#1a2332;">
-          <div style="background:#1a2332;padding:24px 32px;border-radius:8px 8px 0 0;">
-            <h1 style="color:#f59e0b;margin:0;font-size:22px;">itsadecline.com</h1>
-            <p style="color:#94a3b8;margin:4px 0 0;">Specialist Finance Brokerage</p>
-          </div>
-          <div style="background:#f9fafb;padding:32px;border-radius:0 0 8px 8px;">
-            <h2 style="color:#1a2332;margin-top:0;">Hi ${lead.name},</h2>
-            <p>Thank you for submitting your enquiry. We've received your details and a member of our team will be in touch shortly.</p>
-            <div style="background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:20px;margin:20px 0;">
-              <h3 style="margin-top:0;color:#374151;font-size:14px;text-transform:uppercase;letter-spacing:0.05em;">Your Enquiry Summary</h3>
-              <table style="width:100%;border-collapse:collapse;font-size:14px;">
-                <tr><td style="padding:6px 0;color:#6b7280;">Name</td><td style="padding:6px 0;font-weight:600;">${lead.name}</td></tr>
-                <tr><td style="padding:6px 0;color:#6b7280;">Email</td><td style="padding:6px 0;">${lead.email}</td></tr>
-                <tr><td style="padding:6px 0;color:#6b7280;">Phone</td><td style="padding:6px 0;">${lead.phone || '—'}</td></tr>
-                ${lead.postcode ? `<tr><td style="padding:6px 0;color:#6b7280;">Postcode</td><td style="padding:6px 0;">${lead.postcode}</td></tr>` : ''}
-                ${lead.loan_amount ? `<tr><td style="padding:6px 0;color:#6b7280;">Loan Amount</td><td style="padding:6px 0;">£${Number(lead.loan_amount).toLocaleString()}</td></tr>` : ''}
-              </table>
-            </div>
-            <p>To proceed with your application, please review and accept our Terms & Conditions:</p>
-            <a href="https://itsadecline.com/tcs-acceptance.html" style="display:inline-block;background:#f59e0b;color:#1a2332;padding:12px 24px;border-radius:6px;text-decoration:none;font-weight:700;">Review Terms &amp; Conditions →</a>
-            <p style="margin-top:24px;font-size:13px;color:#6b7280;">
-              Questions? Email us at <a href="mailto:sl@itsadecline.com" style="color:#f59e0b;">sl@itsadecline.com</a>
-            </p>
-          </div>
-        </div>
-      `,
-    }),
-  });
+async function sendNotificationEmail(lead) {
+  // Send via Gmail API using sat@itsadecline.com
+  const token = process.env.ITSA_GMAIL_TOKEN;
+  if (!token) return;
 
-  if (!res.ok) {
-    const body = await res.text();
-    throw new Error(`Resend API error: ${res.status} ${body}`);
-  }
-  return res.json();
+  const fmt = v => v ? '£' + Number(v).toLocaleString('en-GB') : '—';
+  const subject = `New ITSA Lead: ${lead.name} — ${lead.postcode || 'no postcode'}`;
+  const body = [
+    `New lead from itsadecline.com`,
+    ``,
+    `Name: ${lead.name}`,
+    `Email: ${lead.email}`,
+    `Phone: ${lead.phone || '—'}`,
+    `Address: ${lead.address || '—'}`,
+    `Property Value: ${fmt(lead.property_value)}`,
+    `Mortgage Balance: ${fmt(lead.mortgage_balance)}`,
+    `Loan Needed: ${fmt(lead.loan_amount)}`,
+    `LTV: ${lead.ltv ? lead.ltv + '%' : '—'}`,
+    `Available Equity: ${fmt(lead.available_equity)}`,
+    ``,
+    `View in Supabase: https://gcsorjyxzyltzxpmaavt.supabase.co`,
+  ].join('\n');
+
+  const message = [
+    `To: sat@itsadecline.com`,
+    `Subject: ${subject}`,
+    `Content-Type: text/plain; charset=utf-8`,
+    ``,
+    body
+  ].join('\n');
+
+  const encoded = Buffer.from(message).toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+
+  await fetch('https://gmail.googleapis.com/gmail/v1/users/me/messages/send', {
+    method: 'POST',
+    headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ raw: encoded })
+  });
 }
 
 module.exports = async (req, res) => {
@@ -75,10 +67,13 @@ module.exports = async (req, res) => {
       name,
       email,
       phone,
+      house_number,
       postcode,
       property_value,
       mortgage_balance,
       loan_amount,
+      ltv,
+      available_equity,
       message,
     } = body || {};
 
@@ -86,38 +81,59 @@ module.exports = async (req, res) => {
       return res.status(400).json({ error: 'name and email are required' });
     }
 
+    const propVal = property_value ? Number(property_value) : null;
+    const mortgageBal = mortgage_balance ? Number(mortgage_balance) : null;
+    const loanAmt = loan_amount ? Number(loan_amount) : null;
+    const ltvNum = ltv ? Number(ltv) : null;
+    const equityNum = available_equity ? Number(available_equity) : null;
+
+    const fullAddress = [house_number, postcode].filter(Boolean).join(', ');
+
     // Insert lead into Supabase
-    const { data: lead, error } = await supabase
-      .from('leads')
-      .insert({
-        name,
-        email,
+    // Try full schema first, fall back to base fields if new columns not yet migrated
+    let lead, error;
+    const fullPayload = {
+      name, email,
+      phone: phone || null,
+      postcode: postcode || null,
+      property_value: propVal,
+      mortgage_balance: mortgageBal,
+      loan_amount: loanAmt,
+      ltv: ltvNum,
+      available_equity: equityNum,
+      address: fullAddress || null,
+      source: 'homepage',
+      status: 'new',
+    };
+
+    ({ data: lead, error } = await supabase.from('leads').insert(fullPayload).select().single());
+
+    if (error && error.message && error.message.includes('column')) {
+      // Fall back to base columns only
+      console.warn('New columns not yet in schema, using base fields');
+      ({ data: lead, error } = await supabase.from('leads').insert({
+        name, email,
         phone: phone || null,
         postcode: postcode || null,
-        property_value: property_value ? Number(property_value) : null,
-        mortgage_balance: mortgage_balance ? Number(mortgage_balance) : null,
-        loan_amount: loan_amount ? Number(loan_amount) : null,
-      })
-      .select()
-      .single();
+        property_value: propVal,
+        mortgage_balance: mortgageBal,
+        loan_amount: loanAmt,
+      }).select().single());
+    }
 
     if (error) {
       console.error('Supabase insert error:', error);
       return res.status(500).json({ error: 'Failed to save lead' });
     }
 
-    // Send confirmation email (non-fatal if it fails)
-    if (process.env.RESEND_API_KEY) {
-      try {
-        await sendConfirmationEmail({ name, email, phone, postcode, loan_amount });
-      } catch (emailErr) {
-        console.error('Confirmation email failed:', emailErr.message);
-      }
+    // Send internal notification (non-fatal)
+    try {
+      await sendNotificationEmail({ name, email, phone, address: fullAddress, postcode, property_value: propVal, mortgage_balance: mortgageBal, loan_amount: loanAmt, ltv: ltvNum, available_equity: equityNum });
+    } catch (emailErr) {
+      console.error('Notification email failed:', emailErr.message);
     }
 
-    // Redirect to T&Cs page
-    res.setHeader('Location', '/tcs-acceptance.html');
-    return res.status(302).end();
+    return res.status(200).json({ success: true, lead_id: lead.id });
   } catch (err) {
     console.error('submit-lead error:', err);
     return res.status(500).json({ error: 'Internal server error' });
