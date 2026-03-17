@@ -189,7 +189,7 @@ app.post('/api/meta-leads', async (req, res) => {
             const tokenData = await tokenRes.json();
             const accessToken = tokenData.access_token;
             if (accessToken) {
-              const subject = `🔔 New lead — ${name || 'Unknown'}`;
+              const subject = `New ITSA lead: ${name || 'Unknown'}`;
               const receivedDate = new Date(lead.created_time).toLocaleString('en-GB', { dateStyle: 'full', timeStyle: 'short', timeZone: 'Europe/London' });
               const htmlBody = `<!DOCTYPE html><html><head><meta charset="UTF-8"><style>body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f4f4f5;margin:0;padding:32px 16px}
 .card{background:#ffffff;border-radius:12px;max-width:520px;margin:0 auto;padding:32px;box-shadow:0 2px 8px rgba(0,0,0,0.08)}
