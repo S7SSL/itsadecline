@@ -91,6 +91,78 @@ app.post('/api/isa-lead', (req, res) => {
   res.json({ success: true });
 });
 
+// --- Meta Lead Gen Webhook ---
+// Verification endpoint (GET)
+app.get('/api/meta-leads', (req, res) => {
+  const VERIFY_TOKEN = process.env.META_WEBHOOK_VERIFY_TOKEN || 'itsa_meta_leads_2026';
+  const mode = req.query['hub.mode'];
+  const token = req.query['hub.verify_token'];
+  const challenge = req.query['hub.challenge'];
+  if (mode === 'subscribe' && token === VERIFY_TOKEN) {
+    console.log('[meta-leads] Webhook verified');
+    return res.status(200).send(challenge);
+  }
+  res.sendStatus(403);
+});
+
+// Lead notification endpoint (POST)
+app.post('/api/meta-leads', async (req, res) => {
+  res.sendStatus(200); // Acknowledge immediately
+  try {
+    const body = req.body;
+    if (body.object !== 'page') return;
+    for (const entry of (body.entry || [])) {
+      for (const change of (entry.changes || [])) {
+        if (change.field !== 'leadgen') continue;
+        const leadgenId = change.value.leadgen_id;
+        const pageId = change.value.page_id;
+        // Fetch lead data from Meta
+        const PAGE_TOKEN = process.env.META_PAGE_TOKEN;
+        const metaRes = await fetch(`https://graph.facebook.com/v19.0/${leadgenId}?fields=field_data,created_time&access_token=${PAGE_TOKEN}`);
+        const lead = await metaRes.json();
+        if (lead.error) { console.error('[meta-leads] fetch error', lead.error); continue; }
+        // Parse fields
+        const fields = {};
+        for (const f of (lead.field_data || [])) {
+          fields[f.name] = f.values[0];
+        }
+        const name = fields['full_name'] || fields['first_name'] || '';
+        const email = fields['email'] || '';
+        const phone = fields['phone_number'] || '';
+        const loanAmount = fields['loan_amount'] || '';
+        console.log(`[meta-leads] New lead: ${name} | ${email} | ${phone} | loan: ${loanAmount}`);
+        // Save to Supabase
+        const SUPABASE_URL = process.env.SUPABASE_URL;
+        const SUPABASE_KEY = process.env.SUPABASE_SERVICE_KEY;
+        if (SUPABASE_URL && SUPABASE_KEY) {
+          await fetch(`${SUPABASE_URL}/rest/v1/leads`, {
+            method: 'POST',
+            headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+            body: JSON.stringify({ name, email, phone, address: loanAmount, source: 'meta_leadgen', status: 'new' })
+          });
+        }
+        // Email notification via Gmail gog token (sat@itsadecline.com)
+        const NOTIFY_EMAIL = process.env.NOTIFY_EMAIL || 'sat@itsadecline.com';
+        const SENDGRID_KEY = process.env.SENDGRID_API_KEY;
+        if (SENDGRID_KEY) {
+          await fetch('https://api.sendgrid.com/v3/mail/send', {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${SENDGRID_KEY}`, 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              personalizations: [{ to: [{ email: NOTIFY_EMAIL }] }],
+              from: { email: 'noreply@itsadecline.com', name: 'itsadecline' },
+              subject: `New lead: ${name || 'Unknown'}`,
+              content: [{ type: 'text/plain', value: `New Meta lead:\n\nName: ${name}\nEmail: ${email}\nPhone: ${phone}\nLoan amount: ${loanAmount}\nTime: ${lead.created_time}` }]
+            })
+          });
+        }
+      }
+    }
+  } catch (e) {
+    console.error('[meta-leads] error:', e.message);
+  }
+});
+
 app.get('/health', (req, res) => res.json({ status: 'ok', service: 'itsadecline-api' }));
 
 const PORT = process.env.PORT || 3000;
