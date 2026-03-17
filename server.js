@@ -131,6 +131,39 @@ app.post('/api/meta-leads', async (req, res) => {
         const phone = fields['phone_number'] || '';
         const loanAmount = fields['loan_amount'] || '';
         console.log(`[meta-leads] New lead: ${name} | ${email} | ${phone} | loan: ${loanAmount}`);
+        // Fire Conversions API event to Meta (server-side Lead event)
+        const PIXEL_ID = process.env.META_PIXEL_ID || '1117581533832863';
+        const CAPI_TOKEN = process.env.META_PAGE_TOKEN;
+        if (CAPI_TOKEN) {
+          try {
+            const crypto = require('crypto');
+            const hashFn = v => v ? crypto.createHash('sha256').update(v.trim().toLowerCase()).digest('hex') : undefined;
+            const capiPayload = {
+              data: [{
+                event_name: 'Lead',
+                event_time: Math.floor(Date.now() / 1000),
+                action_source: 'system_generated',
+                user_data: {
+                  em: email ? [hashFn(email)] : undefined,
+                  ph: phone ? [hashFn(phone.replace(/\D/g,''))] : undefined,
+                  fn: name ? [hashFn(name.split(' ')[0])] : undefined,
+                  ln: name && name.includes(' ') ? [hashFn(name.split(' ').slice(1).join(' '))] : undefined,
+                  country: [hashFn('gb')]
+                },
+                custom_data: { loan_amount: loanAmount, lead_source: 'meta_leadgen' }
+              }]
+            };
+            await fetch(`https://graph.facebook.com/v19.0/${PIXEL_ID}/events?access_token=${CAPI_TOKEN}`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(capiPayload)
+            });
+            console.log('[meta-leads] CAPI Lead event fired for pixel', PIXEL_ID);
+          } catch (capiErr) {
+            console.error('[meta-leads] CAPI error:', capiErr.message);
+          }
+        }
+
         // Save to Supabase
         const SUPABASE_URL = process.env.SUPABASE_URL;
         const SUPABASE_KEY = process.env.SUPABASE_SERVICE_KEY;
