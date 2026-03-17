@@ -141,20 +141,34 @@ app.post('/api/meta-leads', async (req, res) => {
             body: JSON.stringify({ name, email, phone, address: loanAmount, source: 'meta_leadgen', status: 'new' })
           });
         }
-        // Email notification via Gmail gog token (sat@itsadecline.com)
-        const NOTIFY_EMAIL = process.env.NOTIFY_EMAIL || 'sat@itsadecline.com';
-        const SENDGRID_KEY = process.env.SENDGRID_API_KEY;
-        if (SENDGRID_KEY) {
-          await fetch('https://api.sendgrid.com/v3/mail/send', {
-            method: 'POST',
-            headers: { 'Authorization': `Bearer ${SENDGRID_KEY}`, 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              personalizations: [{ to: [{ email: NOTIFY_EMAIL }] }],
-              from: { email: 'noreply@itsadecline.com', name: 'itsadecline' },
-              subject: `New lead: ${name || 'Unknown'}`,
-              content: [{ type: 'text/plain', value: `New Meta lead:\n\nName: ${name}\nEmail: ${email}\nPhone: ${phone}\nLoan amount: ${loanAmount}\nTime: ${lead.created_time}` }]
-            })
-          });
+        // Email notification via Gmail API (sat@itsadecline.com)
+        const GMAIL_REFRESH_TOKEN = process.env.ITSA_GMAIL_REFRESH_TOKEN;
+        const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+        const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
+        if (GMAIL_REFRESH_TOKEN && GOOGLE_CLIENT_ID && GOOGLE_CLIENT_SECRET) {
+          try {
+            // Get access token
+            const tokenRes = await fetch('https://oauth2.googleapis.com/token', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+              body: new URLSearchParams({ grant_type: 'refresh_token', refresh_token: GMAIL_REFRESH_TOKEN, client_id: GOOGLE_CLIENT_ID, client_secret: GOOGLE_CLIENT_SECRET })
+            });
+            const tokenData = await tokenRes.json();
+            const accessToken = tokenData.access_token;
+            if (accessToken) {
+              const subject = `New ITSA lead: ${name || 'Unknown'}`;
+              const bodyText = `New lead from Meta ad:\n\nName: ${name}\nEmail: ${email}\nPhone: ${phone}\nLoan amount: ${loanAmount}\nReceived: ${lead.created_time}\n\nLog in to Ads Manager to view: https://adsmanager.facebook.com`;
+              const rawEmail = Buffer.from(`To: sat@itsadecline.com\r\nFrom: sat@itsadecline.com\r\nSubject: ${subject}\r\nContent-Type: text/plain\r\n\r\n${bodyText}`).toString('base64url');
+              await fetch('https://gmail.googleapis.com/gmail/v1/users/me/messages/send', {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify({ raw: rawEmail })
+              });
+              console.log('[meta-leads] Email sent for lead:', name);
+            }
+          } catch (emailErr) {
+            console.error('[meta-leads] Email error:', emailErr.message);
+          }
         }
       }
     }
