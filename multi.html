@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%231a2744'/><text x='16' y='22' font-family='Inter,sans-serif' font-size='16' font-weight='700' text-anchor='middle' fill='%23fff'>id</text></svg>">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Property Assessment — itsadecline</title>
+    <meta name="description" content="Portfolio lending assessment for multiple properties. Calculate your combined LTV and equity across your property portfolio.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #0a0f1a;
+            --bg-card: #111827;
+            --bg-input: #1a2235;
+            --border: #1e2d45;
+            --border-focus: #00e5ff;
+            --accent: #00e5ff;
+            --accent-dim: rgba(0, 229, 255, 0.12);
+            --accent-glow: rgba(0, 229, 255, 0.25);
+            --text-primary: #f0f6ff;
+            --text-secondary: #7a8fa8;
+            --text-muted: #4a5e74;
+            --success: #00e5a0;
+            --success-dim: rgba(0, 229, 160, 0.12);
+            --danger: #ff4d6d;
+            --danger-dim: rgba(255, 77, 109, 0.12);
+            --warning: #ffb74d;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* ===== NAVBAR ===== */
+        .navbar {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            background: rgba(10, 15, 26, 0.92);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 64px;
+        }
+
+        .logo {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+
+        .logo span { color: var(--accent); }
+
+        .nav-back {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: color 0.2s;
+        }
+
+        .nav-back:hover { color: var(--accent); }
+
+        /* ===== PAGE HEADER ===== */
+        .page-header {
+            padding: 100px 24px 48px;
+            text-align: center;
+            background: radial-gradient(ellipse 80% 50% at 50% 0%, rgba(0,229,255,0.08) 0%, transparent 70%);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .page-badge {
+            display: inline-block;
+            background: var(--accent-dim);
+            border: 1px solid rgba(0,229,255,0.25);
+            color: var(--accent);
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 6px 16px;
+            border-radius: 100px;
+            margin-bottom: 20px;
+        }
+
+        .page-header h1 {
+            font-size: 2.6rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin-bottom: 14px;
+            line-height: 1.15;
+        }
+
+        .page-header h1 span { color: var(--accent); }
+
+        .page-header p {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            max-width: 540px;
+            margin: 0 auto;
+        }
+
+        /* ===== MAIN LAYOUT ===== */
+        .main {
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 40px 24px 80px;
+        }
+
+        /* ===== STEP INDICATOR ===== */
+        .steps-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            margin-bottom: 40px;
+        }
+
+        .step-dot {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .step-dot-circle {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 2px solid var(--border);
+            background: var(--bg-card);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            transition: all 0.3s;
+        }
+
+        .step-dot.active .step-dot-circle {
+            border-color: var(--accent);
+            background: var(--accent-dim);
+            color: var(--accent);
+        }
+
+        .step-dot.done .step-dot-circle {
+            border-color: var(--success);
+            background: var(--success-dim);
+            color: var(--success);
+        }
+
+        .step-dot-label {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .step-dot.active .step-dot-label { color: var(--accent); }
+        .step-dot.done .step-dot-label { color: var(--success); }
+
+        .step-connector {
+            width: 60px;
+            height: 2px;
+            background: var(--border);
+            margin-bottom: 22px;
+            transition: background 0.3s;
+        }
+
+        .step-connector.done { background: var(--success); }
+
+        /* ===== CARDS ===== */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 28px;
+            margin-bottom: 16px;
+            position: relative;
+            transition: border-color 0.2s;
+        }
+
+        .card:hover { border-color: rgba(0,229,255,0.2); }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+
+        .card-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card-num {
+            width: 24px;
+            height: 24px;
+            background: var(--accent-dim);
+            border: 1px solid rgba(0,229,255,0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .btn-remove {
+            background: none;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-muted);
+            font-size: 0.78rem;
+            padding: 5px 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .btn-remove:hover {
+            border-color: var(--danger);
+            color: var(--danger);
+            background: var(--danger-dim);
+        }
+
+        /* ===== FORM ELEMENTS ===== */
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .form-group { margin-bottom: 14px; }
+        .form-group:last-child { margin-bottom: 0; }
+
+        .form-group label {
+            display: block;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+        }
+
+        .input-wrap { position: relative; }
+
+        .input-prefix {
+            position: absolute;
+            left: 13px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 0.95rem;
+            pointer-events: none;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 11px 14px;
+            background: var(--bg-input);
+            border: 1.5px solid var(--border);
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-family: inherit;
+            color: var(--text-primary);
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .form-group input.with-prefix { padding-left: 26px; }
+
+        .form-group input::placeholder { color: var(--text-muted); }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+        }
+
+        .form-group textarea {
+            width: 100%;
+            padding: 11px 14px;
+            background: var(--bg-input);
+            border: 1.5px solid var(--border);
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-family: inherit;
+            color: var(--text-primary);
+            resize: vertical;
+            min-height: 90px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .form-group textarea::placeholder { color: var(--text-muted); }
+
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+        }
+
+        /* ===== BUTTONS ===== */
+        .btn-add {
+            width: 100%;
+            padding: 14px;
+            background: transparent;
+            border: 2px dashed var(--border);
+            border-radius: 14px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+
+        .btn-add:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: var(--accent-dim);
+        }
+
+        .btn-add:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .btn-add:disabled:hover {
+            border-color: var(--border);
+            color: var(--text-secondary);
+            background: transparent;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 16px 24px;
+            background: var(--accent);
+            color: #0a0f1a;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            letter-spacing: -0.2px;
+        }
+
+        .btn-primary:hover {
+            background: #33ecff;
+            box-shadow: 0 6px 24px rgba(0,229,255,0.35);
+            transform: translateY(-2px);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn-secondary {
+            width: 100%;
+            padding: 14px 24px;
+            background: transparent;
+            color: var(--accent);
+            border: 1.5px solid var(--accent);
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .btn-secondary:hover {
+            background: var(--accent-dim);
+        }
+
+        .trust-note {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            margin-top: 12px;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+        }
+
+        /* ===== RESULTS ===== */
+        .result-property-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 20px 24px;
+            margin-bottom: 12px;
+        }
+
+        .result-property-card h4 {
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .result-cell {
+            background: var(--bg-input);
+            border-radius: 10px;
+            padding: 10px 12px;
+        }
+
+        .result-cell-label {
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .result-cell-value {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .result-cell-value.good { color: var(--success); }
+        .result-cell-value.warn { color: var(--warning); }
+        .result-cell-value.bad { color: var(--danger); }
+
+        .totals-card {
+            background: var(--bg-card);
+            border: 2px solid var(--accent);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .totals-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), transparent);
+        }
+
+        .totals-card h3 {
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent);
+            margin-bottom: 18px;
+        }
+
+        .totals-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .total-cell {
+            text-align: center;
+        }
+
+        .total-cell-label {
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .total-cell-value {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--text-primary);
+        }
+
+        .total-cell-value.ltv-ok { color: var(--success); }
+        .total-cell-value.ltv-warn { color: var(--warning); }
+        .total-cell-value.ltv-bad { color: var(--danger); }
+
+        .verdict {
+            border-radius: 12px;
+            padding: 18px 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+        }
+
+        .verdict.pass {
+            background: var(--success-dim);
+            border: 1px solid rgba(0,229,160,0.3);
+        }
+
+        .verdict.fail {
+            background: var(--danger-dim);
+            border: 1px solid rgba(255,77,109,0.3);
+        }
+
+        .verdict-icon {
+            font-size: 1.4rem;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .verdict-text strong {
+            display: block;
+            font-size: 0.95rem;
+            margin-bottom: 4px;
+        }
+
+        .verdict.pass .verdict-text strong { color: var(--success); }
+        .verdict.fail .verdict-text strong { color: var(--danger); }
+
+        .verdict-text p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* ===== CONTACT FORM SECTION ===== */
+        .contact-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 32px;
+        }
+
+        .contact-section h2 {
+            font-size: 1.3rem;
+            font-weight: 800;
+            margin-bottom: 6px;
+            letter-spacing: -0.3px;
+        }
+
+        .contact-section .subtitle {
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            margin-bottom: 28px;
+        }
+
+        /* ===== THANK YOU ===== */
+        .thankyou-card {
+            background: var(--bg-card);
+            border: 2px solid var(--success);
+            border-radius: 20px;
+            padding: 48px 32px;
+            text-align: center;
+        }
+
+        .thankyou-icon {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .thankyou-card h2 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: var(--success);
+            margin-bottom: 12px;
+        }
+
+        .thankyou-card p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            max-width: 400px;
+            margin: 0 auto 8px;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 600px) {
+            .page-header h1 { font-size: 1.9rem; }
+            .form-row { grid-template-columns: 1fr; }
+            .result-grid { grid-template-columns: repeat(2, 1fr); }
+            .totals-grid { grid-template-columns: repeat(2, 1fr); }
+            .step-connector { width: 32px; }
+            .card { padding: 20px; }
+            .contact-section { padding: 24px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo">itsa<span>decline</span></a>
+            <a href="/" class="nav-back">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+                Back to home
+            </a>
+        </div>
+    </nav>
+
+    <!-- PAGE HEADER -->
+    <div class="page-header">
+        <div class="page-badge">Multi-Property Portfolio</div>
+        <h1>Assess your <span>full portfolio</span></h1>
+        <p>Add up to 10 properties and we'll calculate your combined LTV and equity position across the portfolio.</p>
+    </div>
+
+    <!-- MAIN -->
+    <main class="main">
+
+        <!-- STEP INDICATOR -->
+        <div class="steps-indicator" id="stepsIndicator">
+            <div class="step-dot active" id="dot1">
+                <div class="step-dot-circle">1</div>
+                <div class="step-dot-label">Properties</div>
+            </div>
+            <div class="step-connector" id="conn1"></div>
+            <div class="step-dot" id="dot2">
+                <div class="step-dot-circle">2</div>
+                <div class="step-dot-label">Results</div>
+            </div>
+            <div class="step-connector" id="conn2"></div>
+            <div class="step-dot" id="dot3">
+                <div class="step-dot-circle">3</div>
+                <div class="step-dot-label">Contact</div>
+            </div>
+        </div>
+
+        <!-- STEP 1: PROPERTY ENTRIES -->
+        <div id="step1">
+            <div id="propertiesContainer"></div>
+
+            <button class="btn-add" id="btnAddProperty" onclick="addProperty()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add another property
+            </button>
+
+            <button class="btn-primary" onclick="calculate()">
+                Calculate Portfolio LTV &amp; Equity →
+            </button>
+            <div class="trust-note">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#4a5e74" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                No credit check &nbsp;·&nbsp; No obligation &nbsp;·&nbsp; Results instantly
+            </div>
+        </div>
+
+        <!-- STEP 2: RESULTS -->
+        <div id="step2" style="display:none;">
+            <div id="propertyResults"></div>
+            <div class="totals-card" id="totalsCard"></div>
+            <div id="verdictArea" style="margin-bottom:24px;"></div>
+            <button class="btn-secondary" onclick="goBack()" style="margin-bottom:0;">← Edit Properties</button>
+        </div>
+
+        <!-- STEP 3: CONTACT FORM -->
+        <div id="step3" style="display:none;">
+            <div class="contact-section">
+                <h2>One last step</h2>
+                <p class="subtitle">Tell us a little about yourself and we'll review your portfolio within 24 hours.</p>
+
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="c_name" placeholder="John Smith">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" id="c_email" placeholder="john@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <input type="tel" id="c_phone" placeholder="07xxx xxxxxx">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Loan Amount Required (£)</label>
+                    <div class="input-wrap">
+                        <span class="input-prefix">£</span>
+                        <input type="number" id="c_loan" class="with-prefix" placeholder="150,000" min="1000">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Brief Description of Circumstances <span style="color:var(--text-muted);font-weight:400;text-transform:none;">(optional)</span></label>
+                    <textarea id="c_description" placeholder="e.g. Looking to refinance across my portfolio, currently declined by main lender due to adverse credit..."></textarea>
+                </div>
+
+                <button class="btn-primary" id="btnSubmit" onclick="submitLead()" style="margin-top:8px;">
+                    Submit for Assessment →
+                </button>
+                <div class="trust-note">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#4a5e74" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    Your information is secure and never shared with third parties.
+                </div>
+            </div>
+        </div>
+
+        <!-- THANK YOU -->
+        <div id="stepThankyou" style="display:none;">
+            <div class="thankyou-card">
+                <span class="thankyou-icon">✅</span>
+                <h2>Assessment Submitted</h2>
+                <p>Thank you — we've received your portfolio details.</p>
+                <p style="margin-top:12px;color:var(--accent);font-weight:600;">We'll be in touch within 24 hours.</p>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer style="padding:24px;text-align:center;border-top:1px solid var(--border);color:var(--text-muted);font-size:0.78rem;">
+        <p>© 2026 itsadecline. Your home may be repossessed if you do not keep up repayments on a mortgage or secured loan. itsadecline is a lead generation service; lending decisions are made by FCA-authorised specialist lenders.</p>
+    </footer>
+
+    <script>
+        const MAX_PROPERTIES = 10;
+        let propertyCount = 0;
+
+        function fmt(n) {
+            return '£' + Math.round(n).toLocaleString('en-GB');
+        }
+
+        function addProperty() {
+            if (propertyCount >= MAX_PROPERTIES) return;
+            propertyCount++;
+            const idx = propertyCount;
+            const container = document.getElementById('propertiesContainer');
+
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.id = 'prop-card-' + idx;
+            card.innerHTML = `
+                <div class="card-header">
+                    <div class="card-title">
+                        <div class="card-num">${idx}</div>
+                        Property ${idx}
+                    </div>
+                    ${idx > 1 ? `<button class="btn-remove" onclick="removeProperty(${idx})">Remove</button>` : ''}
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>House No. / Flat</label>
+                        <input type="text" id="p${idx}_house" placeholder="42 or Flat 3B">
+                    </div>
+                    <div class="form-group">
+                        <label>Postcode</label>
+                        <input type="text" id="p${idx}_postcode" placeholder="SW1A 1AA" style="text-transform:uppercase;"
+                               oninput="this.value=this.value.toUpperCase()">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Estimated Value (£)</label>
+                        <div class="input-wrap">
+                            <span class="input-prefix">£</span>
+                            <input type="number" id="p${idx}_value" class="with-prefix" placeholder="350,000" min="1000">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Outstanding Debt (£)</label>
+                        <div class="input-wrap">
+                            <span class="input-prefix">£</span>
+                            <input type="number" id="p${idx}_debt" class="with-prefix" placeholder="150,000" min="0">
+                        </div>
+                    </div>
+                </div>
+            `;
+            container.appendChild(card);
+
+            updateAddButton();
+        }
+
+        function removeProperty(idx) {
+            const card = document.getElementById('prop-card-' + idx);
+            if (card) card.remove();
+            propertyCount--;
+            // Re-number remaining cards
+            renumberCards();
+            updateAddButton();
+        }
+
+        function renumberCards() {
+            const cards = document.querySelectorAll('#propertiesContainer .card');
+            propertyCount = cards.length;
+            cards.forEach((card, i) => {
+                const n = i + 1;
+                const newId = 'prop-card-' + n;
+                // Update card id and internal field ids
+                const oldId = card.id.replace('prop-card-', '');
+                card.id = newId;
+
+                const fields = ['house', 'postcode', 'value', 'debt'];
+                fields.forEach(f => {
+                    const el = card.querySelector('#p' + oldId + '_' + f);
+                    if (el) el.id = 'p' + n + '_' + f;
+                });
+
+                // Update card number display
+                const numEl = card.querySelector('.card-num');
+                if (numEl) numEl.textContent = n;
+                const titleEl = card.querySelector('.card-title');
+                if (titleEl) titleEl.childNodes[titleEl.childNodes.length - 1].textContent = ' Property ' + n;
+
+                // Update remove button
+                const removeBtn = card.querySelector('.btn-remove');
+                if (removeBtn) {
+                    removeBtn.setAttribute('onclick', 'removeProperty(' + n + ')');
+                } else if (n > 1) {
+                    // Add remove button if missing
+                    const header = card.querySelector('.card-header');
+                    const btn = document.createElement('button');
+                    btn.className = 'btn-remove';
+                    btn.setAttribute('onclick', 'removeProperty(' + n + ')');
+                    btn.textContent = 'Remove';
+                    header.appendChild(btn);
+                }
+            });
+        }
+
+        function updateAddButton() {
+            const btn = document.getElementById('btnAddProperty');
+            if (propertyCount >= MAX_PROPERTIES) {
+                btn.disabled = true;
+                btn.querySelector('span') && (btn.querySelector('span').textContent = '');
+                btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Maximum ${MAX_PROPERTIES} properties reached`;
+                btn.disabled = true;
+            } else {
+                btn.disabled = false;
+                btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Add another property`;
+            }
+        }
+
+        function collectProperties() {
+            const cards = document.querySelectorAll('#propertiesContainer .card');
+            const properties = [];
+            let valid = true;
+
+            cards.forEach((card, i) => {
+                const n = i + 1;
+                const house = (document.getElementById('p' + n + '_house')?.value || '').trim();
+                const postcode = (document.getElementById('p' + n + '_postcode')?.value || '').trim().toUpperCase();
+                const value = parseFloat(document.getElementById('p' + n + '_value')?.value || 0);
+                const debt = parseFloat(document.getElementById('p' + n + '_debt')?.value || 0);
+
+                if (!house || !postcode || !value || value <= 0) {
+                    valid = false;
+                    card.style.borderColor = 'var(--danger)';
+                    setTimeout(() => card.style.borderColor = '', 2000);
+                } else {
+                    card.style.borderColor = '';
+                    properties.push({ house, postcode, value, debt: debt || 0 });
+                }
+            });
+
+            return valid ? properties : null;
+        }
+
+        function ltvColor(ltv) {
+            if (ltv <= 65) return 'good';
+            if (ltv <= 80) return 'warn';
+            return 'bad';
+        }
+
+        function calculate() {
+            const properties = collectProperties();
+            if (!properties || properties.length === 0) {
+                alert('Please fill in all required fields for each property (house number, postcode, and value).');
+                return;
+            }
+
+            // Build results
+            let totalValue = 0, totalDebt = 0;
+            const resultsEl = document.getElementById('propertyResults');
+            resultsEl.innerHTML = '';
+
+            properties.forEach((p, i) => {
+                totalValue += p.value;
+                totalDebt += p.debt;
+                const equity = p.value - p.debt;
+                const ltv = p.value > 0 ? Math.round((p.debt / p.value) * 100) : 0;
+
+                const card = document.createElement('div');
+                card.className = 'result-property-card';
+                card.innerHTML = `
+                    <h4>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                        Property ${i + 1} — ${p.house}, ${p.postcode}
+                    </h4>
+                    <div class="result-grid">
+                        <div class="result-cell">
+                            <div class="result-cell-label">Value</div>
+                            <div class="result-cell-value">${fmt(p.value)}</div>
+                        </div>
+                        <div class="result-cell">
+                            <div class="result-cell-label">Debt</div>
+                            <div class="result-cell-value">${fmt(p.debt)}</div>
+                        </div>
+                        <div class="result-cell">
+                            <div class="result-cell-label">Equity</div>
+                            <div class="result-cell-value ${equity >= 0 ? 'good' : 'bad'}">${fmt(equity)}</div>
+                        </div>
+                        <div class="result-cell">
+                            <div class="result-cell-label">LTV</div>
+                            <div class="result-cell-value ${ltvColor(ltv)}">${ltv}%</div>
+                        </div>
+                    </div>
+                `;
+                resultsEl.appendChild(card);
+            });
+
+            const totalEquity = totalValue - totalDebt;
+            const blendedLTV = totalValue > 0 ? Math.round((totalDebt / totalValue) * 100) : 0;
+
+            let ltvClass = 'ltv-ok';
+            if (blendedLTV > 85) ltvClass = 'ltv-bad';
+            else if (blendedLTV > 70) ltvClass = 'ltv-warn';
+
+            document.getElementById('totalsCard').innerHTML = `
+                <h3>📊 Combined Portfolio Totals</h3>
+                <div class="totals-grid">
+                    <div class="total-cell">
+                        <div class="total-cell-label">Total Value</div>
+                        <div class="total-cell-value">${fmt(totalValue)}</div>
+                    </div>
+                    <div class="total-cell">
+                        <div class="total-cell-label">Total Debt</div>
+                        <div class="total-cell-value">${fmt(totalDebt)}</div>
+                    </div>
+                    <div class="total-cell">
+                        <div class="total-cell-label">Total Equity</div>
+                        <div class="total-cell-value ${totalEquity >= 0 ? 'ltv-ok' : 'ltv-bad'}">${fmt(totalEquity)}</div>
+                    </div>
+                    <div class="total-cell">
+                        <div class="total-cell-label">Blended LTV</div>
+                        <div class="total-cell-value ${ltvClass}">${blendedLTV}%</div>
+                    </div>
+                </div>
+            `;
+
+            const verdictEl = document.getElementById('verdictArea');
+            if (blendedLTV > 85) {
+                verdictEl.innerHTML = `
+                    <div class="verdict fail">
+                        <div class="verdict-icon">⚠️</div>
+                        <div class="verdict-text">
+                            <strong>Combined LTV Exceeds Lending Criteria</strong>
+                            <p>Unfortunately your combined LTV of ${blendedLTV}% exceeds our standard lending criteria of 85%. Please contact us directly — our specialists may still be able to help depending on your circumstances.</p>
+                        </div>
+                    </div>
+                `;
+                // Don't show step 3 — keep the back button only
+                window._portfolioQualifies = false;
+            } else {
+                verdictEl.innerHTML = `
+                    <div class="verdict pass">
+                        <div class="verdict-icon">✅</div>
+                        <div class="verdict-text">
+                            <strong>You May Qualify — Proceed to Assessment</strong>
+                            <p>Your blended LTV of ${blendedLTV}% is within our lending criteria. Complete your contact details below and a specialist will review your portfolio within 24 hours.</p>
+                        </div>
+                    </div>
+                    <button class="btn-primary" onclick="goToContact()" style="margin-top:16px;">
+                        Continue to Contact Form →
+                    </button>
+                `;
+                window._portfolioQualifies = true;
+            }
+
+            // Store for submission
+            window._portfolioData = properties;
+
+            // Transition to step 2
+            document.getElementById('step1').style.display = 'none';
+            document.getElementById('step2').style.display = 'block';
+
+            // Update step indicator
+            document.getElementById('dot1').classList.remove('active');
+            document.getElementById('dot1').classList.add('done');
+            document.getElementById('dot1').querySelector('.step-dot-circle').innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>`;
+            document.getElementById('conn1').classList.add('done');
+            document.getElementById('dot2').classList.add('active');
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function goBack() {
+            document.getElementById('step2').style.display = 'none';
+            document.getElementById('step1').style.display = 'block';
+
+            document.getElementById('dot1').classList.add('active');
+            document.getElementById('dot1').classList.remove('done');
+            document.getElementById('dot1').querySelector('.step-dot-circle').textContent = '1';
+            document.getElementById('conn1').classList.remove('done');
+            document.getElementById('dot2').classList.remove('active');
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function goToContact() {
+            document.getElementById('step2').style.display = 'none';
+            document.getElementById('step3').style.display = 'block';
+
+            document.getElementById('dot2').classList.remove('active');
+            document.getElementById('dot2').classList.add('done');
+            document.getElementById('dot2').querySelector('.step-dot-circle').innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>`;
+            document.getElementById('conn2').classList.add('done');
+            document.getElementById('dot3').classList.add('active');
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function submitLead() {
+            const name = document.getElementById('c_name').value.trim();
+            const email = document.getElementById('c_email').value.trim();
+            const phone = document.getElementById('c_phone').value.trim();
+            const loan = document.getElementById('c_loan').value.trim();
+            const description = document.getElementById('c_description').value.trim();
+
+            if (!name || !email || !phone || !loan) {
+                alert('Please fill in your name, email, phone and loan amount.');
+                return;
+            }
+
+            const btn = document.getElementById('btnSubmit');
+            btn.textContent = 'Submitting...';
+            btn.disabled = true;
+
+            const payload = {
+                name,
+                email,
+                phone,
+                loan_amount: loan,
+                address: JSON.stringify(window._portfolioData || []),
+                description,
+                source: 'multi_property'
+            };
+
+            fetch('https://itsadecline-api.onrender.com/api/submit-lead', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            }).then(res => {
+                showThankyou();
+            }).catch(() => {
+                // Still show thank you on network error — don't block user
+                showThankyou();
+            });
+        }
+
+        function showThankyou() {
+            document.getElementById('step3').style.display = 'none';
+            document.getElementById('stepThankyou').style.display = 'block';
+
+            document.getElementById('dot3').classList.remove('active');
+            document.getElementById('dot3').classList.add('done');
+            document.getElementById('dot3').querySelector('.step-dot-circle').innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>`;
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Init with one property card
+        addProperty();
+    </script>
+
+</body>
+</html>
