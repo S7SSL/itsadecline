@@ -189,9 +189,34 @@ app.post('/api/meta-leads', async (req, res) => {
             const tokenData = await tokenRes.json();
             const accessToken = tokenData.access_token;
             if (accessToken) {
-              const subject = `New ITSA lead: ${name || 'Unknown'}`;
-              const bodyText = `New lead from Meta ad:\n\nName: ${name}\nEmail: ${email}\nPhone: ${phone}\nLoan amount: ${loanAmount}\nReceived: ${lead.created_time}\n\nLog in to Ads Manager to view: https://adsmanager.facebook.com`;
-              const rawEmail = Buffer.from(`To: sat@itsadecline.com\r\nFrom: sat@itsadecline.com\r\nSubject: ${subject}\r\nContent-Type: text/plain\r\n\r\n${bodyText}`).toString('base64url');
+              const subject = `🔔 New lead — ${name || 'Unknown'}`;
+              const receivedDate = new Date(lead.created_time).toLocaleString('en-GB', { dateStyle: 'full', timeStyle: 'short', timeZone: 'Europe/London' });
+              const htmlBody = `<!DOCTYPE html><html><head><meta charset="UTF-8"><style>body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f4f4f5;margin:0;padding:32px 16px}
+.card{background:#ffffff;border-radius:12px;max-width:520px;margin:0 auto;padding:32px;box-shadow:0 2px 8px rgba(0,0,0,0.08)}
+.logo{font-size:22px;font-weight:700;color:#0a0f1a;letter-spacing:-0.5px;margin-bottom:24px}
+.logo span{color:#00e5ff}
+h2{font-size:18px;font-weight:600;color:#0a0f1a;margin:0 0 24px}
+.field{margin-bottom:16px}
+.label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.8px;color:#6b7280;margin-bottom:4px}
+.value{font-size:16px;color:#0a0f1a;font-weight:500}
+.divider{border:none;border-top:1px solid #e5e7eb;margin:24px 0}
+.cta{display:inline-block;background:#00e5ff;color:#0a0f1a;font-weight:700;font-size:14px;padding:12px 24px;border-radius:8px;text-decoration:none;margin-top:8px}
+.footer{font-size:12px;color:#9ca3af;margin-top:24px;text-align:center}
+</style></head><body>
+<div class="card">
+  <div class="logo">its<span>a</span>decline</div>
+  <h2>New lead received</h2>
+  <div class="field"><div class="label">Name</div><div class="value">${name || '—'}</div></div>
+  <div class="field"><div class="label">Email</div><div class="value">${email || '—'}</div></div>
+  <div class="field"><div class="label">Phone</div><div class="value">${phone || '—'}</div></div>
+  <div class="field"><div class="label">Loan amount</div><div class="value">${loanAmount || '—'}</div></div>
+  <div class="field"><div class="label">Received</div><div class="value">${receivedDate}</div></div>
+  <hr class="divider">
+  <a href="https://adsmanager.facebook.com/adsmanager/manage/leads?act=2060604164786586" class="cta">View in Ads Manager →</a>
+  <div class="footer">itsadecline.com · Kaizen Finance Ltd</div>
+</div>
+</body></html>`;
+              const rawEmail = Buffer.from(`To: sat@itsadecline.com\r\nFrom: sat@itsadecline.com\r\nSubject: ${subject}\r\nMIME-Version: 1.0\r\nContent-Type: text/html; charset=UTF-8\r\n\r\n${htmlBody}`).toString('base64url');
               await fetch('https://gmail.googleapis.com/gmail/v1/users/me/messages/send', {
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
