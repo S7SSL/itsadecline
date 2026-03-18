@@ -222,7 +222,33 @@ h2{font-size:18px;font-weight:600;color:#0a0f1a;margin:0 0 24px}
                 headers: { 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
                 body: JSON.stringify({ raw: rawEmail })
               });
-              console.log('[meta-leads] Email sent for lead:', name);
+              console.log('[meta-leads] Notification email sent for lead:', name);
+
+              // Send follow-up email TO THE LEAD
+              if (email && !email.includes('test@meta')) {
+                const firstName = name ? name.split(' ')[0] : 'there';
+                const leadSubject = `Your free assessment — itsadecline.com`;
+                const leadHtml = `<!DOCTYPE html><html><head><meta charset="UTF-8"><style>body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f4f4f5;margin:0;padding:32px 16px}.card{background:#ffffff;border-radius:12px;max-width:520px;margin:0 auto;padding:32px;box-shadow:0 2px 8px rgba(0,0,0,0.08)}.logo{font-size:22px;font-weight:700;color:#0a0f1a;letter-spacing:-0.5px;margin-bottom:24px}.logo span{color:#00e5ff}p{color:#374151;line-height:1.7;margin:0 0 16px}.cta{display:inline-block;background:#00e5ff;color:#0a0f1a;font-weight:700;font-size:15px;padding:14px 28px;border-radius:8px;text-decoration:none;margin:8px 8px 8px 0}.cta2{display:inline-block;background:#0a0f1a;color:#ffffff;font-weight:600;font-size:14px;padding:12px 24px;border-radius:8px;text-decoration:none;margin:8px 0}.divider{border:none;border-top:1px solid #e5e7eb;margin:24px 0}.footer{font-size:12px;color:#9ca3af;margin-top:24px}</style></head><body>
+<div class="card">
+  <div class="logo">its<span>a</span>decline</div>
+  <p>Hi ${firstName},</p>
+  <p>Thanks for reaching out. We're here to help you find a way forward after a mortgage decline.</p>
+  <p>To assess your options, we need a few more details about your property. It takes under 2 minutes:</p>
+  <a href="https://itsadecline.com" class="cta">Complete Your Assessment →</a>
+  <hr class="divider">
+  <p>You can also book a free 30-minute call with our team:</p>
+  <a href="https://calendly.com/sat-installsmart/30min" class="cta2">Book a Call</a>
+  <div class="footer">itsadecline.com · Kaizen Finance Ltd · <a href="https://itsadecline.com/privacy" style="color:#9ca3af;">Privacy Policy</a></div>
+</div>
+</body></html>`;
+                const rawLeadEmail = Buffer.from(`To: ${email}\r\nFrom: sat@itsadecline.com\r\nSubject: ${leadSubject}\r\nMIME-Version: 1.0\r\nContent-Type: text/html; charset=UTF-8\r\n\r\n${leadHtml}`).toString('base64url');
+                await fetch('https://gmail.googleapis.com/gmail/v1/users/me/messages/send', {
+                  method: 'POST',
+                  headers: { 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ raw: rawLeadEmail })
+                });
+                console.log('[meta-leads] Follow-up email sent to lead:', email);
+              }
             }
           } catch (emailErr) {
             console.error('[meta-leads] Email error:', emailErr.message);
