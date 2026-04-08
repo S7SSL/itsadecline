@@ -1276,7 +1276,7 @@
         function submitContactForm() {
             console.log('[submitContactForm] Called');
             const form = document.getElementById('contactForm');
-            const btn = form.querySelector('button');
+            const btn = form.querySelector('a') || form.querySelector('button');
             
             // Validate form
             // Validate contact form
@@ -1293,8 +1293,12 @@
                 return;
             }
             
-            btn.textContent = 'Submitting...';
-            btn.disabled = true;
+            if (btn.textContent !== undefined) {
+                btn.textContent = 'Submitting...';
+            }
+            if (btn.disabled !== undefined) {
+                btn.disabled = true;
+            }
 
             const formData = new FormData(form);
             const payload = {};
@@ -1305,8 +1309,10 @@
             localStorage.setItem('itsadecline_lead', JSON.stringify(payload));
             
             console.log('[submitContactForm] Redirecting to /tcs-acceptance.html');
-            // Redirect to T&Cs
-            window.location.href = '/tcs-acceptance.html';
+            // Redirect to T&Cs immediately
+            setTimeout(() => {
+                window.location.href = '/tcs-acceptance.html';
+            }, 100);
         }
     </script>
 
