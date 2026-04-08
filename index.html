@@ -1218,7 +1218,7 @@
             const loanAmount = parseAmount(document.getElementById('loan_amount').value);
             // Validate numbers
             if (!propVal || !mortgageBalance || !loanAmount) {
-                alert('Please enter valid amounts (e.g., 550k, 288k, 90k)');
+                alert('Please enter valid amounts (e.g., 350k, 150k, 50k, or 2.5m for millions)');
                 btn.textContent = 'Check My Eligibility →';
                 btn.disabled = false;
                 return;
