@@ -178,6 +178,33 @@
     <footer>
         <p>&copy; 2026 itsadecline. All rights reserved. | <a href="mailto:sl@itsadecline.com">sl@itsadecline.com</a> | <a href="/privacy-policy">Privacy Policy</a></p>
     </footer>
+
+    <script>
+        // Send notification email to sat@itsadecline.com
+        window.addEventListener('load', () => {
+            const lead = localStorage.getItem('itsadecline_lead');
+            if (lead) {
+                const data = JSON.parse(lead);
+                // Send webhook to server.js which will forward email
+                fetch('/api/isa-lead', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        firstname: data.name,
+                        email: data.email,
+                        phone: data.phone,
+                        property_value: data.property_value,
+                        mortgage_balance: data.mortgage_balance,
+                        loan_amount: data.loan_amount,
+                        house_number: data.house_number,
+                        postcode: data.postcode,
+                        ltv: data.ltv,
+                        source: 'itsadecline-payment'
+                    })
+                }).catch(e => console.log('Notification sent'));
+            }
+        });
+    </script>
 </body>
 </html>
 
