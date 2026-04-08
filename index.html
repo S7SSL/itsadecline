@@ -1,13 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-        <!-- Google tag (gtag.js) -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17990502106"></script>
+        <!-- Google Analytics disabled -->
         <script>
-                  window.dataLayer = window.dataLayer || [];
-                  function gtag(){dataLayer.push(arguments);}
-                  gtag('js', new Date());
-                  gtag('config', 'AW-17990502106');
+            window.dataLayer = window.dataLayer || [];
         </script>
     <meta charset="UTF-8">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="6" fill="%231a2744"/><text x="16" y="22" font-family="Inter,sans-serif" font-size="16" font-weight="700" text-anchor="middle" fill="%23fff">id</text></svg>">
@@ -862,14 +858,14 @@
                                 <label for="property_value">Estimated Property Value</label>
                                 <div style="position:relative;">
                                     <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#718096;font-weight:600;">£</span>
-                                    <input type="number" id="property_value" name="property_value" placeholder="350,000" min="50000" required style="padding-left:28px;">
+                                    <input type="text" id="property_value" name="property_value" placeholder="550k" required style="padding-left:28px;">
                                 </div>
                             </div>
                             <div class="form-group" style="flex:1;">
                                 <label for="mortgage_balance">Outstanding Mortgage</label>
                                 <div style="position:relative;">
                                     <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#718096;font-weight:600;">£</span>
-                                    <input type="number" id="mortgage_balance" name="mortgage_balance" placeholder="150,000" min="0" required style="padding-left:28px;">
+                                    <input type="text" id="mortgage_balance" name="mortgage_balance" placeholder="288k" required style="padding-left:28px;">
                                 </div>
                             </div>
                         </div>
@@ -877,7 +873,7 @@
                             <label for="loan_amount">How Much Do You Need?</label>
                             <div style="position:relative;">
                                 <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#718096;font-weight:600;">£</span>
-                                <input type="number" id="loan_amount" name="loan_amount" placeholder="50,000" min="10000" required style="padding-left:28px;">
+                                <input type="text" id="loan_amount" name="loan_amount" placeholder="90k" required style="padding-left:28px;">
                             </div>
                         </div>
                         <button type="submit" class="btn-primary" id="checkBtn">Check My Eligibility &rarr;</button>
@@ -898,7 +894,7 @@
                         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;" id="aipDetails"></div>
                     </div>
                     <p style="font-size:14px;color:#4a5568;margin-bottom:16px;">To proceed, enter your contact details and we'll confirm your offer within 48 hours.</p>
-                    <form class="contact-form" id="contactForm" action="/api/submit-lead" method="POST">
+                    <div class="contact-form" id="contactForm">
                         <input type="hidden" id="h_house_number" name="house_number">
                         <input type="hidden" id="h_postcode" name="postcode">
                         <input type="hidden" id="h_property_value" name="property_value">
@@ -918,12 +914,12 @@
                             <label for="phone">Phone Number</label>
                             <input type="tel" id="phone" name="phone" placeholder="07xxx xxxxxx" required>
                         </div>
-                        <button type="submit" class="btn-primary">Confirm & Pay £295 Commitment Fee &rarr;</button>
+                        <a href="javascript:void(0)" class="btn-primary" onclick="submitContactForm(); return false;" style="display:inline-block;text-decoration:none;cursor:pointer;">Confirm & Pay £295 Commitment Fee &rarr;</a>
                         <div class="form-trust">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#38a169" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                             Your information is secure and will never be shared with third parties.
                         </div>
-                    </form>
+                    </div>
                 </div>
 
                 <!-- Step 3: Declined -->
@@ -1211,9 +1207,22 @@
             btn.textContent = 'Calculating...';
             btn.disabled = true;
 
-            const propVal = parseFloat(document.getElementById('property_value').value);
-            const mortgageBalance = parseFloat(document.getElementById('mortgage_balance').value);
-            const loanAmount = parseFloat(document.getElementById('loan_amount').value);
+            const parseAmount = (val) => {
+                val = val.trim().toUpperCase();
+                if (val.endsWith('K')) return parseFloat(val) * 1000;
+                if (val.endsWith('M')) return parseFloat(val) * 1000000;
+                return parseFloat(val);
+            };
+            const propVal = parseAmount(document.getElementById('property_value').value);
+            const mortgageBalance = parseAmount(document.getElementById('mortgage_balance').value);
+            const loanAmount = parseAmount(document.getElementById('loan_amount').value);
+            // Validate numbers
+            if (!propVal || !mortgageBalance || !loanAmount) {
+                alert('Please enter valid amounts (e.g., 550k, 288k, 90k)');
+                btn.textContent = 'Check My Eligibility →';
+                btn.disabled = false;
+                return;
+            }
             const houseNumber = document.getElementById('house_number').value.trim();
             const postcode = document.getElementById('postcode').value.trim().toUpperCase();
 
@@ -1264,11 +1273,26 @@
         });
 
         // Step 2: Contact form — submit lead + redirect to T&Cs
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const form = this;
-            const btn = form.querySelector('button[type="submit"]');
-            const originalText = btn.textContent;
+        function submitContactForm() {
+            console.log('[submitContactForm] Called');
+            const form = document.getElementById('contactForm');
+            const btn = form.querySelector('button');
+            
+            // Validate form
+            // Validate contact form
+            if (!document.getElementById('name').value.trim()) {
+                alert('Please enter your name');
+                return;
+            }
+            if (!document.getElementById('email').value.trim()) {
+                alert('Please enter your email');
+                return;
+            }
+            if (!document.getElementById('phone').value.trim()) {
+                alert('Please enter your phone number');
+                return;
+            }
+            
             btn.textContent = 'Submitting...';
             btn.disabled = true;
 
@@ -1276,23 +1300,14 @@
             const payload = {};
             formData.forEach((value, key) => { payload[key] = value; });
 
-            fetch('https://itsadecline-api.onrender.com/api/submit-lead', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            }).then(response => {
-                if (response.ok) {
-                    window.location.href = '/tcs-acceptance.html';
-                } else {
-                    btn.textContent = 'Error — Try Again';
-                    btn.style.background = '#ef4444';
-                    setTimeout(() => { btn.textContent = originalText; btn.style.background = ''; btn.disabled = false; }, 3000);
-                }
-            }).catch(() => {
-                // Still redirect — don't block the user
-                window.location.href = '/tcs-acceptance.html';
-            });
-        });
+            console.log('[submitContactForm] Data saved to localStorage:', payload);
+            // Store lead data in localStorage
+            localStorage.setItem('itsadecline_lead', JSON.stringify(payload));
+            
+            console.log('[submitContactForm] Redirecting to /tcs-acceptance.html');
+            // Redirect to T&Cs
+            window.location.href = '/tcs-acceptance.html';
+        }
     </script>
 
     <!-- Privacy Policy Modal -->

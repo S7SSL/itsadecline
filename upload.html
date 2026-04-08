@@ -384,6 +384,10 @@
                     setTimeout(function() {
                         form.style.display = 'none';
                         successBox.style.display = 'block';
+                        // Redirect to T&Cs acceptance after 2 seconds
+                        setTimeout(function() {
+                            window.location.href = '/tcs-acceptance.html';
+                        }, 2000);
                     }, 400);
                 } else {
                     throw new Error(data.message || 'Upload failed.');

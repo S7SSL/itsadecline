@@ -908,6 +908,11 @@ function submitAcceptance() {
 
   // Log (in production: POST to your backend / Google Sheets / CRM)
   console.log('T&C ACCEPTANCE:', window._acceptance);
+  
+  // Redirect to payment page after 3 seconds
+  setTimeout(function() {
+    window.location.href = '/pay';
+  }, 3000);
 }
 
 // ── Download signed copy as printable HTML (opens in new window for PDF save) ──
