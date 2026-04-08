@@ -1301,9 +1301,19 @@
                 btn.disabled = true;
             }
 
-            const formData = new FormData(form);
-            const payload = {};
-            formData.forEach((value, key) => { payload[key] = value; });
+            // Manually collect data from hidden fields + contact fields
+            const payload = {
+                house_number: document.getElementById('h_house_number').value,
+                postcode: document.getElementById('h_postcode').value,
+                property_value: document.getElementById('h_property_value').value,
+                mortgage_balance: document.getElementById('h_mortgage_balance').value,
+                loan_amount: document.getElementById('h_loan_amount').value,
+                ltv: document.getElementById('h_ltv').value,
+                available_equity: document.getElementById('h_equity').value,
+                name: document.getElementById('name').value.trim(),
+                email: document.getElementById('email').value.trim(),
+                phone: document.getElementById('phone').value.trim()
+            };
 
             console.log('[submitContactForm] Data saved to localStorage:', payload);
             // Store lead data in localStorage
