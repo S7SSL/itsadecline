@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PPQ Kiralar 2025 - Property Analysis</title>
+    <title>PPQ Kiralar 2025 - Investment Analysis</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -11,206 +14,283 @@
             box-sizing: border-box;
         }
         
+        html, body {
+            height: 100%;
+            width: 100%;
+        }
+        
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 40px 20px;
-            min-height: 100vh;
+            font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #f8f9fa;
+            color: #2c3e50;
+            line-height: 1.6;
+            font-size: 16px;
         }
         
         .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            overflow: hidden;
+            width: 100%;
+            max-width: 100%;
+            margin: 0;
+            padding: 0;
         }
         
         .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1a1f2e 0%, #2c3e50 100%);
             color: white;
-            padding: 40px;
+            padding: 32px 20px;
             text-align: center;
         }
         
         .header h1 {
-            font-size: 28px;
-            margin-bottom: 10px;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
         }
         
         .header p {
-            font-size: 16px;
-            opacity: 0.9;
+            font-size: 14px;
+            opacity: 0.85;
+            font-weight: 500;
         }
         
         .content {
-            padding: 40px;
+            padding: 20px;
         }
         
         .section {
-            margin-bottom: 40px;
+            margin-bottom: 32px;
         }
         
         .section h2 {
-            color: #333;
-            font-size: 20px;
+            font-size: 18px;
+            font-weight: 700;
+            color: #1a1f2e;
+            margin-bottom: 16px;
+            border-bottom: 2px solid #e1e8ed;
+            padding-bottom: 12px;
+        }
+        
+        .metrics {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
             margin-bottom: 20px;
-            border-bottom: 2px solid #667eea;
-            padding-bottom: 10px;
+        }
+        
+        .metric {
+            background: white;
+            padding: 16px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            border-left: 3px solid #3b82f6;
+        }
+        
+        .metric-label {
+            font-size: 11px;
+            color: #7f8c8d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+        
+        .metric-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1a1f2e;
         }
         
         table {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 20px;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
         }
         
         table thead {
-            background: #f5f5f5;
-            font-weight: 600;
-            color: #333;
+            background: #f0f4f8;
         }
         
         table th {
             padding: 12px;
             text-align: left;
-            border-bottom: 2px solid #ddd;
+            font-size: 12px;
+            font-weight: 700;
+            color: #2c3e50;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid #e1e8ed;
         }
         
         table td {
             padding: 12px;
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid #f0f4f8;
+            font-size: 14px;
         }
         
-        table tr:hover {
-            background: #f9f9f9;
+        table tr:last-child td {
+            border-bottom: none;
         }
         
         .amount {
-            color: #667eea;
             font-weight: 600;
+            color: #3b82f6;
             text-align: right;
         }
         
         .total-row {
-            background: #f5f5f5;
+            background: #f8fafb;
             font-weight: 600;
         }
         
-        .metric-box {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-        
-        .metric {
-            background: #f9f9f9;
-            padding: 20px;
-            border-left: 4px solid #667eea;
-            border-radius: 4px;
-        }
-        
-        .metric-label {
-            color: #666;
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 8px;
-        }
-        
-        .metric-value {
-            font-size: 24px;
-            font-weight: 700;
-            color: #333;
-        }
-        
         .alert {
-            padding: 15px;
-            border-left: 4px solid #ff6b6b;
-            background: #ffe0e0;
-            color: #d63031;
-            margin-bottom: 15px;
-            border-radius: 4px;
-        }
-        
-        .warning {
-            border-left-color: #ffa502;
-            background: #ffe8cc;
-            color: #cc5500;
-        }
-        
-        .success {
-            border-left-color: #27ae60;
-            background: #d5f4e6;
-            color: #1e7e34;
-        }
-        
-        .valuation-box {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            padding: 30px;
-            border-radius: 8px;
-            text-align: center;
-            margin: 30px 0;
-        }
-        
-        .valuation-box h3 {
-            color: #333;
-            margin-bottom: 10px;
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        
-        .valuation-figure {
-            font-size: 36px;
-            font-weight: 700;
-            color: #667eea;
-            margin-bottom: 10px;
-        }
-        
-        .valuation-range {
-            color: #666;
-            font-size: 14px;
-        }
-        
-        .risk-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-        
-        .risk-item {
-            padding: 15px;
-            border-radius: 4px;
-            border-left: 4px solid #ff6b6b;
-            background: #ffe0e0;
+            padding: 14px;
+            border-left: 3px solid;
+            border-radius: 6px;
+            margin-bottom: 12px;
             font-size: 13px;
             line-height: 1.5;
         }
         
-        .risk-item.critical {
-            border-left-color: #d63031;
+        .alert-critical {
+            border-left-color: #dc2626;
+            background: #fee2e2;
+            color: #991b1b;
         }
         
-        .risk-item.warning {
-            border-left-color: #ffa502;
-            background: #ffe8cc;
+        .alert-warning {
+            border-left-color: #f59e0b;
+            background: #fef3c7;
+            color: #92400e;
         }
         
-        .risk-item.positive {
-            border-left-color: #27ae60;
-            background: #d5f4e6;
-            color: #1e7e34;
+        .alert-success {
+            border-left-color: #16a34a;
+            background: #dcfce7;
+            color: #166534;
+        }
+        
+        .alert strong {
+            display: block;
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+        
+        .valuation {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 20px 0;
+            border: 2px solid #e1e8ed;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+        
+        .valuation-label {
+            font-size: 12px;
+            color: #7f8c8d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .valuation-figure {
+            font-size: 28px;
+            font-weight: 700;
+            color: #3b82f6;
+            margin-bottom: 8px;
+        }
+        
+        .valuation-note {
+            font-size: 12px;
+            color: #7f8c8d;
+            font-weight: 500;
+        }
+        
+        .actions {
+            background: #f0f4f8;
+            padding: 18px;
+            border-radius: 8px;
+            border-left: 3px solid #3b82f6;
+            margin: 20px 0;
+        }
+        
+        .actions h3 {
+            font-size: 14px;
+            font-weight: 700;
+            color: #1a1f2e;
+            margin-bottom: 12px;
+        }
+        
+        .actions ol {
+            margin-left: 18px;
+            font-size: 13px;
+            color: #2c3e50;
+            line-height: 1.7;
+        }
+        
+        .actions li {
+            margin-bottom: 8px;
+        }
+        
+        .summary {
+            background: white;
+            padding: 18px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            font-size: 13px;
+            line-height: 1.7;
+            color: #2c3e50;
+        }
+        
+        .summary p {
+            margin-bottom: 12px;
+        }
+        
+        .summary strong {
+            color: #1a1f2e;
+            font-weight: 600;
         }
         
         .footer {
-            background: #f5f5f5;
-            padding: 30px 40px;
-            border-top: 1px solid #eee;
-            font-size: 12px;
-            color: #666;
+            background: #1a1f2e;
+            color: white;
+            padding: 24px 20px;
+            text-align: center;
+            font-size: 11px;
+            opacity: 0.75;
+            margin-top: 40px;
+        }
+        
+        @media (max-width: 480px) {
+            .metrics {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 20px;
+            }
+            
+            .section h2 {
+                font-size: 16px;
+            }
+            
+            table {
+                font-size: 12px;
+            }
+            
+            table th, table td {
+                padding: 8px;
+            }
+            
+            .valuation-figure {
+                font-size: 24px;
+            }
         }
     </style>
 </head>
@@ -218,28 +298,28 @@
     <div class="container">
         <div class="header">
             <h1>PPQ Kiralar 2025</h1>
-            <p>Stevenage Retail Property - Investment Analysis</p>
+            <p>Investment Analysis</p>
         </div>
         
         <div class="content">
-            <!-- EXECUTIVE SUMMARY -->
+            <!-- SUMMARY -->
             <div class="section">
-                <h2>Executive Summary</h2>
-                <div class="metric-box">
+                <h2>Summary</h2>
+                <div class="metrics">
                     <div class="metric">
-                        <div class="metric-label">Gross Annual Income</div>
+                        <div class="metric-label">Annual Revenue</div>
                         <div class="metric-value">£207,280</div>
                     </div>
                     <div class="metric">
-                        <div class="metric-label">Property Valuation</div>
+                        <div class="metric-label">Valuation</div>
                         <div class="metric-value">£2.5–£3.2M</div>
                     </div>
                     <div class="metric">
-                        <div class="metric-label">Number of Tenants</div>
+                        <div class="metric-label">Tenants</div>
                         <div class="metric-value">6</div>
                     </div>
                     <div class="metric">
-                        <div class="metric-label">Yield (Net)</div>
+                        <div class="metric-label">Yield</div>
                         <div class="metric-value">5–7%</div>
                     </div>
                 </div>
@@ -247,288 +327,119 @@
             
             <!-- RENT ROLL -->
             <div class="section">
-                <h2>Tenant Rent Roll (2025)</h2>
+                <h2>Tenant Rent Roll</h2>
                 <table>
                     <thead>
                         <tr>
-                            <th>Tenant Name</th>
-                            <th>Monthly Rent</th>
+                            <th>Tenant</th>
                             <th>Annual Rent</th>
-                            <th>Service Charge (Q)</th>
-                            <th>Lease Term</th>
                             <th>Expires</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td><strong>Costa Coffee</strong></td>
-                            <td class="amount">£5,000</td>
                             <td class="amount">£60,000</td>
-                            <td class="amount">£1,371</td>
-                            <td>10 years</td>
                             <td><strong>2026</strong></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Telefónica (O2)</strong></td>
-                            <td class="amount">£3,500</td>
-                            <td class="amount">£42,000</td>
-                            <td class="amount">£1,174</td>
-                            <td>5 years</td>
-                            <td>2030</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Fireaway Pizza</strong></td>
-                            <td class="amount">£1,500</td>
-                            <td class="amount">£18,000</td>
-                            <td class="amount">£625</td>
-                            <td>15 years</td>
-                            <td>2037</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Stevenage Cafe</strong></td>
-                            <td class="amount">£2,000</td>
-                            <td class="amount">£24,000</td>
-                            <td class="amount">£625</td>
-                            <td>14 years</td>
-                            <td><strong>2025*</strong></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Hushua Barbers</strong></td>
-                            <td class="amount">£1,600</td>
-                            <td class="amount">£19,200</td>
-                            <td class="amount">£625</td>
-                            <td>15 years</td>
-                            <td>2038</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Europa Food</strong></td>
-                            <td class="amount">£1,600</td>
-                            <td class="amount">£19,200</td>
-                            <td class="amount">£625</td>
-                            <td>5 years</td>
-                            <td>2030</td>
-                        </tr>
-                        <tr class="total-row">
-                            <td><strong>TOTAL</strong></td>
-                            <td class="amount"><strong>£15,200</strong></td>
-                            <td class="amount"><strong>£182,400</strong></td>
-                            <td class="amount"><strong>£6,220 × 4</strong></td>
-                            <td colspan="2" class="amount"><strong>£24,880 (annual service)</strong></td>
-                        </tr>
-                    </tbody>
-                </table>
-                <p style="font-size: 12px; color: #666; margin-top: 10px;">* Stevenage Cafe lease expired 2025 but tenant reportedly still occupying — requires urgent clarification</p>
-            </div>
-            
-            <!-- FINANCIAL SUMMARY -->
-            <div class="section">
-                <h2>Financial Summary</h2>
-                <div class="metric-box">
-                    <div class="metric">
-                        <div class="metric-label">Monthly Rental Income</div>
-                        <div class="metric-value">£15,200</div>
-                    </div>
-                    <div class="metric">
-                        <div class="metric-label">Annual Rental Income</div>
-                        <div class="metric-value">£182,400</div>
-                    </div>
-                    <div class="metric">
-                        <div class="metric-label">Annual Service Charges</div>
-                        <div class="metric-value">£24,880</div>
-                    </div>
-                    <div class="metric">
-                        <div class="metric-label">Total Annual Revenue</div>
-                        <div class="metric-value">£207,280</div>
-                    </div>
-                </div>
-                
-                <table style="margin-top: 30px;">
-                    <thead>
-                        <tr>
-                            <th>Description</th>
-                            <th>Amount</th>
-                            <th>% of Revenue</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Costa Coffee</td>
-                            <td class="amount">£60,000</td>
-                            <td class="amount">31.4%</td>
                         </tr>
                         <tr>
                             <td>Telefónica (O2)</td>
                             <td class="amount">£42,000</td>
-                            <td class="amount">21.9%</td>
+                            <td>2030</td>
                         </tr>
                         <tr>
                             <td>Fireaway Pizza</td>
                             <td class="amount">£18,000</td>
-                            <td class="amount">9.4%</td>
+                            <td>2037</td>
                         </tr>
                         <tr>
-                            <td>Stevenage Cafe</td>
+                            <td><strong>Stevenage Cafe</strong></td>
                             <td class="amount">£24,000</td>
-                            <td class="amount">12.5%</td>
+                            <td><strong>2025*</strong></td>
                         </tr>
                         <tr>
                             <td>Hushua Barbers</td>
                             <td class="amount">£19,200</td>
-                            <td class="amount">10.0%</td>
+                            <td>2038</td>
                         </tr>
                         <tr>
                             <td>Europa Food</td>
                             <td class="amount">£19,200</td>
-                            <td class="amount">10.0%</td>
+                            <td>2030</td>
                         </tr>
                         <tr class="total-row">
-                            <td><strong>TOTAL RENT</strong></td>
-                            <td class="amount"><strong>£182,400</strong></td>
-                            <td class="amount"><strong>100%</strong></td>
+                            <td>TOTAL</td>
+                            <td class="amount">£182,400</td>
+                            <td>—</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
             
-            <!-- RISK ASSESSMENT -->
+            <!-- RISKS -->
             <div class="section">
-                <h2>Risk Assessment</h2>
+                <h2>Key Risks</h2>
                 
-                <div style="margin-bottom: 20px;">
-                    <h3 style="color: #d63031; margin-bottom: 15px; font-size: 14px;">🔴 CRITICAL RISKS</h3>
-                    <div class="risk-grid">
-                        <div class="risk-item critical">
-                            <strong>Costa Coffee Lease Expiry (2026)</strong><br>
-                            31% of annual revenue expires imminently. If renewal is not secured, lose £60,000/year immediately.
-                        </div>
-                        <div class="risk-item critical">
-                            <strong>Stevenage Cafe Status Unclear</strong><br>
-                            Lease technically expired 2025 but tenant still occupying. Urgently clarify: renewed? Month-to-month? Legal?
-                        </div>
-                    </div>
+                <div class="alert alert-critical">
+                    <strong>🔴 Costa Coffee Expires 2026</strong>
+                    31% of revenue (£60k/year) at immediate risk. Renewal urgently required.
                 </div>
                 
-                <div style="margin-bottom: 20px;">
-                    <h3 style="color: #ffa502; margin-bottom: 15px; font-size: 14px;">🟠 WARNING RISKS</h3>
-                    <div class="risk-grid">
-                        <div class="risk-item warning">
-                            <strong>O2 Short-Term Lease (2030)</strong><br>
-                            21.9% of revenue at risk in 4 years. Telecom sector consolidation = relocation risk.
-                        </div>
-                        <div class="risk-item warning">
-                            <strong>Europa Food Uncertain Review</strong><br>
-                            Lease renewal date "TBC" — no clarity on future terms. Expires 2030.
-                        </div>
-                        <div class="risk-item warning">
-                            <strong>Retail Sector Headwinds</strong><br>
-                            UK high street under pressure. Coffee chains, fast-food consolidating. Tenant churn risk.
-                        </div>
-                    </div>
+                <div class="alert alert-critical">
+                    <strong>🔴 Stevenage Cafe Status</strong>
+                    Lease expired 2025 but tenant still occupying. Urgent clarification needed.
                 </div>
                 
-                <div>
-                    <h3 style="color: #27ae60; margin-bottom: 15px; font-size: 14px;">🟢 POSITIVE FACTORS</h3>
-                    <div class="risk-grid">
-                        <div class="risk-item positive">
-                            <strong>Long-Term Anchors</strong><br>
-                            Fireaway Pizza (11 years) & Hushua Barbers (12 years) provide revenue stability.
-                        </div>
-                        <div class="risk-item positive">
-                            <strong>Diversified Tenancy Mix</strong><br>
-                            Food, retail, telecom, services reduce single-tenant dependency.
-                        </div>
-                        <div class="risk-item positive">
-                            <strong>Regular Collections</strong><br>
-                            No reported defaults. Rent appears to be collected reliably.
-                        </div>
-                    </div>
+                <div class="alert alert-warning">
+                    <strong>🟠 O2 Expires 2030</strong>
+                    22% of revenue at risk in 4 years. Telecom consolidation risk.
+                </div>
+                
+                <div class="alert alert-success">
+                    <strong>🟢 Long-Term Anchors</strong>
+                    Fireaway Pizza (2037) & Hushua Barbers (2038) provide stability.
                 </div>
             </div>
             
             <!-- VALUATION -->
             <div class="section">
-                <h2>Property Valuation</h2>
-                
-                <div class="valuation-box">
-                    <h3>Fair Market Valuation</h3>
-                    <div class="valuation-figure">£2.5M – £3.2M</div>
-                    <div class="valuation-range">Most likely: £2.8M (net of lease expiry risk)</div>
+                <h2>Valuation</h2>
+                <div class="valuation">
+                    <div class="valuation-label">Fair Market Value</div>
+                    <div class="valuation-figure">£2.8M</div>
+                    <div class="valuation-note">Range: £2.5M–£3.2M (net of lease risk)</div>
                 </div>
-                
-                <h3 style="margin-bottom: 15px; color: #333;">Valuation Methodology</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Metric</th>
-                            <th>Calculation</th>
-                            <th>Result</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Gross Annual Income</td>
-                            <td>Rent + Service Charges</td>
-                            <td class="amount">£207,280</td>
-                        </tr>
-                        <tr>
-                            <td>Capitalization Rate</td>
-                            <td>6.5% (UK retail average)</td>
-                            <td class="amount">6.5%</td>
-                        </tr>
-                        <tr class="total-row">
-                            <td><strong>Valuation (Before Risk Adjustment)</strong></td>
-                            <td><strong>£207,280 ÷ 0.065</strong></td>
-                            <td class="amount"><strong>£3,189,000</strong></td>
-                        </tr>
-                        <tr>
-                            <td>Lease Expiry Risk Discount</td>
-                            <td>15–20% (Costa + Cafe uncertainty)</td>
-                            <td class="amount">-£475k to -£640k</td>
-                        </tr>
-                        <tr class="total-row">
-                            <td><strong>Adjusted Valuation (Conservative)</strong></td>
-                            <td><strong>After risk haircut</strong></td>
-                            <td class="amount"><strong>£2.5M – £2.8M</strong></td>
-                        </tr>
-                    </tbody>
-                </table>
             </div>
             
-            <!-- RECOMMENDATIONS -->
+            <!-- ACTIONS -->
             <div class="section">
-                <h2>Key Actions Required</h2>
-                
-                <div style="background: #f0f4ff; padding: 20px; border-radius: 8px; border-left: 4px solid #667eea;">
-                    <ol style="margin-left: 20px; color: #333; line-height: 1.8;">
-                        <li><strong>URGENT: Costa Coffee Renewal</strong> — Confirm status of lease renewal negotiations. If no renewal in place, property value drops 30%+ immediately.</li>
-                        <li><strong>Stevenage Cafe Legal Position</strong> — Clarify current lease status. Is tenant holding over? Renewed informally? Formal agreement in place?</li>
-                        <li><strong>Service Charge Collection</strong> — Verify all tenants are paying in full. Any arrears? Collection history?</li>
-                        <li><strong>Building Condition</strong> — Structural/mechanical condition assessment. Any major capex needs? Roof, HVAC, electrical?</li>
-                        <li><strong>Europa Food Renewal</strong> — Clarify renewal terms (currently "TBC"). Define terms in advance of lease expiry 2030.</li>
-                        <li><strong>Market Comparable Analysis</strong> — Verify £6.5% cap rate is appropriate for Stevenage retail given sector headwinds. May warrant 7–8% cap rate.</li>
+                <div class="actions">
+                    <h3>Critical Actions</h3>
+                    <ol>
+                        <li><strong>Secure Costa Coffee renewal</strong> — 2026 expiry is imminent</li>
+                        <li><strong>Clarify Stevenage Cafe status</strong> — Lease renewal or hold-over?</li>
+                        <li><strong>Confirm service charges collected</strong> — All tenants paid in full?</li>
+                        <li><strong>Assess building condition</strong> — Any major capex needs?</li>
+                        <li><strong>Lock in O2 & Europa Food renewal terms</strong> — Before 2030 expiry</li>
                     </ol>
                 </div>
             </div>
             
             <!-- SUMMARY -->
             <div class="section">
-                <h2>Summary</h2>
-                <p style="line-height: 1.8; color: #555;">
-                    PPQ Kiralar is a <strong>moderate-yield retail investment</strong> (5–7% gross yield) with <strong>significant near-term lease expiry risk</strong>. The property generates £207,280 annually from a diversified tenant mix, but <strong>53% of revenue expires in the next 4 years</strong> (Costa 2026, O2 2030, Europa 2030). 
-                </p>
-                <p style="line-height: 1.8; color: #555; margin-top: 15px;">
-                    Fair valuation is <strong>£2.5M–£3.2M</strong> depending on lease renewal success and cap rate assumptions. The key to value preservation is <strong>securing Costa Coffee renewal in 2026</strong>. Without it, expect a 25–30% valuation decline.
-                </p>
-                <p style="line-height: 1.8; color: #555; margin-top: 15px;">
-                    <strong>Best strategy:</strong> Secure multi-year lease extensions from all major tenants (Costa, O2, Europa) before they approach expiry. This will stabilize income and support a higher valuation multiple.
-                </p>
+                <div class="summary">
+                    <p><strong>PPQ Kiralar is a moderate-yield retail investment (5–7%) with significant near-term lease expiry risk.</strong> The property generates £207,280 annually from diversified tenants, but 53% of revenue expires in the next 4 years.</p>
+                    
+                    <p><strong>Fair valuation: £2.8M</strong> — but depends critically on securing Costa Coffee renewal in 2026. Without it, expect a 25–30% valuation decline.</p>
+                    
+                    <p><strong>Priority:</strong> Secure multi-year lease extensions from all major tenants (Costa, O2, Europa) before they approach expiry.</p>
+                </div>
             </div>
         </div>
         
         <div class="footer">
-            <p><strong>PPQ Kiralar 2025 — Investment Analysis</strong></p>
-            <p>Report generated: April 2026 | Data source: Tenant Rent Roll 2025</p>
-            <p style="margin-top: 10px;">Disclaimer: This analysis is for informational purposes only and is not investment advice. Actual valuation should be conducted by a qualified chartered surveyor. Prospective investors should conduct independent due diligence.</p>
+            <p>PPQ Kiralar 2025 — Investment Analysis | April 2026</p>
+            <p style="margin-top: 8px; opacity: 0.6;">For informational purposes only. Not investment advice.</p>
         </div>
     </div>
 </body>
