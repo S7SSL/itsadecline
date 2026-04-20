@@ -1,6 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
   <rect width="64" height="64" fill="#1a1f2e"/>
-  <circle cx="32" cy="32" r="28" fill="none" stroke="#3b82f6" stroke-width="3"/>
-  <path d="M32 12 L44 20 L44 44 L20 44 L20 20 Z" fill="#3b82f6" opacity="0.8"/>
-  <path d="M20 36 L32 24 L44 36" stroke="#1a1f2e" stroke-width="2" fill="none"/>
+  <circle cx="32" cy="32" r="28" fill="#3b82f6"/>
+  <text x="32" y="40" font-family="Arial, sans-serif" font-size="28" font-weight="bold" text-anchor="middle" fill="white">ITSA</text>
 </svg>
