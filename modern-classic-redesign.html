@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Classic Car Co — Premium Classic & Sports Cars</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* HEADER */
+        header {
+            background: white;
+            padding: 24px 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: #1a1a1a;
+            letter-spacing: -1px;
+        }
+
+        .nav {
+            display: flex;
+            gap: 32px;
+        }
+
+        .nav a {
+            text-decoration: none;
+            color: #666;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav a:hover {
+            color: #d4af37;
+        }
+
+        /* HERO */
+        .hero {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            color: white;
+            padding: 80px 20px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 56px;
+            margin-bottom: 16px;
+            letter-spacing: -1px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            opacity: 0.9;
+            margin-bottom: 32px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: #d4af37;
+            color: #1a1a1a;
+            padding: 14px 32px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+
+        .cta-button:hover {
+            background: #e0bc47;
+        }
+
+        /* CARS GRID */
+        .cars-section {
+            max-width: 1400px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 40px;
+            margin-bottom: 48px;
+            text-align: center;
+        }
+
+        .cars-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 32px;
+            margin-bottom: 60px;
+        }
+
+        .car-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .car-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+        }
+
+        .car-image {
+            width: 100%;
+            height: 240px;
+            background: linear-gradient(135deg, #e0e0e0 0%, #f5f5f5 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            color: #999;
+        }
+
+        .car-details {
+            padding: 24px;
+        }
+
+        .car-year-make {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .car-model {
+            font-size: 14px;
+            color: #999;
+            margin-bottom: 16px;
+        }
+
+        .car-specs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+            font-size: 13px;
+        }
+
+        .spec {
+            background: #f9f9f9;
+            padding: 8px 12px;
+            border-radius: 4px;
+            color: #666;
+        }
+
+        .spec-label {
+            display: block;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 4px;
+        }
+
+        .car-price {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: #d4af37;
+            margin-bottom: 16px;
+        }
+
+        .car-button {
+            width: 100%;
+            padding: 12px;
+            background: #1a1a1a;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .car-button:hover {
+            background: #d4af37;
+            color: #1a1a1a;
+        }
+
+        /* FOOTER */
+        footer {
+            background: #1a1a1a;
+            color: white;
+            padding: 48px 20px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 32px;
+            margin-bottom: 32px;
+            text-align: left;
+        }
+
+        .footer-section h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 16px;
+            margin-bottom: 16px;
+        }
+
+        .footer-section a {
+            display: block;
+            color: #999;
+            text-decoration: none;
+            margin-bottom: 8px;
+            font-size: 13px;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: #d4af37;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #333;
+            padding-top: 24px;
+            color: #666;
+            font-size: 12px;
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .nav {
+                gap: 16px;
+                font-size: 12px;
+            }
+
+            .hero h1 {
+                font-size: 36px;
+            }
+
+            .cars-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header>
+        <div class="header-content">
+            <div class="logo">Modern Classic</div>
+            <nav class="nav">
+                <a href="#inventory">Inventory</a>
+                <a href="#about">About</a>
+                <a href="#contact">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+        <h1>Curated Classics & Modern Legends</h1>
+        <p>Handpicked premium vehicles from the world's finest collectors. Authenticity, provenance, and passion in every car.</p>
+        <a href="#inventory" class="cta-button">View Inventory</a>
+    </section>
+
+    <!-- INVENTORY -->
+    <section class="cars-section" id="inventory">
+        <h2 class="section-title">Current Inventory</h2>
+        
+        <div class="cars-grid">
+            <!-- Car 1 -->
+            <div class="car-card">
+                <div class="car-image">🚗</div>
+                <div class="car-details">
+                    <div class="car-year-make">1995 Audi RS2 Avant</div>
+                    <div class="car-model">1 of 180 produced</div>
+                    <div class="car-specs">
+                        <div class="spec">
+                            <span class="spec-label">Colour</span>
+                            Ragusa Green
+                        </div>
+                        <div class="spec">
+                            <span class="spec-label">Condition</span>
+                            Immaculate
+                        </div>
+                    </div>
+                    <div class="car-price">£50,000</div>
+                    <button class="car-button">View Details</button>
+                </div>
+            </div>
+
+            <!-- Car 2 -->
+            <div class="car-card">
+                <div class="car-image">🏁</div>
+                <div class="car-details">
+                    <div class="car-year-make">2016 Porsche Cayman 981 GT4</div>
+                    <div class="car-model">Manual transmission</div>
+                    <div class="car-specs">
+                        <div class="spec">
+                            <span class="spec-label">Mileage</span>
+                            18,000 Miles
+                        </div>
+                        <div class="spec">
+                            <span class="spec-label">Warranty</span>
+                            Transferable
+                        </div>
+                    </div>
+                    <div class="car-price">£58,000</div>
+                    <button class="car-button">View Details</button>
+                </div>
+            </div>
+
+            <!-- Car 3 -->
+            <div class="car-card">
+                <div class="car-image">🏎️</div>
+                <div class="car-details">
+                    <div class="car-year-make">1993 Porsche 928 GT</div>
+                    <div class="car-model">Guards Red</div>
+                    <div class="car-specs">
+                        <div class="spec">
+                            <span class="spec-label">Mileage</span>
+                            132,000 Miles
+                        </div>
+                        <div class="spec">
+                            <span class="spec-label">Status</span>
+                            Excellent
+                        </div>
+                    </div>
+                    <div class="car-price">£35,000</div>
+                    <button class="car-button">View Details</button>
+                </div>
+            </div>
+
+            <!-- Car 4 -->
+            <div class="car-card">
+                <div class="car-image">⚙️</div>
+                <div class="car-details">
+                    <div class="car-year-make">1981 Mercedes 280 SL</div>
+                    <div class="car-model">Classic roadster</div>
+                    <div class="car-specs">
+                        <div class="spec">
+                            <span class="spec-label">History</span>
+                            36 years, 1 owner
+                        </div>
+                        <div class="spec">
+                            <span class="spec-label">Provenance</span>
+                            Original
+                        </div>
+                    </div>
+                    <div class="car-price">£21,000</div>
+                    <button class="car-button">View Details</button>
+                </div>
+            </div>
+
+            <!-- Car 5 -->
+            <div class="car-card">
+                <div class="car-image">👑</div>
+                <div class="car-details">
+                    <div class="car-year-make">1993 Mercedes G300 G-Wagon</div>
+                    <div class="car-model">W463 model</div>
+                    <div class="car-specs">
+                        <div class="spec">
+                            <span class="spec-label">Condition</span>
+                            Show standard
+                        </div>
+                        <div class="spec">
+                            <span class="spec-label">Care</span>
+                            Pampered
+                        </div>
+                    </div>
+                    <div class="car-price">£35,000–£40,000</div>
+                    <button class="car-button">View Details</button>
+                </div>
+            </div>
+
+            <!-- Car 6 -->
+            <div class="car-card">
+                <div class="car-image">🌟</div>
+                <div class="car-details">
+                    <div class="car-year-make">1987 VW Golf GTi MK2</div>
+                    <div class="car-model">16V Type 19</div>
+                    <div class="car-specs">
+                        <div class="spec">
+                            <span class="spec-label">Mileage</span>
+                            92,000 miles
+                        </div>
+                        <div class="spec">
+                            <span class="spec-label">Owners</span>
+                            Original survivor
+                        </div>
+                    </div>
+                    <div class="car-price">£15,000</div>
+                    <button class="car-button">View Details</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h3>Modern Classic</h3>
+                    <p style="font-size: 13px; color: #999; margin-bottom: 16px;">Premium classic and modern sports cars for collectors and enthusiasts.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <a href="#inventory">View Inventory</a>
+                    <a href="#about">About Us</a>
+                    <a href="#contact">Contact</a>
+                    <a href="#faq">FAQ</a>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <a href="tel:+441234567890">+44 (0) 123 456 7890</a>
+                    <a href="mailto:hello@modernclassic.com">hello@modernclassic.com</a>
+                    <p style="font-size: 13px; color: #999; margin-top: 16px;">London, UK</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Modern Classic Car Co. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
