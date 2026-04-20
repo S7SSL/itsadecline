@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Powered Websites for UK Businesses</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: white;
+            color: #333;
+        }
+
+        header {
+            padding: 20px;
+            border-bottom: 1px solid #f0f0f0;
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        nav {
+            display: flex;
+            gap: 20px;
+            font-size: 12px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #666;
+            transition: color 0.3s;
+        }
+
+        .hero {
+            padding: 50px 20px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 36px;
+            font-weight: 300;
+            margin-bottom: 16px;
+            line-height: 1.3;
+        }
+
+        .hero p {
+            font-size: 15px;
+            color: #666;
+            margin-bottom: 32px;
+        }
+
+        .button {
+            display: inline-block;
+            background: #333;
+            color: white;
+            padding: 12px 28px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: background 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background: #555;
+        }
+
+        .section {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+
+        .section h2 {
+            font-size: 28px;
+            font-weight: 300;
+            margin-bottom: 32px;
+        }
+
+        .faq {
+            margin-bottom: 20px;
+        }
+
+        .faq-question {
+            background: #f9f9f9;
+            padding: 16px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+        }
+
+        .faq-answer {
+            padding: 16px;
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+            display: none;
+            border-left: 3px solid #333;
+        }
+
+        .faq.open .faq-answer {
+            display: block;
+        }
+
+        .faq.open .faq-question::after {
+            content: "−";
+        }
+
+        .faq-question::after {
+            content: "+";
+            font-weight: 300;
+        }
+
+        .terms-section {
+            margin-bottom: 32px;
+        }
+
+        .terms-section h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .terms-section p {
+            font-size: 13px;
+            line-height: 1.6;
+            color: #555;
+            margin-bottom: 12px;
+        }
+
+        footer {
+            background: #f9f9f9;
+            padding: 40px 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 28px;
+            }
+
+            .section h2 {
+                font-size: 22px;
+            }
+
+            .button {
+                padding: 10px 20px;
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo">InstallSmart.AI</div>
+            <nav>
+                <a href="#faq">FAQ</a>
+                <a href="#terms">Terms</a>
+                <a href="#contact">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <h1>AI-Powered Websites for UK Businesses</h1>
+        <p>Build, Book, Sell Online. Launch in 7 days.</p>
+        <a href="#contact" class="button">Get Started</a>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section" id="faq">
+        <h2>Frequently Asked Questions</h2>
+
+        <div class="faq">
+            <div class="faq-question">How long does the build actually take?</div>
+            <div class="faq-answer">We aim for 7 working days from brief to launch. Expedited service available (3–5 days). Or take your time — we work around your schedule.</div>
+        </div>
+
+        <div class="faq">
+            <div class="faq-question">Can I upgrade from Essentials to Pro later?</div>
+            <div class="faq-answer">Yes. Start with our core package and add AI chatbot and booking system later. Only pay the difference — the foundation is built to scale.</div>
+        </div>
+
+        <div class="faq">
+            <div class="faq-question">What if I already have a website?</div>
+            <div class="faq-answer">We can rebuild from scratch (recommended) or upgrade your existing site by adding AI features, improving SEO, and integrating chatbots/bookings. Usually 2–3 weeks.</div>
+        </div>
+
+        <div class="faq">
+            <div class="faq-question">Is the AI chatbot actually any good?</div>
+            <div class="faq-answer">Yes. Powered by GPT-4 and learns from your FAQs, conversations, and business context. Customers report 40% of questions resolved without you lifting a finger.</div>
+        </div>
+
+        <div class="faq">
+            <div class="faq-question">What if I don't like the website?</div>
+            <div class="faq-answer">Money-back guarantee for 30 days. No questions asked. If it's not working for you, we refund the full amount. We're confident you'll love it.</div>
+        </div>
+
+        <div class="faq">
+            <div class="faq-question">Do you handle domain names and hosting?</div>
+            <div class="faq-answer">Yes. We set up your domain, handle SSL security, manage hosting, and keep everything updated. All included — you just own the domain name.</div>
+        </div>
+
+        <div class="faq">
+            <div class="faq-question">What about SEO? Will it rank in Google?</div>
+            <div class="faq-answer">Built for SEO from day one. On-page optimization, structured data, mobile-first design. Organic traffic within 3–6 months. Google Ads recommended for faster results.</div>
+        </div>
+
+        <div class="faq">
+            <div class="faq-question">Can I manage content myself?</div>
+            <div class="faq-answer">Absolutely. Easy CMS lets you edit text, images, and services without code. Training included.</div>
+        </div>
+    </section>
+
+    <!-- TERMS -->
+    <section class="section" id="terms">
+        <h2>Terms & Conditions</h2>
+
+        <div class="terms-section">
+            <h3>Payment & Delivery</h3>
+            <p>Full payment due upfront via Stripe. We aim to deliver within 7 working days of receiving complete project information. Turnaround may vary based on complexity.</p>
+        </div>
+
+        <div class="terms-section">
+            <h3>What's Included</h3>
+            <p>Your package includes design, build, AI setup, and initial support as specified. Included support ends after the stated period (30, 90, or 180 days). Additional support available at £150/hour.</p>
+        </div>
+
+        <div class="terms-section">
+            <h3>Refunds & Cancellations</h3>
+            <p>Cancel for full refund if work hasn't started. Once in progress, 50% refund if cancelled before launch.</p>
+        </div>
+
+        <div class="terms-section">
+            <h3>Your Responsibilities</h3>
+            <p>Provide accurate business information, logos, and content. You're responsible for third-party integrations and their costs.</p>
+        </div>
+
+        <div class="terms-section">
+            <h3>Intellectual Property</h3>
+            <p>You own your website content and design. InstallSmart retains ownership of underlying code, templates, and AI technology.</p>
+        </div>
+
+        <div class="terms-section">
+            <h3>Limitations</h3>
+            <p>Not liable for losses from third-party outages, hacking, or credential misuse. No guarantee on search ranking, lead volume, or sales conversion — these depend on your industry and marketing efforts.</p>
+        </div>
+    </section>
+
+    <footer>
+        <p>InstallSmart.AI — AI-Powered Websites for UK Businesses</p>
+        <p style="margin-top: 16px;">Sat Lally | Independent AI & Web Advisory</p>
+    </footer>
+
+    <script>
+        document.querySelectorAll('.faq-question').forEach(el => {
+            el.addEventListener('click', () => {
+                el.parentElement.classList.toggle('open');
+            });
+        });
+    </script>
+</body>
+</html>
