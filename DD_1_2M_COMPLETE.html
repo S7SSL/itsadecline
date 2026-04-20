@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Due Diligence Analysis</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html, body {
+            height: 100%;
+            width: 100%;
+        }
+        
+        body {
+            font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #f8f9fa;
+            color: #2c3e50;
+            line-height: 1.6;
+            font-size: 16px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #1a1f2e 0%, #2c3e50 100%);
+            color: white;
+            padding: 32px 20px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+        
+        .header p {
+            font-size: 14px;
+            opacity: 0.85;
+            font-weight: 500;
+        }
+        
+        .content {
+            padding: 20px;
+        }
+        
+        .section {
+            margin-bottom: 32px;
+        }
+        
+        .section h2 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1a1f2e;
+            margin-bottom: 16px;
+            border-bottom: 2px solid #e1e8ed;
+            padding-bottom: 12px;
+        }
+        
+        .section h3 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-top: 16px;
+            margin-bottom: 10px;
+        }
+        
+        .metrics {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        
+        .metric {
+            background: white;
+            padding: 16px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            border-left: 3px solid #3b82f6;
+        }
+        
+        .metric-label {
+            font-size: 11px;
+            color: #7f8c8d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+        
+        .metric-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1a1f2e;
+        }
+        
+        .director-card {
+            background: white;
+            padding: 14px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            border-left: 3px solid #3b82f6;
+        }
+        
+        .director-name {
+            font-weight: 600;
+            color: #1a1f2e;
+            margin-bottom: 4px;
+        }
+        
+        .director-detail {
+            font-size: 12px;
+            color: #7f8c8d;
+            margin: 2px 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+        
+        table thead {
+            background: #f0f4f8;
+        }
+        
+        table th {
+            padding: 12px;
+            text-align: left;
+            font-size: 12px;
+            font-weight: 700;
+            color: #2c3e50;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid #e1e8ed;
+        }
+        
+        table td {
+            padding: 12px;
+            border-bottom: 1px solid #f0f4f8;
+            font-size: 14px;
+        }
+        
+        table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .amount {
+            font-weight: 600;
+            color: #3b82f6;
+            text-align: right;
+        }
+        
+        .total-row {
+            background: #f8fafb;
+            font-weight: 600;
+        }
+        
+        .alert {
+            padding: 14px;
+            border-left: 3px solid;
+            border-radius: 6px;
+            margin-bottom: 12px;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+        
+        .alert-critical {
+            border-left-color: #dc2626;
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .alert-warning {
+            border-left-color: #ffa502;
+            background: #fef3c7;
+            color: #92400e;
+        }
+        
+        .alert-success {
+            border-left-color: #16a34a;
+            background: #dcfce7;
+            color: #166534;
+        }
+        
+        .alert strong {
+            display: block;
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+        
+        .summary {
+            background: white;
+            padding: 18px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            font-size: 13px;
+            line-height: 1.7;
+            color: #2c3e50;
+        }
+        
+        .summary p {
+            margin-bottom: 12px;
+        }
+        
+        .summary strong {
+            color: #1a1f2e;
+            font-weight: 600;
+        }
+        
+        .footer {
+            background: #1a1f2e;
+            color: white;
+            padding: 24px 20px;
+            text-align: center;
+            font-size: 11px;
+        }
+        
+        .footer-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .footer-text {
+            opacity: 0.75;
+            margin: 4px 0;
+        }
+        
+        @media (max-width: 480px) {
+            .metrics {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 20px;
+            }
+            
+            .section h2 {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Park Place Queensway Ltd — £1.2M Facility</h1>
+            <p>Lender Due Diligence & Security Analysis 2026</p>
+        </div>
+        
+        <div class="content">
+            <!-- FACILITY OVERVIEW -->
+            <div class="section">
+                <h2>Facility Overview</h2>
+                <div class="metrics">
+                    <div class="metric">
+                        <div class="metric-label">Loan Amount</div>
+                        <div class="metric-value">£1,200,000</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">Interest Rate</div>
+                        <div class="metric-value">6%</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">Annual Interest</div>
+                        <div class="metric-value">£72,000</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">LTV</div>
+                        <div class="metric-value">27.3%</div>
+                    </div>
+                </div>
+                <p style="font-size: 13px; color: #7f8c8d; margin-top: 12px;"><strong>Purpose:</strong> Portfolio expansion — property growth and income investment</p>
+            </div>
+            
+            <!-- BORROWERS & COMPANY -->
+            <div class="section">
+                <h2>Borrowers & Corporate Structure</h2>
+                
+                <h3>Borrower Entity</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Company Details</th>
+                            <th>Information</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Company Name</strong></td>
+                            <td>PARK PLACE QUEENSWAY LTD</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Company Number</strong></td>
+                            <td>10716194</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Status</strong></td>
+                            <td>Active</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Incorporation Date</strong></td>
+                            <td>7 April 2017</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Registered Office</strong></td>
+                            <td>Flat 31, Aphrodite Court, 15 Dollis Valley Drive, Barnet, Hertfordshire EN5 2GH</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h3 style="margin-top: 20px;">Directors</h3>
+                
+                <div class="director-card">
+                    <div class="director-name">Sukru Alibasic</div>
+                    <div class="director-detail">📍 Nationality: Turkish</div>
+                    <div class="director-detail">🏠 Residence: Turkey</div>
+                    <div class="director-detail">📅 Appointed: 10 February 2021</div>
+                    <div class="director-detail">✅ Identity Verified: 22 December 2025</div>
+                </div>
+                
+                <div class="director-card">
+                    <div class="director-name">Burak Kaan Bulbuloglu</div>
+                    <div class="director-detail">📍 Nationality: British</div>
+                    <div class="director-detail">🏠 Residence: England</div>
+                    <div class="director-detail">📅 Appointed: 20 January 2022</div>
+                    <div class="director-detail">✅ Identity Verified: 12 November 2025</div>
+                </div>
+            </div>
+            
+            <!-- COMPANY FINANCIALS -->
+            <div class="section">
+                <h2>Company Financials (Year Ended 31 March 2025)</h2>
+                
+                <h3>Profit & Loss Summary</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Line Item</th>
+                            <th style="text-align: right;">2025</th>
+                            <th style="text-align: right;">2024</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Rental Income</strong></td>
+                            <td class="amount">£142,233</td>
+                            <td class="amount">£138,286</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Service Charge Income</strong></td>
+                            <td class="amount">£36,299</td>
+                            <td class="amount">£35,172</td>
+                        </tr>
+                        <tr class="total-row">
+                            <td><strong>Total Revenue</strong></td>
+                            <td class="amount"><strong>£178,533</strong></td>
+                            <td class="amount"><strong>£173,471</strong></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3"></td>
+                        </tr>
+                        <tr>
+                            <td>Administrative Costs</td>
+                            <td class="amount">(£115,597)</td>
+                            <td class="amount">(£110,926)</td>
+                        </tr>
+                        <tr class="total-row">
+                            <td><strong>Operating Profit</strong></td>
+                            <td class="amount"><strong>£62,936</strong></td>
+                            <td class="amount"><strong>£61,764</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Net Profit Margin</strong></td>
+                            <td class="amount"><strong>35.3%</strong></td>
+                            <td class="amount"><strong>35.6%</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="alert alert-success">
+                    <strong>✅ Strong Financial Performance</strong>
+                    Consistent profitability with 35.3% net margin. Year-on-year growth +2.9%. Well-managed administrative costs.
+                </div>
+            </div>
+            
+            <!-- COMPANY PROPERTY HOLDINGS -->
+            <div class="section">
+                <h2>Company Property Holdings</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Property</th>
+                            <th>Address</th>
+                            <th>Type</th>
+                            <th>Value</th>
+                            <th>Annual Income</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Park Place</strong></td>
+                            <td>4–12 Park Place, London W2</td>
+                            <td>Freehold Commercial</td>
+                            <td class="amount">£750,000</td>
+                            <td class="amount">£71,117</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Queensway</strong></td>
+                            <td>69–75 Queensway, London W2</td>
+                            <td>Freehold Commercial</td>
+                            <td class="amount">£850,000</td>
+                            <td class="amount">£71,117</td>
+                        </tr>
+                        <tr class="total-row">
+                            <td colspan="3"><strong>Park Place Queensway Portfolio</strong></td>
+                            <td class="amount"><strong>£1,600,000</strong></td>
+                            <td class="amount"><strong>£178,533</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- STEVENAGE SECURITY -->
+            <div class="section">
+                <h2>Additional Security — PPQ Kiralar (Stevenage)</h2>
+                
+                <h3>Property Details</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Attribute</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Property</strong></td>
+                            <td>PPQ Kiralar Retail Centre</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Address</strong></td>
+                            <td>2–12 Park Place, Stevenage</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Postcode</strong></td>
+                            <td>SG1 1DP</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Type</strong></td>
+                            <td>Freehold Commercial Retail</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Valuation</strong></td>
+                            <td class="amount">£2,800,000</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Annual Rental Income</strong></td>
+                            <td class="amount">£182,400</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Service Charge Income</strong></td>
+                            <td class="amount">£24,880</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Total Annual Income</strong></td>
+                            <td class="amount">£207,280</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h3>Tenant Schedule</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tenant</th>
+                            <th>Annual Rent</th>
+                            <th>Lease Expires</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Costa Coffee</strong></td>
+                            <td class="amount">£60,000</td>
+                            <td><strong style="color: #dc2626;">2026</strong></td>
+                        </tr>
+                        <tr>
+                            <td>O2 Telefonica</td>
+                            <td class="amount">£42,000</td>
+                            <td>2030</td>
+                        </tr>
+                        <tr>
+                            <td>Stevenage Cafe</td>
+                            <td class="amount">£24,000</td>
+                            <td><strong style="color: #dc2626;">2025</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Fireaway Pizza</td>
+                            <td class="amount">£18,000</td>
+                            <td>2037</td>
+                        </tr>
+                        <tr>
+                            <td>Hushua Barbers</td>
+                            <td class="amount">£19,200</td>
+                            <td>2038</td>
+                        </tr>
+                        <tr>
+                            <td>Europa Food</td>
+                            <td class="amount">£19,200</td>
+                            <td>2030</td>
+                        </tr>
+                        <tr class="total-row">
+                            <td><strong>TOTAL</strong></td>
+                            <td class="amount"><strong>£182,400</strong></td>
+                            <td>—</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- DEBT SERVICE COVERAGE -->
+            <div class="section">
+                <h2>Debt Service Coverage Analysis</h2>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Income Source</th>
+                            <th style="text-align: right;">Annual Income</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Park Place Queensway Ltd</strong></td>
+                            <td class="amount">£178,533</td>
+                        </tr>
+                        <tr>
+                            <td><strong>PPQ Kiralar (Stevenage)</strong></td>
+                            <td class="amount">£207,280</td>
+                        </tr>
+                        <tr class="total-row">
+                            <td><strong>TOTAL ANNUAL INCOME</strong></td>
+                            <td class="amount"><strong>£385,813</strong></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Annual Interest Cost (£1.2M @ 6%)</strong></td>
+                            <td class="amount" style="color: #dc2626;"><strong>£72,000</strong></td>
+                        </tr>
+                        <tr class="total-row">
+                            <td><strong>Debt Service Coverage Ratio (DSCR)</strong></td>
+                            <td class="amount" style="color: #16a34a;"><strong>5.36x</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="alert alert-success">
+                    <strong>✅ Exceptional Debt Service Coverage</strong>
+                    DSCR of 5.36x demonstrates outstanding repayment capacity. Interest cost (£72k) represents only 18.7% of combined annual income. Substantial headroom for operational flexibility and tenant changes.
+                </div>
+            </div>
+            
+            <!-- SECURITY POSITION -->
+            <div class="section">
+                <h2>Lender Security Position</h2>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Security Asset</th>
+                            <th style="text-align: right;">Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Park Place Queensway Ltd Properties</strong></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>– Park Place (4–12 Park Place, London W2)</td>
+                            <td class="amount">£750,000</td>
+                        </tr>
+                        <tr>
+                            <td>– Queensway (69–75 Queensway, London W2)</td>
+                            <td class="amount">£850,000</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"></td>
+                        </tr>
+                        <tr>
+                            <td><strong>PPQ Kiralar (Stevenage)</strong></td>
+                            <td class="amount">£2,800,000</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"></td>
+                        </tr>
+                        <tr class="total-row">
+                            <td><strong>Total Security Value</strong></td>
+                            <td class="amount"><strong>£4,400,000</strong></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Loan Amount</strong></td>
+                            <td class="amount"><strong>£1,200,000</strong></td>
+                        </tr>
+                        <tr class="total-row">
+                            <td><strong>Loan-to-Value (LTV)</strong></td>
+                            <td class="amount"><strong>27.3%</strong></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Equity/Security Buffer</strong></td>
+                            <td class="amount"><strong>£3,200,000</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Loan-to-Equity Ratio</strong></td>
+                            <td class="amount"><strong>0.375x</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="alert alert-success">
+                    <strong>✅ Exceptional Security Position</strong>
+                    LTV of 27.3% is very strong. £3.2M equity cushion provides substantial downside protection. Diversified across 3 properties (2 London freehold + 1 Stevenage retail). Even 40% property value decline maintains positive security position.
+                </div>
+            </div>
+            
+            <!-- RISK ASSESSMENT -->
+            <div class="section">
+                <h2>Risk Assessment</h2>
+                
+                <div class="alert alert-critical">
+                    <strong>🔴 Critical: Stevenage Lease Expiries</strong>
+                    Costa Coffee (33% of Stevenage income) expires 2026. Stevenage Cafe (13%) status unclear (expired 2025). Combined 46% of Stevenage rental at risk. Immediate lease renewal action required.
+                </div>
+                
+                <div class="alert alert-warning">
+                    <strong>🟠 Moderate: Stevenage Concentration</strong>
+                    64% of total portfolio income comes from Stevenage (£207k of £386k). Strong single-asset risk, though mitigated by diversified tenant base and long-term anchors.
+                </div>
+                
+                <div class="alert alert-success">
+                    <strong>🟢 Positive: Park Place Stability</strong>
+                    36% of income from Park Place Queensway (£178k). Stable, profitable (35.3% margin), freehold properties. Consistent YoY growth.
+                </div>
+                
+                <div class="alert alert-success">
+                    <strong>🟢 Positive: Exceptional LTV & Coverage</strong>
+                    LTV 27.3%, DSCR 5.36x. Very strong lender position. Substantial equity cushion across all security assets.
+                </div>
+            </div>
+            
+            <!-- SUMMARY -->
+            <div class="section">
+                <div class="summary">
+                    <p><strong>£1.2M facility secured against combined portfolio worth £4.4M — exceptional security position with outstanding debt service coverage.</strong></p>
+                    
+                    <p>PARK PLACE QUEENSWAY LTD (Directors: Sukru Alibasic, Burak Kaan Bulbuloglu) operates two freehold London properties generating £178.5k annual income with 35.3% net profit margin. Additional security provided by PPQ Kiralar (Stevenage) generating £207.3k annual income from 6-tenant retail centre.</p>
+                    
+                    <p><strong>Financial Strength:</strong> Combined annual income of £385.8k provides exceptional interest coverage at 5.36x DSCR. Interest cost of £72k/year represents only 18.7% of total income. Borrower demonstrates strong financial discipline and consistent operational performance.</p>
+                    
+                    <p><strong>Security Position:</strong> LTV of 27.3% is very strong. Total collateral value of £4.4M provides £3.2M equity cushion. Diversified across 3 properties in different locations. Even significant property value decline maintains positive security position.</p>
+                    
+                    <p><strong>Lender Assessment:</strong> STRONG APPROVAL RECOMMENDATION — Exceptional security position, outstanding debt service coverage, and well-managed commercial properties. Condition: Costa Coffee lease renewal confirmation before facility drawdown.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <div class="footer-title">PRIVATE AND CONFIDENTIAL</div>
+            <p class="footer-text">Park Place Queensway Ltd — £1.2M Facility Due Diligence | 20 April 2026</p>
+            <p class="footer-text">© Copyright 2026 itsadecline.com. All rights reserved.</p>
+            <p class="footer-text" style="margin-top: 12px; font-size: 10px;">This document is private and confidential. Unauthorised use or distribution is strictly prohibited.</p>
+        </div>
+    </div>
+</body>
+</html>
