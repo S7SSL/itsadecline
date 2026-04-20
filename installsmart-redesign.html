@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InstallSmart.AI — Independent AI Advisory</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: white;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* HEADER */
+        header {
+            padding: 20px;
+            border-bottom: 1px solid #f0f0f0;
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 16px;
+            font-weight: 700;
+            color: #c41e3a;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        nav {
+            display: flex;
+            gap: 24px;
+            font-size: 13px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #666;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #c41e3a;
+        }
+
+        .cta {
+            background: #c41e3a;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 12px;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+
+        .cta:hover {
+            background: #8b0000;
+        }
+
+        /* HERO */
+        .hero {
+            padding: 60px 20px;
+            text-align: center;
+            background: white;
+        }
+
+        .hero h1 {
+            font-size: 42px;
+            font-weight: 300;
+            margin-bottom: 16px;
+            letter-spacing: -0.5px;
+            line-height: 1.3;
+        }
+
+        .hero p {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 32px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+
+        .button {
+            display: inline-block;
+            background: #c41e3a;
+            color: white;
+            padding: 12px 28px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: background 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background: #8b0000;
+        }
+
+        /* SECTIONS */
+        .section {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+
+        .section h2 {
+            font-size: 32px;
+            font-weight: 300;
+            margin-bottom: 40px;
+            letter-spacing: -0.3px;
+        }
+
+        /* PROCESS GRID */
+        .process-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 32px;
+            margin-bottom: 40px;
+        }
+
+        .process-item {
+            background: #f9f9f9;
+            padding: 32px;
+            border-radius: 6px;
+        }
+
+        .process-number {
+            font-size: 24px;
+            font-weight: 700;
+            color: #c41e3a;
+            margin-bottom: 16px;
+        }
+
+        .process-item h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .process-item p {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* PRICING */
+        .pricing {
+            background: #f9f9f9;
+            padding: 40px 20px;
+            border-radius: 6px;
+            margin-bottom: 40px;
+        }
+
+        .pricing-item {
+            margin-bottom: 24px;
+        }
+
+        .pricing-item h4 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .price {
+            font-size: 24px;
+            font-weight: 700;
+            color: #c41e3a;
+        }
+
+        .price-detail {
+            font-size: 12px;
+            color: #999;
+            margin-top: 4px;
+        }
+
+        /* TESTIMONIAL */
+        .testimonial {
+            background: #f9f9f9;
+            padding: 32px;
+            border-left: 4px solid #c41e3a;
+            border-radius: 4px;
+            margin: 40px 0;
+        }
+
+        .testimonial-text {
+            font-size: 15px;
+            line-height: 1.7;
+            margin-bottom: 12px;
+            font-style: italic;
+            color: #555;
+        }
+
+        .testimonial-author {
+            font-size: 13px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        /* FOOTER */
+        footer {
+            background: #c41e3a;
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            font-size: 13px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-content p {
+            margin-bottom: 16px;
+        }
+
+        .footer-content a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        /* MOBILE */
+        @media (max-width: 768px) {
+            nav {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .hero p {
+                font-size: 15px;
+            }
+
+            .section h2 {
+                font-size: 24px;
+            }
+
+            .process-grid {
+                grid-template-columns: 1fr;
+            }
+
+            header {
+                padding: 16px;
+            }
+
+            .button {
+                padding: 10px 20px;
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header>
+        <div class="header-content">
+            <div class="logo">InstallSmart.AI</div>
+            <nav>
+                <a href="#services">Services</a>
+                <a href="#process">Process</a>
+                <a href="#pricing">Pricing</a>
+                <a href="#about">About</a>
+            </nav>
+            <a href="#contact" class="cta">Book Call</a>
+        </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+        <h1>AI That Works. Built, Maintained, and Compounding.</h1>
+        <p>Independent AI advisory for London SMEs. No vendors. No fluff. Just results.</p>
+        <a href="#contact" class="button">Book a Free 15-Min Call</a>
+    </section>
+
+    <!-- THE PROBLEM -->
+    <section class="section">
+        <h2>The Problem</h2>
+        <p style="font-size: 15px; line-height: 1.7; max-width: 800px; color: #555;">
+            Every AI vendor will tell you their product is the answer. Most of them are wrong.
+        </p>
+        <p style="font-size: 15px; line-height: 1.7; max-width: 800px; color: #666; margin-top: 16px;">
+            London SME directors are being sold AI by the people who profit from the sale. SaaS vendors. System integrators. Agencies with preferred tech stacks. The result: expensive implementations that don't deliver, tools bought on demos, and teams left wondering why the ROI never materialised.
+        </p>
+        <p style="font-size: 15px; line-height: 1.7; max-width: 800px; color: #666; margin-top: 16px;">
+            The businesses that get genuine, lasting value from AI have one thing in common: they had someone independent in their corner.
+        </p>
+    </section>
+
+    <!-- PROCESS -->
+    <section class="section" id="process">
+        <h2>How It Works</h2>
+        <div class="process-grid">
+            <div class="process-item">
+                <div class="process-number">01</div>
+                <h3>Understand Your Situation</h3>
+                <p>Full business deep-dive. We map your current operations, existing tech, AI spend to date. No templates — just your specific context.</p>
+            </div>
+            <div class="process-item">
+                <div class="process-number">02</div>
+                <h3>Tell You What to Build</h3>
+                <p>Independent recommendations. Right tools, right vendors, right team. Clear architecture and a prioritised roadmap.</p>
+            </div>
+            <div class="process-item">
+                <div class="process-number">03</div>
+                <h3>Implement & Maintain</h3>
+                <p>We oversee delivery. Monthly retainer keeps your AI performing. Quarterly reviews ensure it's still working in year 3.</p>
+            </div>
+            <div class="process-item">
+                <div class="process-number">04</div>
+                <h3>Grow Your AI Investment</h3>
+                <p>As your business scales, your AI compounds. New use cases. New revenue. New competitive advantage.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRICING -->
+    <section class="section" id="pricing">
+        <h2>Simple Pricing</h2>
+        <div class="pricing">
+            <div class="pricing-item">
+                <h4>Stage 1: AI Audit</h4>
+                <div class="price">£495</div>
+                <div class="price-detail">Understand what you actually need</div>
+            </div>
+            <div class="pricing-item">
+                <h4>Stage 2: Implementation</h4>
+                <div class="price">£3.5k – £8k</div>
+                <div class="price-detail">Build it right, first time</div>
+            </div>
+            <div class="pricing-item">
+                <h4>Stage 3: Retainer</h4>
+                <div class="price">£500–800/mo</div>
+                <div class="price-detail">Keep it running, keep it growing</div>
+            </div>
+            <div class="pricing-item">
+                <h4>Total Value (3 Years)</h4>
+                <div class="price">£35k–£50k</div>
+                <div class="price-detail">Compounding returns</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIAL -->
+    <section class="section">
+        <div class="testimonial">
+            <div class="testimonial-text">"Pragmatic, structured, no fluff. Exactly how a proper advisory should work."</div>
+            <div class="testimonial-author">Erim Kaur, CEO ByErim</div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-content">
+            <p style="font-size: 16px; font-weight: 300; margin-bottom: 24px;">Ready to get AI right?</p>
+            <a href="#contact" class="button" style="background: white; color: #c41e3a; margin-bottom: 32px;">Book a Free Call</a>
+            <p>No pitch. No obligation. Just an honest conversation about your AI investment.</p>
+            <p style="margin-top: 32px; font-size: 12px; opacity: 0.8;">Sat Lally | InstallSmart.AI | Independent AI Advisory for London SMEs</p>
+        </div>
+    </footer>
+</body>
+</html>
