@@ -1315,15 +1315,38 @@
                 phone: document.getElementById('phone').value.trim()
             };
 
-            console.log('[submitContactForm] Data saved to localStorage:', payload);
-            // Store lead data in localStorage
+            // Store lead data in localStorage (used by /tcs-acceptance.html for the signature page)
             localStorage.setItem('itsadecline_lead', JSON.stringify(payload));
-            
-            console.log('[submitContactForm] Redirecting to /tcs-acceptance.html');
-            // Redirect to T&Cs immediately
-            setTimeout(() => {
+            console.log('[submitContactForm] Data saved to localStorage:', payload);
+
+            // POST to Supabase Edge Function /lead-intake. On success we get back a lead_id
+            // which we carry into the T&Cs page via ?leadId= so the acceptance row can be
+            // written against the same lead record.
+            const LEAD_INTAKE_URL = 'https://uavjeywctezxcchoyboz.supabase.co/functions/v1/lead-intake';
+            payload.source = 'homepage';
+
+            fetch(LEAD_INTAKE_URL, {
+                method: 'POST',
+                headers: { 'content-type': 'application/json' },
+                body: JSON.stringify(payload)
+            })
+            .then(r => r.json().then(j => ({ ok: r.ok, status: r.status, body: j })))
+            .then(res => {
+                if (res.ok && res.body && res.body.lead_id) {
+                    console.log('[submitContactForm] lead_id:', res.body.lead_id);
+                    localStorage.setItem('itsadecline_lead_id', res.body.lead_id);
+                    window.location.href = '/tcs-acceptance.html?leadId=' + encodeURIComponent(res.body.lead_id);
+                } else {
+                    console.error('[submitContactForm] lead-intake failed', res);
+                    // Fall back to T&Cs anyway — we already have the data in localStorage
+                    window.location.href = '/tcs-acceptance.html';
+                }
+            })
+            .catch(err => {
+                console.error('[submitContactForm] network error', err);
+                // Graceful degradation — still move them forward, we'll catch in T&Cs
                 window.location.href = '/tcs-acceptance.html';
-            }, 100);
+            });
         }
     </script>
 

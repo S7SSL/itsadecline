@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Book your consultation — ITSA</title>
+  <style>
+    :root {
+      --fg: #111; --muted: #555; --border: #d7d7d7; --accent: #1b5e20;
+      --accent-fg: #fff; --surface: #fafafa; --selected: #e8f5e9;
+    }
+    body { font-family: system-ui, sans-serif; color: var(--fg); max-width: 820px;
+           margin: 32px auto; padding: 0 16px; line-height: 1.5; }
+    h1    { margin: 0 0 4px; font-size: 1.6rem; }
+    h2    { margin: 32px 0 8px; font-size: 1.15rem; }
+    h4    { margin: 16px 0 8px; font-size: 0.95rem; color: var(--muted);
+            font-weight: 500; }
+    p.lead{ color: var(--muted); margin-top: 0; }
+
+    [data-booking-widget] { margin-top: 16px; }
+    [data-status]         { font-size: 0.9rem; color: var(--muted);
+                             min-height: 1.25em; }
+    [data-status][data-state="loading"]::after    { content: "Loading available slots…"; }
+    [data-status][data-state="empty"]::after      { content: "No slots available right now — please try again shortly."; }
+    [data-status][data-state="error"]::after      { content: "Couldn't load slots. Please refresh."; color: #b00020; }
+    [data-status][data-state="submitting"]::after { content: "Booking…"; }
+    [data-status][data-state="booked"]::after     { content: "Booked."; color: var(--accent); }
+
+    .day        { border: 1px solid var(--border); border-radius: 8px;
+                   padding: 12px 14px; margin-bottom: 12px; background: var(--surface); }
+    .slot-row   { display: flex; flex-wrap: wrap; gap: 8px; }
+    .slot-chip  { border: 1px solid var(--border); background: white;
+                   border-radius: 999px; padding: 6px 12px; font-size: 0.9rem;
+                   cursor: pointer; }
+    .slot-chip:hover    { border-color: var(--accent); }
+    .slot-chip.selected { background: var(--selected); border-color: var(--accent);
+                           color: var(--accent); font-weight: 500; }
+
+    [data-book-form]    { display: grid; gap: 10px; margin-top: 16px;
+                           border-top: 1px solid var(--border); padding-top: 16px; }
+    [data-book-form] label  { display: grid; gap: 4px; font-size: 0.9rem;
+                               color: var(--muted); }
+    [data-book-form] input,
+    [data-book-form] textarea { font: inherit; padding: 8px 10px;
+                                 border: 1px solid var(--border);
+                                 border-radius: 6px; }
+    [data-book-form] button  { justify-self: start; background: var(--accent);
+                                color: var(--accent-fg); border: none;
+                                padding: 10px 18px; border-radius: 6px;
+                                font-size: 1rem; cursor: pointer; }
+    [data-book-errors]  { color: #b00020; font-size: 0.9rem; min-height: 1.25em; }
+    [data-confirmation] { background: var(--selected); border: 1px solid var(--accent);
+                           border-radius: 8px; padding: 12px 14px; color: var(--accent);
+                           margin-top: 16px; }
+  </style>
+</head>
+<body>
+  <h1>Book your funder consultation</h1>
+  <p class="lead">Pick a time — the funder will review your pre-qualification and walk you through terms. 30 minutes, by phone.</p>
+
+  <section data-booking-widget>
+    <div data-status></div>
+    <div data-slots></div>
+
+    <form data-book-form hidden>
+      <h2>Your details</h2>
+      <label>Name <input name="name" autocomplete="name"></label>
+      <label>Email <input name="email" type="email" required autocomplete="email"></label>
+      <label>Phone <input name="phone" type="tel" autocomplete="tel"></label>
+      <label>Anything the funder should know? <textarea name="notes" rows="3"></textarea></label>
+      <input type="hidden" name="leadId">
+      <input type="hidden" name="valuationId">
+      <input type="hidden" name="loanAmount">
+      <input type="hidden" name="valuationData">
+      <div data-book-errors></div>
+      <button type="submit">Confirm booking</button>
+    </form>
+
+    <div data-confirmation hidden></div>
+  </section>
+
+  <!-- Config first — sets window.ITSA_CONFIG with Supabase Edge Function URLs -->
+  <script src="/js/itsa-config.js"></script>
+  <script>
+    // Widget reads these globals as overrides. Map from ITSA_CONFIG so we
+    // only have one place to change the Supabase project URL.
+    if (window.ITSA_CONFIG && window.ITSA_CONFIG.ENDPOINTS) {
+      window.SLOTS_ENDPOINT       = window.ITSA_CONFIG.ENDPOINTS.SLOTS;
+      window.BOOKING_ENDPOINT     = window.ITSA_CONFIG.ENDPOINTS.BOOK;
+      // No paid-status gate yet — create-checkout + webhook writes
+      // the paid flag, gating will be enabled in a follow-up.
+    }
+  </script>
+  <script type="module">
+    import { initBookingWidget } from '/js/booking-widget.js';
+    initBookingWidget();
+  </script>
+</body>
+</html>

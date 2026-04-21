@@ -888,6 +888,7 @@ function submitAcceptance() {
     day: 'numeric', month: 'long', year: 'numeric',
     hour: '2-digit', minute: '2-digit', second: '2-digit'
   });
+  const acceptedAt = now.toISOString();
   const refId = 'IAD-' + Date.now().toString(36).toUpperCase();
 
   document.getElementById('confDetails').innerHTML = `
@@ -899,21 +900,61 @@ function submitAcceptance() {
     <div class="conf-row"><span class="label">Service</span><span class="value">Finance Placement (£295)</span></div>
   `;
 
-  // Store for PDF
-  window._acceptance = { name, email, property, timestamp, refId, sigData };
+  // Store for PDF / fallback
+  window._acceptance = { name, email, property, timestamp, acceptedAt, refId, sigData };
+  try {
+    localStorage.setItem('itsadecline_acceptance', JSON.stringify({
+      name: name, email: email, property: property,
+      acceptedAt: acceptedAt, refId: refId
+    }));
+  } catch (e) { /* ignore storage errors */ }
 
-  // Show confirmation
+  // Show confirmation panel while we kick off checkout
   document.getElementById('mainContent').style.display = 'none';
   document.getElementById('confirmationPage').classList.add('active');
   window.scrollTo({ top: 0, behavior: 'smooth' });
 
-  // Log (in production: POST to your backend / Google Sheets / CRM)
   console.log('T&C ACCEPTANCE:', window._acceptance);
-  
-  // Redirect to payment page after 3 seconds
-  setTimeout(function() {
-    window.location.href = '/pay';
-  }, 3000);
+
+  // Resolve leadId — prefer URL param, fall back to localStorage
+  const params = new URLSearchParams(window.location.search);
+  const leadId = params.get('leadId') || localStorage.getItem('itsadecline_lead_id') || null;
+
+  // POST acceptance + create Stripe checkout session. On success we get back
+  // a hosted checkout URL and redirect to it. On failure we fall back to the
+  // legacy /pay placeholder page so the user is never stranded.
+  const CHECKOUT_URL = 'https://uavjeywctezxcchoyboz.supabase.co/functions/v1/create-checkout';
+  const body = {
+    leadId: leadId,
+    tcs: {
+      signature: sigData,
+      acceptedAt: acceptedAt,
+      refId: refId,
+      name: name,
+      email: email,
+      property: property || null
+    }
+  };
+
+  fetch(CHECKOUT_URL, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify(body)
+  })
+  .then(r => r.json().then(j => ({ ok: r.ok, status: r.status, body: j })))
+  .then(res => {
+    if (res.ok && res.body && res.body.checkout_url) {
+      console.log('[submitAcceptance] redirecting to checkout');
+      window.location.href = res.body.checkout_url;
+    } else {
+      console.error('[submitAcceptance] create-checkout failed', res);
+      setTimeout(function(){ window.location.href = '/pay'; }, 2500);
+    }
+  })
+  .catch(err => {
+    console.error('[submitAcceptance] network error', err);
+    setTimeout(function(){ window.location.href = '/pay'; }, 2500);
+  });
 }
 
 // ── Download signed copy as printable HTML (opens in new window for PDF save) ──
