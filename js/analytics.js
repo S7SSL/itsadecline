@@ -1,12 +1,15 @@
-// analytics.js — GDPR-friendly GA4 loader with consent banner.
+// analytics.js — GDPR-friendly consent banner + GA4 loader.
 //
 // Behaviour:
 //   • First visit: shows a small bottom banner asking for consent. GA4 does
-//     NOT load until the user clicks Accept.
-//   • After Accept: consent is stored in localStorage, GA4 loads on this and
-//     every subsequent visit.
+//     NOT load until the user clicks Accept. ads.js (Google Ads + Meta Pixel)
+//     listens to the same consent state and behaves identically.
+//   • After Accept: consent is stored in localStorage. GA4 loads on this and
+//     every subsequent visit; a CustomEvent 'itsa:consent-accepted' is fired
+//     so ads.js can load its tags in-place on the current page.
 //   • After Decline: consent is stored as declined, banner does not reappear,
-//     GA4 is not loaded.
+//     no analytics / ads tags load. A 'itsa:consent-declined' event fires so
+//     other scripts can react.
 //
 // Measurement ID is the real GA4 ID from Google Analytics
 // (Admin → Data Streams → Web → Measurement ID, format: G-XXXXXXXXXX).
@@ -37,7 +40,7 @@
     b.innerHTML =
       '<div style="max-width:1200px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;gap:12px;justify-content:space-between;">' +
         '<p style="flex:1;min-width:240px;margin:0;font-size:14px;line-height:1.5;">' +
-          'We use a single analytics cookie (Google Analytics) to understand how visitors use the site. ' +
+          'We use analytics and advertising cookies (Google Analytics, Google Ads, Meta Pixel) to understand how visitors use the site and to measure marketing. ' +
           'See our <a href="/privacy.html" style="color:#63b3ed;text-decoration:underline;">Privacy Policy</a>.' +
         '</p>' +
         '<div style="display:flex;gap:8px;flex-wrap:wrap;">' +
@@ -56,10 +59,13 @@
       try { localStorage.setItem(CONSENT_KEY, 'accepted'); } catch (e) {}
       b.remove();
       loadGA4();
+      // Signal other consent-gated scripts (ads.js) to load in-place.
+      try { window.dispatchEvent(new CustomEvent('itsa:consent-accepted')); } catch (e) {}
     });
     document.getElementById('itsa-consent-decline').addEventListener('click', function () {
       try { localStorage.setItem(CONSENT_KEY, 'declined'); } catch (e) {}
       b.remove();
+      try { window.dispatchEvent(new CustomEvent('itsa:consent-declined')); } catch (e) {}
     });
   }
 
