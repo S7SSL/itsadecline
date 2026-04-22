@@ -8,11 +8,11 @@
 //   • After Decline: consent is stored as declined, banner does not reappear,
 //     GA4 is not loaded.
 //
-// Replace MEASUREMENT_ID with the real GA4 ID from Google Analytics
+// Measurement ID is the real GA4 ID from Google Analytics
 // (Admin → Data Streams → Web → Measurement ID, format: G-XXXXXXXXXX).
 (function () {
   'use strict';
-  var MEASUREMENT_ID = 'G-XXXXXXXXXX'; // TODO: swap for real GA4 ID
+  var MEASUREMENT_ID = 'G-7WWS29FMXD'; // itsadecline.com — GA4 property (property ID 504587566)
   var CONSENT_KEY = 'itsa_analytics_consent';
 
   function loadGA4() {
