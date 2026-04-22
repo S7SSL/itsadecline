@@ -855,30 +855,13 @@
                             </div>
                         </div>
                         <div class="form-row">
-                            <div class="form-group" style="flex:1;min-width:160px;">
-                                <label for="property_type">Property Type</label>
-                                <select id="property_type" name="property_type" required style="width:100%;padding:12px;border:1px solid #e2e8f0;border-radius:8px;font-size:15px;background:white;">
-                                    <option value="">Select…</option>
-                                    <option value="detached">Detached house</option>
-                                    <option value="semi">Semi-detached</option>
-                                    <option value="terraced">Terraced</option>
-                                    <option value="flat">Flat / Apartment</option>
-                                    <option value="maisonette">Maisonette</option>
-                                    <option value="other">Other</option>
-                                </select>
+                            <div class="form-group" style="flex:1;">
+                                <label for="property_value">Estimated Property Value</label>
+                                <div style="position:relative;">
+                                    <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#718096;font-weight:600;">£</span>
+                                    <input type="text" id="property_value" name="property_value" placeholder="550k" required style="padding-left:28px;">
+                                </div>
                             </div>
-                            <div class="form-group" style="flex:1;min-width:160px;">
-                                <label for="property_condition">Condition</label>
-                                <select id="property_condition" name="condition" required style="width:100%;padding:12px;border:1px solid #e2e8f0;border-radius:8px;font-size:15px;background:white;">
-                                    <option value="">Select…</option>
-                                    <option value="excellent">Excellent (recently refurbished)</option>
-                                    <option value="good" selected>Good (well maintained)</option>
-                                    <option value="fair">Fair (some wear)</option>
-                                    <option value="poor">Poor (needs work)</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-row">
                             <div class="form-group" style="flex:1;">
                                 <label for="mortgage_balance">Outstanding Mortgage</label>
                                 <div style="position:relative;">
@@ -886,18 +869,18 @@
                                     <input type="text" id="mortgage_balance" name="mortgage_balance" placeholder="288k" required style="padding-left:28px;">
                                 </div>
                             </div>
-                            <div class="form-group" style="flex:1;">
-                                <label for="loan_amount">How Much Do You Need?</label>
-                                <div style="position:relative;">
-                                    <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#718096;font-weight:600;">£</span>
-                                    <input type="text" id="loan_amount" name="loan_amount" placeholder="90k" required style="padding-left:28px;">
-                                </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="loan_amount">How Much Do You Need?</label>
+                            <div style="position:relative;">
+                                <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#718096;font-weight:600;">£</span>
+                                <input type="text" id="loan_amount" name="loan_amount" placeholder="90k" required style="padding-left:28px;">
                             </div>
                         </div>
-                        <button type="submit" class="btn-primary" id="checkBtn">Run Desktop Valuation &rarr;</button>
+                        <button type="submit" class="btn-primary" id="checkBtn">Check My Eligibility &rarr;</button>
                         <div class="form-trust">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#38a169" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                            HMLR Land Registry &middot; Rightmove &middot; Zoopla &mdash; averaged. No credit check.
+                            No credit check. No commitment. Results in seconds.
                         </div>
                         <div id="valuationError" style="display:none;margin-top:14px;padding:12px 14px;background:#fff5f5;border:1px solid #fc8181;border-radius:8px;color:#742a2a;font-size:14px;"></div>
                     </form>
@@ -910,19 +893,12 @@
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#38a169" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
                             <strong style="color:#276749;font-size:16px;">Agreement in Principle — You Qualify</strong>
                         </div>
-                        <div id="sourceBreakdown" style="background:white;border-radius:8px;padding:14px;margin-bottom:12px;border:1px solid #c6f6d5;">
-                            <div style="font-size:11px;color:#718096;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;">Desktop Valuation &mdash; 3-Source Average</div>
-                            <div id="sourceRows" style="display:flex;flex-direction:column;gap:6px;"></div>
-                            <div id="sourceAverage" style="margin-top:10px;padding-top:10px;border-top:1px dashed #cbd5e0;display:flex;justify-content:space-between;align-items:center;"></div>
-                        </div>
                         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;" id="aipDetails"></div>
                     </div>
                     <p style="font-size:14px;color:#4a5568;margin-bottom:16px;">To proceed, enter your contact details and we'll confirm your offer within 48 hours.</p>
                     <div class="contact-form" id="contactForm">
                         <input type="hidden" id="h_house_number" name="house_number">
                         <input type="hidden" id="h_postcode" name="postcode">
-                        <input type="hidden" id="h_property_type" name="property_type">
-                        <input type="hidden" id="h_condition" name="condition">
                         <input type="hidden" id="h_property_value" name="property_value">
                         <input type="hidden" id="h_mortgage_balance" name="mortgage_balance">
                         <input type="hidden" id="h_loan_amount" name="loan_amount">
@@ -952,7 +928,7 @@
                 <div id="formStep3" style="display:none;">
                     <div style="background:#fff5f5;border:2px solid #fc8181;border-radius:12px;padding:20px;margin-bottom:20px;text-align:center;">
                         <p style="color:#c53030;font-weight:600;margin-bottom:8px;">Above our 70% LTV policy</p>
-                        <p id="declineDetail" style="color:#744210;font-size:14px;">Based on the 3-source desktop valuation, your loan-to-value exceeds our 70% maximum. We can't advance this application to payment, but we may still be able to help on a bespoke basis.</p>
+                        <p id="declineDetail" style="color:#744210;font-size:14px;">Based on the figures you've entered, your loan-to-value exceeds our 70% maximum. We can't advance this application to payment, but we may still be able to help on a bespoke basis.</p>
                         <a href="tel:+442080000000" class="btn-primary" style="display:inline-block;margin-top:16px;text-decoration:none;">Call Us Now</a>
                     </div>
                 </div>
@@ -1226,12 +1202,12 @@
             });
         });
 
-        // Step 1: Desktop valuation — calls /valuation (HMLR + Rightmove/Zoopla AVMs),
-        // shows 3-source breakdown, enforces 70% hard gate against the average.
-        // The USP: the borrower sees a real desktop valuation BEFORE they pay.
-        const VALUATION_URL = 'https://uavjeywctezxcchoyboz.supabase.co/functions/v1/valuation';
+        // Step 1: Self-reported LTV check (simulated valuation — desktop-valuation
+        // feature is disabled until we have live HMLR data across all postcodes).
+        // We compute LTV locally from self-reported property value + debt and
+        // enforce the 70% hard gate. The server-side hard gate in create-checkout
+        // re-reads ltv from the lead snapshot, so a DOM-edit can't bypass it.
         const HARD_GATE_LTV = 70;
-        let LATEST_VALUATION = null;   // cached so submitContactForm can forward it
         const fmtGBP = v => '£' + Math.round(v).toLocaleString('en-GB');
         const parseAmount = (val) => {
             val = String(val || '').trim().toUpperCase();
@@ -1250,23 +1226,27 @@
             el.style.display = 'none';
         }
 
-        document.getElementById('propertyForm').addEventListener('submit', async function(e) {
+        document.getElementById('propertyForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const btn = document.getElementById('checkBtn');
-            const restoreBtn = () => { btn.textContent = 'Run Desktop Valuation →'; btn.disabled = false; };
-            btn.textContent = 'Running HMLR + AVM lookup…';
+            const restoreBtn = () => { btn.innerHTML = 'Check My Eligibility &rarr;'; btn.disabled = false; };
+            btn.textContent = 'Checking…';
             btn.disabled = true;
             clearValuationError();
 
             const houseNumber      = document.getElementById('house_number').value.trim();
             const postcode         = document.getElementById('postcode').value.trim().toUpperCase();
-            const propertyType     = document.getElementById('property_type').value;
-            const condition        = document.getElementById('property_condition').value;
+            const propertyValue    = parseAmount(document.getElementById('property_value').value);
             const mortgageBalance  = parseAmount(document.getElementById('mortgage_balance').value);
             const loanAmount       = parseAmount(document.getElementById('loan_amount').value);
 
-            if (!houseNumber || !postcode || !propertyType || !condition) {
-                showValuationError('Please fill in every field before running the valuation.');
+            if (!houseNumber || !postcode) {
+                showValuationError('Please enter your house number and postcode.');
+                restoreBtn();
+                return;
+            }
+            if (!Number.isFinite(propertyValue) || propertyValue <= 0) {
+                showValuationError('Please enter a valid property value (e.g., 550k or 1.2m).');
                 restoreBtn();
                 return;
             }
@@ -1278,61 +1258,14 @@
             }
 
             const totalDebt = mortgageBalance + loanAmount;
-
-            // Call the valuation engine — totalDebt is what LTV is measured against.
-            let valuation;
-            try {
-                const resp = await fetch(VALUATION_URL, {
-                    method: 'POST',
-                    headers: { 'content-type': 'application/json' },
-                    body: JSON.stringify({
-                        postcode,
-                        propertyNumber: houseNumber,
-                        propertyType,
-                        condition,
-                        loanAmount: totalDebt,
-                    }),
-                });
-                const json = await resp.json();
-                if (!resp.ok) {
-                    if (json && json.error === 'invalid_input') {
-                        showValuationError('Please check the property details and try again.');
-                    } else if (json && json.error === 'valuation_failed') {
-                        showValuationError('Valuation service is temporarily unavailable. Please try again in a moment.');
-                    } else {
-                        showValuationError('We could not run a desktop valuation for that postcode. Please call us for a manual quote.');
-                    }
-                    restoreBtn();
-                    return;
-                }
-                valuation = json;
-            } catch (err) {
-                console.error('[valuation] network error', err);
-                showValuationError('Network error running the valuation. Check your connection and try again.');
-                restoreBtn();
-                return;
-            }
-
-            // Need the multi-source breakdown to show the 3-source panel.
-            if (!valuation || !valuation.multiSource || !Array.isArray(valuation.multiSource.sources)) {
-                showValuationError('The valuation came back without enough data to quote. Please call us.');
-                restoreBtn();
-                return;
-            }
-
-            LATEST_VALUATION = valuation;
-
-            const avg = Number(valuation.multiSource.average) || 0;
-            const ltvExact = avg > 0 ? (totalDebt / avg) * 100 : Infinity;
+            const ltvExact = (totalDebt / propertyValue) * 100;
             const ltvRounded = Math.round(ltvExact * 10) / 10;
-            const availableEquity = Math.max(0, avg - mortgageBalance);
+            const availableEquity = Math.max(0, propertyValue - mortgageBalance);
 
             // Persist normalised values for the contact step + T&Cs page.
             document.getElementById('h_house_number').value     = houseNumber;
             document.getElementById('h_postcode').value         = postcode;
-            document.getElementById('h_property_type').value    = propertyType;
-            document.getElementById('h_condition').value        = condition;
-            document.getElementById('h_property_value').value   = Math.round(avg);
+            document.getElementById('h_property_value').value   = Math.round(propertyValue);
             document.getElementById('h_mortgage_balance').value = mortgageBalance;
             document.getElementById('h_loan_amount').value      = loanAmount;
             document.getElementById('h_ltv').value              = ltvRounded;
@@ -1341,7 +1274,7 @@
             // Hard gate — blocks payment both client-side AND server-side (create-checkout).
             if (ltvExact > HARD_GATE_LTV) {
                 document.getElementById('declineDetail').textContent =
-                    `Your 3-source average comes out at ${fmtGBP(avg)}, putting your LTV at ${ltvRounded}%. ` +
+                    `Based on the figures you've entered, your LTV comes out at ${ltvRounded}%. ` +
                     `That's above our ${HARD_GATE_LTV}% policy maximum, so we can't advance this application to payment. ` +
                     `We may still be able to help on a bespoke basis — give us a call.`;
                 document.getElementById('formStep1').style.display = 'none';
@@ -1349,27 +1282,15 @@
                 return;
             }
 
-            // Render the 3-source breakdown.
-            const rowsHtml = valuation.multiSource.sources.map(s => `
-                <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;">
-                    <div style="display:flex;align-items:center;gap:8px;">
-                        <span style="font-size:13px;color:#2d3748;">${s.name}</span>
-                        ${s.placeholder ? '<span style="font-size:10px;padding:2px 6px;background:#edf2f7;color:#4a5568;border-radius:10px;text-transform:uppercase;letter-spacing:.5px;">Derived</span>' : '<span style="font-size:10px;padding:2px 6px;background:#c6f6d5;color:#276749;border-radius:10px;text-transform:uppercase;letter-spacing:.5px;">Live</span>'}
-                    </div>
-                    <span style="font-size:14px;font-weight:600;color:#1a202c;">${fmtGBP(s.value)}</span>
-                </div>
-            `).join('');
-            document.getElementById('sourceRows').innerHTML = rowsHtml;
-            document.getElementById('sourceAverage').innerHTML = `
-                <span style="font-size:13px;font-weight:600;color:#2d3748;text-transform:uppercase;letter-spacing:.5px;">3-Source Average</span>
-                <span style="font-size:18px;font-weight:800;color:#276749;">${fmtGBP(avg)}</span>
-            `;
-
-            const ltvColor = ltvExact <= 50 ? '#276749' : ltvExact <= 65 ? '#276749' : '#c05621';
+            const ltvColor = ltvExact <= 65 ? '#276749' : '#c05621';
             document.getElementById('aipDetails').innerHTML = `
                 <div style="background:white;border-radius:8px;padding:12px;">
                     <div style="font-size:11px;color:#718096;text-transform:uppercase;letter-spacing:.5px;">Property</div>
                     <div style="font-size:15px;font-weight:700;color:#1a202c;">${houseNumber}, ${postcode}</div>
+                </div>
+                <div style="background:white;border-radius:8px;padding:12px;">
+                    <div style="font-size:11px;color:#718096;text-transform:uppercase;letter-spacing:.5px;">Estimated Value</div>
+                    <div style="font-size:15px;font-weight:700;color:#1a202c;">${fmtGBP(propertyValue)}</div>
                 </div>
                 <div style="background:white;border-radius:8px;padding:12px;">
                     <div style="font-size:11px;color:#718096;text-transform:uppercase;letter-spacing:.5px;">Loan Requested</div>
@@ -1379,7 +1300,7 @@
                     <div style="font-size:11px;color:#718096;text-transform:uppercase;letter-spacing:.5px;">LTV (Policy max ${HARD_GATE_LTV}%)</div>
                     <div style="font-size:15px;font-weight:700;color:${ltvColor};">${ltvRounded}%</div>
                 </div>
-                <div style="background:white;border-radius:8px;padding:12px;">
+                <div style="background:white;border-radius:8px;padding:12px;grid-column:span 2;">
                     <div style="font-size:11px;color:#718096;text-transform:uppercase;letter-spacing:.5px;">Available Equity</div>
                     <div style="font-size:15px;font-weight:700;color:#276749;">${fmtGBP(availableEquity)}</div>
                 </div>
@@ -1418,15 +1339,13 @@
             }
 
             // Manually collect data from hidden fields + contact fields.
-            // IMPORTANT: we forward the full valuation object so the server-side
-            // hard gate in handleCreateCheckoutRequest can re-verify LTV — a
-            // malicious user editing the DOM can't bypass it because the
-            // server re-reads valuationSnapshot.ltv before creating Stripe session.
+            // IMPORTANT: the server-side hard gate in handleCreateCheckoutRequest
+            // reads the top-level `ltv` number from the lead snapshot — so a
+            // DOM-edited client-side LTV can't bypass the 70% policy: lead-intake
+            // persists it, create-checkout re-reads it before Stripe session.
             const payload = {
                 house_number: document.getElementById('h_house_number').value,
                 postcode: document.getElementById('h_postcode').value,
-                property_type: document.getElementById('h_property_type').value,
-                condition: document.getElementById('h_condition').value,
                 property_value: document.getElementById('h_property_value').value,
                 mortgage_balance: document.getElementById('h_mortgage_balance').value,
                 loan_amount: document.getElementById('h_loan_amount').value,
@@ -1435,7 +1354,6 @@
                 name: document.getElementById('name').value.trim(),
                 email: document.getElementById('email').value.trim(),
                 phone: document.getElementById('phone').value.trim(),
-                valuation: LATEST_VALUATION,
             };
 
             // Store lead data in localStorage (used by /tcs-acceptance.html for the signature page)
