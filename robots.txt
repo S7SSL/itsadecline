@@ -1,3 +1,21 @@
 User-agent: *
 Allow: /
-Sitemap: https://www.itsadecline.com/sitemap.xml
+
+# Internal / not-for-indexing
+Disallow: /dashboard.html
+Disallow: /broker-demo.html
+Disallow: /upload.html
+Disallow: /multi.html
+Disallow: /DD_
+Disallow: /PPQ_
+Disallow: /installsmart-
+Disallow: /modern-classic-
+Disallow: /linkedin/
+Disallow: /legacy/
+Disallow: /api/
+Disallow: /supabase/
+Disallow: /tcs-acceptance.html
+Disallow: /thank-you.html
+Disallow: /pay.html
+
+Sitemap: https://itsadecline.com/sitemap.xml
