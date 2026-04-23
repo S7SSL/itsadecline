@@ -1,7 +1,7 @@
 User-agent: *
 Allow: /
 
-# Internal / not-for-indexing
+# Internal tooling, demo pages, and admin surfaces — never crawl.
 Disallow: /dashboard.html
 Disallow: /broker-demo.html
 Disallow: /upload.html
@@ -14,8 +14,11 @@ Disallow: /linkedin/
 Disallow: /legacy/
 Disallow: /api/
 Disallow: /supabase/
-Disallow: /tcs-acceptance.html
-Disallow: /thank-you.html
-Disallow: /pay.html
+
+# Payment-funnel pages (pay/thank-you/tcs-acceptance/booking) are NOT
+# blocked here on purpose. Each carries <meta name="robots" content="noindex, follow">
+# so search engines can crawl, read the noindex, and drop them cleanly.
+# Disallowing via robots.txt would prevent the noindex from being read,
+# which risks URL-only listings in SERPs if anything ever links to them.
 
 Sitemap: https://itsadecline.com/sitemap.xml

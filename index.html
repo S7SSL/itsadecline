@@ -32,22 +32,53 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <!-- Structured data: FinancialService + Organization -->
+    <!-- Structured data: Organization + FinancialService + WebSite + FAQPage -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@graph": [
         {
+          "@type": "Organization",
+          "@id": "https://itsadecline.com/#org",
+          "name": "Kaizen Finance Ltd",
+          "legalName": "Kaizen Finance Ltd",
+          "url": "https://itsadecline.com/",
+          "logo": "https://itsadecline.com/favicon.svg",
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "3rd Floor, 86-90 Paul Street",
+            "addressLocality": "London",
+            "postalCode": "EC2A 4NE",
+            "addressCountry": "GB"
+          }
+        },
+        {
           "@type": "FinancialService",
           "@id": "https://itsadecline.com/#business",
           "name": "itsadecline",
-          "alternateName": "ITSA",
+          "alternateName": ["ITSA", "ItsADecline"],
           "url": "https://itsadecline.com/",
           "logo": "https://itsadecline.com/favicon.svg",
           "image": "https://itsadecline.com/og-image.svg",
           "description": "UK finance broker connecting homeowners declined by high-street banks with specialist lenders for homeowner loans, second-charge mortgages, bridging finance and development finance.",
+          "disambiguatingDescription": "itsadecline is a lead generation service, not a lender. All lending decisions are made by FCA-authorised specialist lenders on our panel.",
+          "parentOrganization": {"@id": "https://itsadecline.com/#org"},
           "areaServed": {"@type": "Country", "name": "United Kingdom"},
           "email": "sl@itsadecline.com",
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "3rd Floor, 86-90 Paul Street",
+            "addressLocality": "London",
+            "postalCode": "EC2A 4NE",
+            "addressCountry": "GB"
+          },
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "contactType": "customer service",
+            "email": "sl@itsadecline.com",
+            "areaServed": "GB",
+            "availableLanguage": "English"
+          },
           "serviceType": [
             "Declined mortgage solutions",
             "Homeowner loans",
@@ -64,6 +95,60 @@
           "name": "itsadecline",
           "publisher": {"@id": "https://itsadecline.com/#business"},
           "inLanguage": "en-GB"
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://itsadecline.com/#faq",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Can I get a homeowner loan if I've been declined by my bank?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. Mainstream banks use rigid credit criteria that reject many applications. Specialist lenders take a holistic view — considering income, equity and circumstances rather than just credit score."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What is a second charge loan?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "A second charge loan is secured against your property, sitting behind your existing mortgage. It allows you to borrow additional funds without remortgaging, so your existing rate is unaffected."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How fast can I get a bridging loan?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Bridging finance can be arranged in as little as 48 hours in straightforward cases. Complex cases typically complete within 5–10 working days."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Do CCJs or defaults affect my chances?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Not necessarily. Many of our specialist lenders consider applications with adverse credit history, including CCJs, defaults and missed payments, depending on the amount, age and circumstances."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Is this service free?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "The initial consultation is completely free with no obligation. Any fees are clearly outlined before you proceed — there are no hidden costs."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Are you FCA authorised?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "itsadecline is a lead generation service. All lending decisions are made by our panel of FCA-authorised specialist lenders, who are regulated by the Financial Conduct Authority."
+              }
+            }
+          ]
         }
       ]
     }
@@ -809,7 +894,6 @@
     <!-- Consent-gated Meta Pixel (loaded by /js/ads.js only after Accept). No Google Ads on this page. -->
     <script>window.__itsaAdsDisableGoogleAds=true;window.__itsaAdsMetaEvents=[{name:'PageView'}];</script>
     <script src="/js/ads.js" defer></script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FinancialService","name":"itsadecline","description":"AI-powered service for people whose mortgage application has been declined. We analyse your case and identify next steps.","url":"https://www.itsadecline.com","areaServed":"GB","serviceType":"Mortgage Decline Analysis"}</script>
 </head>
 <body>
 
