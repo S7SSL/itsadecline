@@ -1,0 +1,57 @@
+name: IndexNow ping
+
+# Fires on every push to main that touches a deployable file. Sends a bulk
+# IndexNow submission to Bing (and Yandex/Naver/Seznam, who share the
+# protocol) so they crawl the fresh URLs within minutes instead of waiting
+# for their own discovery. GH Pages typically rebuilds in ~30-60s, so we
+# sleep a bit before pinging to avoid telling Bing to fetch a stale build.
+#
+# Verification file: /60a0cc06b8df4ce10529aabcb78d1e09.txt (must stay at
+# the site root — IndexNow fetches it to confirm ownership). Any URL
+# submitted must be on the same host as keyLocation.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '**.html'
+      - 'sitemap.xml'
+      - 'robots.txt'
+      - 'js/**'
+      - 'CNAME'
+  workflow_dispatch: {}
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Wait for GitHub Pages to rebuild
+        run: sleep 60
+
+      - name: Extract URLs from sitemap.xml
+        id: urls
+        run: |
+          python3 - <<'PY'
+          import re, json, pathlib
+          sm = pathlib.Path('sitemap.xml').read_text()
+          urls = re.findall(r'<loc>(.*?)</loc>', sm)
+          print('Found URLs:', urls)
+          pathlib.Path('urls.json').write_text(json.dumps({
+            "host": "itsadecline.com",
+            "key": "60a0cc06b8df4ce10529aabcb78d1e09",
+            "keyLocation": "https://itsadecline.com/60a0cc06b8df4ce10529aabcb78d1e09.txt",
+            "urlList": urls
+          }))
+          PY
+
+      - name: Submit to IndexNow
+        run: |
+          echo "Payload:"
+          cat urls.json
+          echo ""
+          curl -sS -X POST "https://api.indexnow.org/indexnow" \
+            -H "Content-Type: application/json; charset=utf-8" \
+            --data-binary @urls.json \
+            -w "\nHTTP %{http_code}\n"
