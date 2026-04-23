@@ -1,31 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-        <!-- Google tag (gtag.js) -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17990502106">
-function handleTitleUpload(input, caseRef) {
-    if (input.files && input.files[0]) {
-        var file = input.files[0];
-        var label = document.getElementById('upload-label-' + caseRef);
-        if (label) {
-            label.classList.add('attached');
-            var txt = label.querySelector('.upload-btn-text');
-            if (txt) txt.textContent = '\u{1F4CE} ' + (file.name.length > 18 ? file.name.substring(0, 18) + '\u2026' : file.name);
-        }
-        var status = document.getElementById('upload-status-' + caseRef);
-        if (status) status.textContent = ' \u2705 Attached';
-    }
-}
-
-</script>
-        <script>
-                    window.dataLayer = window.dataLayer || [];
-                    function gtag(){dataLayer.push(arguments);}
-                    gtag('js', new Date());
-                    gtag('config', 'AW-17990502106');
-        </script>
-    
     <meta charset="UTF-8">
+    <!-- Admin/funder dashboard is login-gated and should not load ad trackers. -->
+    <script>
+        function handleTitleUpload(input, caseRef) {
+            if (input.files && input.files[0]) {
+                var file = input.files[0];
+                var label = document.getElementById('upload-label-' + caseRef);
+                if (label) {
+                    label.classList.add('attached');
+                    var txt = label.querySelector('.upload-btn-text');
+                    if (txt) txt.textContent = '\u{1F4CE} ' + (file.name.length > 18 ? file.name.substring(0, 18) + '\u2026' : file.name);
+                }
+                var status = document.getElementById('upload-status-' + caseRef);
+                if (status) status.textContent = ' \u2705 Attached';
+            }
+        }
+    </script>
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%230d1b2a'/><text x='16' y='23' font-family='Arial,sans-serif' font-weight='900' font-size='18' fill='%23f59e0b' text-anchor='middle'>i%E2%86%93</text></svg>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>itsadecline — Admin Dashboard</title>
