@@ -393,6 +393,7 @@
  #signaturePad { height: 150px; }
  }
  </style>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body>
 
@@ -500,6 +501,10 @@
 
  <div class="cta-wrap">
  <a class="cta-button" href="https://buy.stripe.com/bJebIU4rK5w3frp1mN5ZC0i">Complete Proposal → £295</a>
+ </div>
+
+ <div class="cta-wrap" style="margin-top: 12px;">
+ <button class="cta-button" onclick="downloadPDF()" id="downloadBtn" style="background: #6b7280; cursor: pointer;">Download Signed Proposal (PDF)</button>
  </div>
 
  <div class="signature-block">
@@ -617,6 +622,22 @@ function confirmSignature() {
 }
 
 document.getElementById('dateField').valueAsDate = new Date();
+
+function downloadPDF() {
+ if (!signatureData) {
+ alert('Please sign the proposal first.');
+ return;
+ }
+ const element = document.querySelector('.page-header, main, .page-footer').parentElement;
+ const opt = {
+ margin: 0,
+ filename: 'PPQ_Proposal_Signed_' + new Date().toISOString().split('T')[0] + '.pdf',
+ image: { type: 'jpeg', quality: 0.98 },
+ html2canvas: { scale: 2 },
+ jsPDF: { orientation: 'portrait', unit: 'mm', format: 'a4' }
+ };
+ html2pdf().set(opt).save(element);
+}
 </script>
 
 </body>
