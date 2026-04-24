@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='28' font-size='28'>💰</text></svg>">
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Financing Proposal — itsadecline.com</title>
+ <style>
+ *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+ :root {
+ --navy: #1a2332;
+ --amber: #f59e0b;
+ --amber-light: #fef3c7;
+ --text: #1f2937;
+ --muted: #6b7280;
+ --border: #e5e7eb;
+ --white: #ffffff;
+ }
+
+ body {
+ font-family: 'Georgia', serif;
+ font-size: 14px;
+ line-height: 1.7;
+ color: var(--text);
+ background: var(--white);
+ max-width: 820px;
+ margin: 0 auto;
+ padding: 0;
+ }
+
+ .page-header {
+ background: var(--navy);
+ color: var(--white);
+ padding: 36px 48px 32px;
+ display: flex;
+ justify-content: space-between;
+ align-items: flex-end;
+ }
+ .logo-text {
+ font-family: 'Arial', sans-serif;
+ font-size: 22px;
+ font-weight: 700;
+ letter-spacing: 0.5px;
+ color: var(--white);
+ }
+ .logo-text span { color: var(--amber); }
+ .header-meta {
+ text-align: right;
+ font-family: 'Arial', sans-serif;
+ }
+ .header-meta .proposal-label {
+ font-size: 13px;
+ color: #94a3b8;
+ text-transform: uppercase;
+ letter-spacing: 1px;
+ }
+ .header-meta .client-name {
+ font-size: 19px;
+ font-weight: 700;
+ color: var(--white);
+ margin-top: 2px;
+ }
+ .header-meta .date {
+ font-size: 12px;
+ color: #94a3b8;
+ margin-top: 3px;
+ }
+
+ .amber-rule {
+ height: 4px;
+ background: var(--amber);
+ }
+
+ .page-body {
+ padding: 40px 48px 32px;
+ }
+
+ h2 {
+ font-family: 'Arial', sans-serif;
+ font-size: 11px;
+ font-weight: 700;
+ text-transform: uppercase;
+ letter-spacing: 2px;
+ color: var(--amber);
+ margin-bottom: 10px;
+ margin-top: 36px;
+ }
+ h2:first-child { margin-top: 0; }
+
+ h3 {
+ font-family: 'Arial', sans-serif;
+ font-size: 13px;
+ font-weight: 700;
+ color: var(--navy);
+ margin-bottom: 6px;
+ margin-top: 20px;
+ }
+
+ p { margin-bottom: 10px; color: var(--text); }
+
+ .section-divider {
+ border: none;
+ border-top: 1px solid var(--border);
+ margin: 32px 0 0;
+ }
+
+ .scope-list {
+ list-style: none;
+ padding: 0;
+ margin: 4px 0 0;
+ }
+ .scope-list li {
+ padding: 7px 0 7px 20px;
+ position: relative;
+ border-bottom: 1px solid var(--border);
+ font-size: 13.5px;
+ }
+ .scope-list li:last-child { border-bottom: none; }
+ .scope-list li::before {
+ content: '→';
+ position: absolute;
+ left: 0;
+ color: var(--amber);
+ font-weight: 700;
+ }
+
+ .terms-box {
+ background: var(--navy);
+ border-radius: 8px;
+ padding: 28px 32px;
+ margin-top: 12px;
+ display: grid;
+ grid-template-columns: 1fr 1fr;
+ gap: 24px;
+ }
+ .term-item .term-label {
+ font-family: 'Arial', sans-serif;
+ font-size: 13px;
+ color: #94a3b8;
+ text-transform: uppercase;
+ letter-spacing: 1px;
+ }
+ .term-item .term-value {
+ font-family: 'Arial', sans-serif;
+ font-size: 18px;
+ color: var(--amber);
+ font-weight: 700;
+ margin-top: 4px;
+ }
+
+ .highlight-box {
+ background: var(--amber-light);
+ border-left: 4px solid var(--amber);
+ border-radius: 4px;
+ padding: 20px;
+ margin: 16px 0;
+ font-size: 13.5px;
+ }
+ .highlight-box strong {
+ color: var(--navy);
+ }
+
+ .issue-box {
+ background: #fee2e2;
+ border-left: 4px solid #dc2626;
+ border-radius: 4px;
+ padding: 16px;
+ margin: 12px 0;
+ font-size: 13.5px;
+ }
+ .issue-box .issue-title {
+ font-weight: 700;
+ color: #991b1b;
+ margin-bottom: 6px;
+ }
+
+ .outcomes-grid {
+ display: grid;
+ grid-template-columns: 1fr 1fr 1fr;
+ gap: 16px;
+ margin-top: 12px;
+ }
+ .outcome-card {
+ background: #f8fafc;
+ border-left: 3px solid var(--amber);
+ border-radius: 4px;
+ padding: 16px;
+ }
+ .outcome-card .outcome-title {
+ font-family: 'Arial', sans-serif;
+ font-size: 12.5px;
+ font-weight: 700;
+ color: var(--navy);
+ margin-bottom: 6px;
+ }
+ .outcome-card p {
+ font-size: 12.5px;
+ color: var(--muted);
+ margin: 0;
+ line-height: 1.5;
+ }
+
+ .steps-list {
+ list-style: none;
+ padding: 0;
+ margin-top: 10px;
+ counter-reset: steps;
+ }
+ .steps-list li {
+ counter-increment: steps;
+ display: flex;
+ align-items: flex-start;
+ gap: 14px;
+ padding: 10px 0;
+ border-bottom: 1px solid var(--border);
+ font-size: 13.5px;
+ }
+ .steps-list li:last-child { border-bottom: none; }
+ .steps-list li::before {
+ content: counter(steps);
+ background: var(--amber);
+ color: var(--white);
+ font-family: 'Arial', sans-serif;
+ font-weight: 700;
+ font-size: 11px;
+ width: 22px;
+ height: 22px;
+ border-radius: 50%;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ flex-shrink: 0;
+ margin-top: 1px;
+ }
+
+ .cta-wrap {
+ text-align: center;
+ margin: 28px 0 8px;
+ }
+ .cta-button {
+ display: inline-block;
+ background: var(--amber);
+ color: var(--white);
+ font-family: 'Arial', sans-serif;
+ font-weight: 700;
+ font-size: 14px;
+ letter-spacing: 0.5px;
+ text-decoration: none;
+ padding: 13px 36px;
+ border-radius: 4px;
+ transition: all 0.3s ease;
+ }
+ .cta-button:hover {
+ background: #f97316;
+ transform: translateY(-2px);
+ box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+ }
+
+ .signature-block {
+ margin-top: 32px;
+ padding-top: 24px;
+ border-top: 1px solid var(--border);
+ font-family: 'Arial', sans-serif;
+ }
+ .signature-block .sig-label {
+ font-size: 11px;
+ text-transform: uppercase;
+ letter-spacing: 1px;
+ color: var(--muted);
+ margin-bottom: 16px;
+ }
+
+ .signature-pad-container {
+ margin-bottom: 24px;
+ padding: 16px;
+ background: #f8fafc;
+ border-radius: 6px;
+ border: 1px solid var(--border);
+ }
+ .signature-pad-label {
+ font-size: 12px;
+ font-weight: 700;
+ color: var(--navy);
+ margin-bottom: 12px;
+ display: block;
+ text-transform: uppercase;
+ letter-spacing: 0.5px;
+ }
+ #signaturePad {
+ border: 2px solid var(--border);
+ border-radius: 4px;
+ display: block;
+ background: white;
+ cursor: crosshair;
+ width: 100%;
+ max-width: 100%;
+ touch-action: none;
+ }
+ .sig-controls {
+ display: flex;
+ gap: 12px;
+ margin-top: 12px;
+ justify-content: flex-end;
+ }
+ .sig-button {
+ font-family: 'Arial', sans-serif;
+ font-size: 12px;
+ padding: 8px 16px;
+ border: none;
+ border-radius: 4px;
+ cursor: pointer;
+ font-weight: 600;
+ transition: all 0.2s ease;
+ }
+ .sig-clear {
+ background: #e5e7eb;
+ color: var(--text);
+ }
+ .sig-clear:hover {
+ background: #d1d5db;
+ }
+ .sig-confirm {
+ background: var(--amber);
+ color: white;
+ }
+ .sig-confirm:hover {
+ background: #f97316;
+ }
+ #signedStatus {
+ font-size: 12px;
+ color: #059669;
+ margin-top: 8px;
+ display: none;
+ font-weight: 600;
+ }
+
+ .sig-row {
+ display: flex;
+ gap: 40px;
+ margin-top: 4px;
+ }
+ .sig-field {
+ flex: 1;
+ }
+ .sig-line {
+ border-bottom: 1px solid var(--text);
+ height: 40px;
+ margin-bottom: 6px;
+ background: white;
+ }
+ .sig-field input {
+ width: 100%;
+ border: none;
+ border-bottom: 1px solid var(--text);
+ padding: 8px 0;
+ font-family: 'Arial', sans-serif;
+ font-size: 14px;
+ }
+ .sig-field-label {
+ font-size: 11px;
+ color: var(--muted);
+ }
+
+ .page-footer {
+ background: var(--navy);
+ color: #94a3b8;
+ font-family: 'Arial', sans-serif;
+ font-size: 11px;
+ padding: 16px 48px;
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+ margin-top: 40px;
+ }
+ .page-footer a { color: var(--amber); text-decoration: none; font-weight: 600; }
+
+ @media print {
+ body { max-width: 100%; font-size: 12px; }
+ .page-header { padding: 24px 32px 20px; }
+ .page-body { padding: 28px 32px 24px; }
+ .page-footer { margin-top: 24px; padding: 12px 32px; }
+ .signature-pad-container { display: none; }
+ }
+
+ @media (max-width: 600px) {
+ .page-header { flex-direction: column; gap: 16px; padding: 24px; }
+ .header-meta { text-align: left; }
+ .page-body { padding: 28px 24px; }
+ .terms-box { grid-template-columns: 1fr; }
+ .outcomes-grid { grid-template-columns: 1fr; }
+ .page-footer { flex-direction: column; gap: 6px; padding: 16px 24px; }
+ #signaturePad { height: 150px; }
+ }
+ </style>
+</head>
+<body>
+
+ <header class="page-header">
+ <div class="logo-text">itsadecline<span>.com</span></div>
+ <div class="header-meta">
+ <div class="proposal-label">Financing Proposal</div>
+ <div class="client-name">Park Place Queensway Ltd</div>
+ <div class="date">April 2026 · Confidential</div>
+ </div>
+ </header>
+ <div class="amber-rule"></div>
+
+ <main class="page-body">
+
+ <h2>Executive Summary</h2>
+ <p>We have reviewed your enquiry regarding financing for the Stevenage Mixed Commercial retail investment property. This proposal sets out the indicative lending parameters, key conditions, and next steps for a potential facility with itsadecline.com.</p>
+ <p>For retail investment properties, we operate within strict lending guidelines designed to balance opportunity with prudent risk management. Our maximum loan to value (LTV) is 50%, with a typical target of 45% LTV by facility expiry.</p>
+
+ <hr class="section-divider">
+
+ <h2>Lending Parameters</h2>
+ <div class="terms-box">
+ <div class="term-item">
+ <div class="term-label">Maximum LTV</div>
+ <div class="term-value">50%</div>
+ </div>
+ <div class="term-item">
+ <div class="term-label">Target LTV (Year 5)</div>
+ <div class="term-value">45%</div>
+ </div>
+ <div class="term-item">
+ <div class="term-label">Indicative Loan</div>
+ <div class="term-value">£1.3m</div>
+ </div>
+ <div class="term-item">
+ <div class="term-label">Indicative Rate</div>
+ <div class="term-value">6.00% p.a.</div>
+ </div>
+ </div>
+ <p style="margin-top: 16px;"><strong>Valuation Basis:</strong> Property valued at £2.6m. At 50% LTV, maximum loan = £1.3m.</p>
+
+ <hr class="section-divider">
+
+ <h2>Interest Rate</h2>
+ <div class="highlight-box">
+ <strong>Rate:</strong> 2.25% above Bank of England Base Rate<br>
+ <strong>Current BoE Base Rate:</strong> 3.75%<br>
+ <strong>Indicative All-In Rate:</strong> 6.00% per annum
+ </div>
+
+ <hr class="section-divider">
+
+ <h2>Key Outstanding Items</h2>
+
+ <h3>1. Revolving Credit Facility</h3>
+ <p>You enquired about structuring this as a revolving credit facility. Unfortunately, such facilities are not viable for this transaction.</p>
+ <div class="issue-box">
+ <div class="issue-title">Reason</div>
+ <p>The minimum borrowing amount for any revolving facility with itsadecline.com is <strong>£3.0m</strong>. As your indicative loan is £1.3m, this product type is not available. A standard term facility is the appropriate structure.</p>
+ </div>
+
+ <h3>2. Outstanding Charges on Title</h3>
+ <p>You indicated the property is owned unencumbered. However, Companies House records show 4 charges outstanding in favour of Skyred International SARL:</p>
+ <div class="issue-box">
+ <div class="issue-title">Charges Requiring Clarification</div>
+ <ul style="margin-left: 16px; margin-top: 8px;">
+ <li>2 charges registered in 2018</li>
+ <li>2 charges registered in 2021</li>
+ </ul>
+ <p style="margin-top: 8px;">We require formal clarification: Are these already discharged (paperwork pending at Companies House), still active, or to be subordinated to our first legal charge?</p>
+ </div>
+
+ <h3>3. Holistic Credit Assessment</h3>
+ <p>We assess all credit on a holistic basis. Our records indicate:</p>
+ <ul class="scope-list">
+ <li><strong>Sukru Alibasic</strong> — Director of Park Place Queensway Ltd and other entities</li>
+ <li><strong>Burak Bulbologlu</strong> — Director of Park Place Queensway Ltd and at least 3 other companies</li>
+ </ul>
+ <p style="margin-top: 10px;">As part of due diligence, we require:</p>
+ <ul class="scope-list">
+ <li><strong>Directorships</strong> — Complete list for each principal</li>
+ <li><strong>Financials</strong> — Latest accounts for all related entities</li>
+ <li><strong>Cross-Guarantees</strong> — Details of any inter-company liabilities</li>
+ <li><strong>Personal Statements</strong> — Financial position of both principals</li>
+ </ul>
+
+ <hr class="section-divider">
+
+ <h2 style="font-size: 10px; margin-top: 28px; margin-bottom: 8px;">Fees & Charges</h2>
+ <p style="font-size: 12.5px; color: #6b7280;">
+ <strong>ITSA Packaging Charge:</strong> 1.0% · <strong>Bank / Funder Charges:</strong> 1.0% · <strong>Total:</strong> 2.0%<br>
+ <span style="font-size: 12px; color: #9ca3af;">All fees deducted from drawdown at completion, payable on an irrevocable basis.</span>
+ </p>
+
+ <hr class="section-divider">
+
+ <h2>Next Steps</h2>
+ <ol class="steps-list">
+ <li>Clarify the status of the 4 Skyred International SARL charges on title</li>
+ <li>Provide comprehensive directorships and financial information for both principals</li>
+ <li>Submit supporting financial documentation and accounts</li>
+ <li>Confirm your appetite to proceed with the facility structure and indicative terms</li>
+ </ol>
+
+ <div class="cta-wrap">
+ <a class="cta-button" href="https://buy.stripe.com/bJebIU4rK5w3frp1mN5ZC0i">Complete Proposal → £295</a>
+ </div>
+
+ <div class="signature-block">
+ <div class="sig-label">Agreed and accepted</div>
+ 
+ <div class="signature-pad-container">
+ <label class="signature-pad-label">✎ Draw your signature below</label>
+ <canvas id="signaturePad" width="400" height="140"></canvas>
+ <div class="sig-controls">
+ <button class="sig-button sig-clear" onclick="clearSignature()">Clear</button>
+ <button class="sig-button sig-confirm" onclick="confirmSignature()">Confirm Signature</button>
+ </div>
+ <div id="signedStatus">✓ Signature captured</div>
+ </div>
+ 
+ <div class="sig-row">
+ <div class="sig-field">
+ <div id="signatureDisplay"></div>
+ <div class="sig-field-label">Signature</div>
+ </div>
+ <div class="sig-field">
+ <input type="date" id="dateField">
+ <div class="sig-field-label">Date</div>
+ </div>
+ </div>
+ </div>
+
+ </main>
+
+ <footer class="page-footer">
+ <span><a href="mailto:sat@itsadecline.com">sat@itsadecline.com</a></span>
+ <span><a href="https://www.itsadecline.com">itsadecline.com</a> · Confidential</span>
+ </footer>
+
+<script>
+const canvas = document.getElementById('signaturePad');
+const ctx = canvas.getContext('2d');
+let isDrawing = false;
+let signatureData = null;
+
+function resizeCanvas() {
+ const dpr = window.devicePixelRatio || 1;
+ const rect = canvas.getBoundingClientRect();
+ canvas.width = rect.width * dpr;
+ canvas.height = rect.height * dpr;
+ ctx.scale(dpr, dpr);
+ ctx.lineCap = 'round';
+ ctx.lineJoin = 'round';
+ ctx.lineWidth = 2.5;
+ ctx.strokeStyle = '#1a2332';
+}
+
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+canvas.addEventListener('mousedown', startDrawing);
+canvas.addEventListener('mousemove', draw);
+canvas.addEventListener('mouseup', stopDrawing);
+canvas.addEventListener('mouseout', stopDrawing);
+
+canvas.addEventListener('touchstart', handleTouch);
+canvas.addEventListener('touchmove', handleTouch);
+canvas.addEventListener('touchend', stopDrawing);
+
+function handleTouch(e) {
+ e.preventDefault();
+ const touch = e.touches[0];
+ const mouseEvent = new MouseEvent(e.type === 'touchstart' ? 'mousedown' : 'mousemove', {
+ clientX: touch.clientX,
+ clientY: touch.clientY
+ });
+ canvas.dispatchEvent(mouseEvent);
+}
+
+function startDrawing(e) {
+ const rect = canvas.getBoundingClientRect();
+ const x = e.clientX - rect.left;
+ const y = e.clientY - rect.top;
+ isDrawing = true;
+ ctx.beginPath();
+ ctx.moveTo(x, y);
+}
+
+function draw(e) {
+ if (!isDrawing) return;
+ const rect = canvas.getBoundingClientRect();
+ const x = e.clientX - rect.left;
+ const y = e.clientY - rect.top;
+ ctx.lineTo(x, y);
+ ctx.stroke();
+}
+
+function stopDrawing() {
+ isDrawing = false;
+ ctx.closePath();
+}
+
+function clearSignature() {
+ ctx.clearRect(0, 0, canvas.width, canvas.height);
+ signatureData = null;
+ document.getElementById('signatureDisplay').innerHTML = '';
+ document.getElementById('signedStatus').style.display = 'none';
+}
+
+function confirmSignature() {
+ signatureData = canvas.toDataURL();
+ const signatureDisplay = document.getElementById('signatureDisplay');
+ const img = document.createElement('img');
+ img.src = signatureData;
+ img.style.maxHeight = '40px';
+ img.style.maxWidth = '100%';
+ signatureDisplay.innerHTML = '';
+ signatureDisplay.appendChild(img);
+ document.getElementById('signedStatus').style.display = 'block';
+}
+
+document.getElementById('dateField').valueAsDate = new Date();
+</script>
+
+</body>
+</html>
