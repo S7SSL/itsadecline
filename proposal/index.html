@@ -393,7 +393,6 @@
  #signaturePad { height: 150px; }
  }
  </style>
- <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body>
 
@@ -504,7 +503,7 @@
  </div>
 
  <div class="cta-wrap" style="margin-top: 12px;">
- <button class="cta-button" onclick="downloadPDF()" id="downloadBtn" style="background: #6b7280; cursor: pointer;">Download Signed Proposal (PDF)</button>
+ <button class="cta-button" onclick="printProposal()" id="downloadBtn" style="background: #6b7280; cursor: pointer;">Print/Save as PDF</button>
  </div>
 
  <div class="signature-block">
@@ -623,20 +622,41 @@ function confirmSignature() {
 
 document.getElementById('dateField').valueAsDate = new Date();
 
-function downloadPDF() {
+// Auto-save signature to localStorage
+function autoSave() {
+ if (signatureData) {
+ localStorage.setItem('proposal_signature', signatureData);
+ localStorage.setItem('proposal_date', document.getElementById('dateField').value);
+ }
+}
+
+// Restore from localStorage if available
+window.addEventListener('load', function() {
+ const saved = localStorage.getItem('proposal_signature');
+ if (saved) {
+ const img = document.createElement('img');
+ img.src = saved;
+ img.style.maxHeight = '40px';
+ document.getElementById('signatureDisplay').innerHTML = '';
+ document.getElementById('signatureDisplay').appendChild(img);
+ document.getElementById('signedStatus').style.display = 'block';
+ signatureData = saved;
+ }
+});
+
+// Auto-save on confirm
+const originalConfirm = window.confirmSignature;
+window.confirmSignature = function() {
+ originalConfirm();
+ autoSave();
+};
+
+function printProposal() {
  if (!signatureData) {
  alert('Please sign the proposal first.');
  return;
  }
- const element = document.querySelector('.page-header, main, .page-footer').parentElement;
- const opt = {
- margin: 0,
- filename: 'PPQ_Proposal_Signed_' + new Date().toISOString().split('T')[0] + '.pdf',
- image: { type: 'jpeg', quality: 0.98 },
- html2canvas: { scale: 2 },
- jsPDF: { orientation: 'portrait', unit: 'mm', format: 'a4' }
- };
- html2pdf().set(opt).save(element);
+ window.print();
 }
 </script>
 
