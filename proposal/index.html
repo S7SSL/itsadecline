@@ -498,17 +498,9 @@
  <li>Confirm your appetite to proceed with the facility structure and indicative terms</li>
  </ol>
 
- <div class="cta-wrap">
- <a class="cta-button" href="https://buy.stripe.com/bJebIU4rK5w3frp1mN5ZC0i">Complete Proposal → £295</a>
- </div>
-
- <div class="cta-wrap" style="margin-top: 12px;">
- <button class="cta-button" onclick="printProposal()" id="downloadBtn" style="background: #6b7280; cursor: pointer;">Print/Save as PDF</button>
- </div>
-
  <div class="signature-block">
  <div class="sig-label">Agreed and accepted</div>
- 
+
  <div class="signature-pad-container">
  <label class="signature-pad-label">✎ Draw your signature below</label>
  <canvas id="signaturePad" width="400" height="140"></canvas>
@@ -518,7 +510,15 @@
  </div>
  <div id="signedStatus">✓ Signature captured</div>
  </div>
- 
+
+ <div class="signature-pad-container" style="margin-top: 16px;">
+ <label class="signature-pad-label">📧 Your email address</label>
+ <input type="email" id="clientEmail" placeholder="client@example.com"
+        autocomplete="email"
+        style="width: 100%; padding: 12px; border: 2px solid var(--border);
+               border-radius: 4px; font-size: 14px; font-family: Arial, sans-serif;">
+ </div>
+
  <div class="sig-row">
  <div class="sig-field">
  <div id="signatureDisplay"></div>
@@ -529,6 +529,32 @@
  <div class="sig-field-label">Date</div>
  </div>
  </div>
+ </div>
+
+ <div class="cta-wrap">
+ <button class="cta-button" id="submitBtn" onclick="submitProposalForSignature()"
+         style="cursor: pointer; border: none; font: inherit;">
+ Submit Proposal for Signing
+ </button>
+ </div>
+
+ <div id="submissionStatus" style="text-align: center; margin-top: 12px; font-size: 13px; color: #059669; display: none;">
+ ✓ Proposal submitted. Unlocking payment…
+ </div>
+
+ <div class="cta-wrap" style="margin-top: 12px;">
+ <a id="paymentLink" class="cta-button" href="#"
+    style="background: #6b7280; cursor: not-allowed; opacity: 0.5; pointer-events: none;"
+    aria-disabled="true">
+ Complete Proposal → £295 (unlocks after signature)
+ </a>
+ </div>
+
+ <div class="cta-wrap" style="margin-top: 12px;">
+ <button class="cta-button" onclick="printProposal()" id="downloadBtn"
+         style="background: #6b7280; cursor: pointer; border: none; font: inherit;">
+ Print/Save as PDF
+ </button>
  </div>
 
  </main>
@@ -657,6 +683,82 @@ function printProposal() {
  return;
  }
  window.print();
+}
+
+// ----------------------------------------------------------------------------
+// Proposal submission flow — posts to submit-proposal Edge Function, then
+// unlocks the Stripe payment button. On successful payment the webhook
+// (proposal-payment-complete) emails the client with the signed PDF attached.
+// ----------------------------------------------------------------------------
+const SUBMIT_ENDPOINT = 'https://uavjeywctezxcchoyboz.supabase.co/functions/v1/submit-proposal';
+const STRIPE_CHECKOUT_URL = 'https://buy.stripe.com/bJebIU4rK5w3frp1mN5ZC0i';
+
+async function submitProposalForSignature() {
+  if (!signatureData) {
+    alert('Please draw and confirm your signature first.');
+    return;
+  }
+
+  const emailEl = document.getElementById('clientEmail');
+  const email = (emailEl.value || '').trim();
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    alert('Please enter a valid email address.');
+    emailEl.focus();
+    return;
+  }
+
+  const dateField = document.getElementById('dateField').value;
+  if (!dateField) {
+    alert('Please select a date.');
+    return;
+  }
+
+  const submitBtn = document.getElementById('submitBtn');
+  const originalLabel = submitBtn.textContent;
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Submitting…';
+
+  try {
+    const response = await fetch(SUBMIT_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        signature: signatureData,
+        email: email,
+        dateSigned: dateField,
+        proposalName: 'PPQ_Proposal_24022026',
+        proposalTitle: 'Financing Proposal — Park Place Queensway Ltd',
+        clientName: 'Park Place Queensway Ltd'
+      })
+    });
+
+    if (!response.ok) {
+      const errText = await response.text().catch(() => '');
+      throw new Error('Server ' + response.status + ': ' + errText);
+    }
+    await response.json();
+
+    document.getElementById('submissionStatus').style.display = 'block';
+
+    const paymentLink = document.getElementById('paymentLink');
+    paymentLink.href = STRIPE_CHECKOUT_URL + '?prefilled_email=' + encodeURIComponent(email);
+    paymentLink.style.background = 'var(--amber)';
+    paymentLink.style.cursor = 'pointer';
+    paymentLink.style.opacity = '1';
+    paymentLink.style.pointerEvents = 'auto';
+    paymentLink.removeAttribute('aria-disabled');
+    paymentLink.textContent = 'Complete Proposal → £295';
+
+    submitBtn.textContent = '✓ Submitted';
+
+    // Soft auto-redirect so the client never has to hunt for the next step.
+    setTimeout(function () { paymentLink.click(); }, 2500);
+  } catch (error) {
+    console.error('Submission failed:', error);
+    alert('Submission failed: ' + error.message + '\n\nPlease try again or email sat@itsadecline.com.');
+    submitBtn.disabled = false;
+    submitBtn.textContent = originalLabel;
+  }
 }
 </script>
 
