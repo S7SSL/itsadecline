@@ -4,7 +4,7 @@
  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='28' font-size='28'>💰</text></svg>">
  <meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <title>Financing Proposal — itsadecline.com</title>
+ <title>Investment Proposal — itsadecline.com</title>
  <style>
  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -458,36 +458,32 @@
 
  <h2>Key Terms & Conditions</h2>
 
- <h3>1. Co-Investment Structure</h3>
- <p>This proposal outlines a bridged acquisition and residential conversion strategy. Your equity commitment of £350,000 will be deployed as follows:</p>
+ <h3>Co-Investment Structure</h3>
+ <p>This proposal outlines a bridged residential conversion strategy. Your equity commitment of £350,000 bridges the acquisition and refurbishment phases, with bridge finance covering the shortfall:</p>
  <ul class="scope-list">
  <li><strong>Acquisition Costs:</strong> Purchase price + Stamp Duty + legal fees (£1,117,500)</li>
  <li><strong>Refurbishment:</strong> Modernisation and 3-flat conversion (£200,000)</li>
+ <li><strong>Bridge Finance (0–18 months):</strong> Covers acquisition and refurb shortfall at 0.85–1.0% per month</li>
+ <li><strong>Permanent Finance (18+ months):</strong> Refinance to 6% commercial facility on stabilised asset</li>
  </ul>
 
- <h3>2. Bridge Finance Terms</h3>
- <p>Bridge facility to cover acquisition and refurbishment phases:</p>
- <div class="issue-box">
- <div class="issue-title">Bridge Finance Assumptions</div>
- <p>Rate: 0.85–1.0% per month | Term: 18–24 months | Exit: Refinance to permanent 6% facility on stabilised asset</p>
- </div>
-
- <h3>3. Permanent Financing</h3>
- <p>Upon stabilisation (month 18), asset will be refinanced into permanent commercial debt structure:</p>
+ <h3>Debt Service & Returns</h3>
+ <p>Upon stabilisation (Month 18), your equity generates:</p>
  <ul class="scope-list">
- <li><strong>Amount:</strong> £700,000</li>
- <li><strong>Rate:</strong> 6.0% per annum</li>
- <li><strong>DSCR:</strong> 4.29x (strong lender capacity)</li>
- <li><strong>Monthly Cashflow:</strong> £11,500 post-interest</li>
+ <li><strong>Monthly Cashflow:</strong> £11,500 (post-interest, permanent phase)</li>
+ <li><strong>Annual Yield:</strong> £138,000 on £350k equity = 39.4% annual yield</li>
+ <li><strong>Exit Profit:</strong> £1,173,450 (after all costs and bridge financing)</li>
+ <li><strong>Total Multiple:</strong> 3.35x over 18 months (~89% annualised IRR)</li>
  </ul>
 
- <h3>4. Next Steps</h3>
+ <h3>Next Steps</h3>
  <p>To proceed with this investment opportunity:</p>
  <ul class="scope-list">
- <li><strong>Planning Approval:</strong> Formal planning advice for 3-flat conversion</li>
- <li><strong>Bridge Finance Agreement:</strong> Lock facility terms and drawdown schedule</li>
+ <li><strong>Planning Approval:</strong> Formal planning advice for 3-flat conversion (£2–3k)</li>
+ <li><strong>Bridge Finance Lock:</strong> Secure facility terms and drawdown schedule</li>
  <li><strong>Contractor Pricing:</strong> Fixed-price refurbishment quotations</li>
  <li><strong>Valuation Lock:</strong> Independent appraisal supporting £2m+ refinance base</li>
+ <li><strong>Lender Confirmation:</strong> Permanent 6% facility pre-approval for Month 18 refinance</li>
  </ul>
 
  <hr class="section-divider">
@@ -650,7 +646,6 @@ function confirmSignature() {
 
 document.getElementById('dateField').valueAsDate = new Date();
 
-// Auto-save signature to localStorage
 function autoSave() {
  if (signatureData) {
  localStorage.setItem('proposal_signature', signatureData);
@@ -658,7 +653,6 @@ function autoSave() {
  }
 }
 
-// Restore from localStorage if available
 window.addEventListener('load', function() {
  const saved = localStorage.getItem('proposal_signature');
  if (saved) {
@@ -672,7 +666,6 @@ window.addEventListener('load', function() {
  }
 });
 
-// Auto-save on confirm
 const originalConfirm = window.confirmSignature;
 window.confirmSignature = function() {
  originalConfirm();
@@ -687,10 +680,6 @@ function printProposal() {
  window.print();
 }
 
-// ============================================================================
-// Proposal submission flow — EXACT SAME AS STEVENAGE
-// Posts to submit-proposal Edge Function, unlocks Stripe payment button
-// ============================================================================
 const SUBMIT_ENDPOINT = 'https://uavjeywctezxcchoyboz.supabase.co/functions/v1/submit-proposal';
 const STRIPE_CHECKOUT_URL = 'https://buy.stripe.com/bJebIU4rK5w3frp1mN5ZC0i';
 
@@ -752,7 +741,6 @@ async function submitProposalForSignature() {
 
     submitBtn.textContent = '✓ Submitted';
 
-    // Soft auto-redirect so the client never has to hunt for the next step.
     setTimeout(function () { paymentLink.click(); }, 2500);
   } catch (error) {
     console.error('Submission failed:', error);
