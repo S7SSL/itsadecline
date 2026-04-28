@@ -175,65 +175,6 @@
  margin-bottom: 6px;
  }
 
- .outcomes-grid {
- display: grid;
- grid-template-columns: 1fr 1fr 1fr;
- gap: 16px;
- margin-top: 12px;
- }
- .outcome-card {
- background: #f8fafc;
- border-left: 3px solid var(--amber);
- border-radius: 4px;
- padding: 16px;
- }
- .outcome-card .outcome-title {
- font-family: 'Arial', sans-serif;
- font-size: 12.5px;
- font-weight: 700;
- color: var(--navy);
- margin-bottom: 6px;
- }
- .outcome-card p {
- font-size: 12.5px;
- color: var(--muted);
- margin: 0;
- line-height: 1.5;
- }
-
- .steps-list {
- list-style: none;
- padding: 0;
- margin-top: 10px;
- counter-reset: steps;
- }
- .steps-list li {
- counter-increment: steps;
- display: flex;
- align-items: flex-start;
- gap: 14px;
- padding: 10px 0;
- border-bottom: 1px solid var(--border);
- font-size: 13.5px;
- }
- .steps-list li:last-child { border-bottom: none; }
- .steps-list li::before {
- content: counter(steps);
- background: var(--amber);
- color: var(--white);
- font-family: 'Arial', sans-serif;
- font-weight: 700;
- font-size: 11px;
- width: 22px;
- height: 22px;
- border-radius: 50%;
- display: flex;
- align-items: center;
- justify-content: center;
- flex-shrink: 0;
- margin-top: 1px;
- }
-
  .cta-wrap {
  text-align: center;
  margin: 28px 0 8px;
@@ -388,7 +329,6 @@
  .header-meta { text-align: left; }
  .page-body { padding: 28px 24px; }
  .terms-box { grid-template-columns: 1fr; }
- .outcomes-grid { grid-template-columns: 1fr; }
  .page-footer { flex-direction: column; gap: 6px; padding: 16px 24px; }
  #signaturePad { height: 150px; }
  }
@@ -421,27 +361,27 @@
  <div class="term-value">£1,000,000</div>
  </div>
  <div class="term-item">
- <div class="term-label">Bridge Finance</div>
+ <div class="term-label">Acquisition Debt</div>
  <div class="term-value">£700,000</div>
  </div>
  <div class="term-item">
- <div class="term-label">Equity Required</div>
- <div class="term-value">£350,000</div>
+ <div class="term-label">Works Debt</div>
+ <div class="term-value">£300,000</div>
  </div>
  <div class="term-item">
- <div class="term-label">Stabilised Value</div>
- <div class="term-value">£2,400,000</div>
+ <div class="term-label">Purchaser Equity</div>
+ <div class="term-value">£350,000</div>
  </div>
  </div>
- <p style="margin-top: 16px;"><strong>Valuation Basis:</strong> Property acquisition at £1m + £200k refurbishment. Stabilised residential valuation at £2.4m (7.5% cap rate on £180k NOI).</p>
+ <p style="margin-top: 16px;"><strong>Total Debt:</strong> £1,000,000 (£700k acquisition + £300k works). <strong>Total Funding:</strong> £1,350,000 (debt + equity). <strong>Stabilised Value:</strong> £2,400,000 (7.5% cap rate on £180k NOI).</p>
 
  <hr class="section-divider">
 
  <h2>Financing Structure</h2>
  <div class="highlight-box">
- <strong>Phase 1 (0–18 months):</strong> Bridge finance £700k @ 0.85–1.0% per month<br>
- <strong>Phase 2 (18+ months):</strong> Refinance to permanent commercial £700k @ 6.0% per annum<br>
- <strong>Bridge Cost:</strong> Approximately £116,550 (18-month term)
+ <strong>Phase 1 (0–18 months):</strong> Senior debt £1m (£700k acq + £300k works) @ 0.85–1.0% per month bridge<br>
+ <strong>Phase 2 (18+ months):</strong> Refinance to permanent commercial £1m @ 6.0% per annum<br>
+ <strong>Bridge Cost:</strong> Approximately £166,500 (18-month term on £1m facility)
  </div>
 
  <hr class="section-divider">
@@ -449,41 +389,43 @@
  <h2>Investment Returns</h2>
  <div class="highlight-box">
  <strong>Annual NOI:</strong> £180,000 (stabilised)<br>
- <strong>Gross Profit (18-month exit):</strong> £1,173,450<br>
- <strong>Equity Multiple:</strong> 3.35x<br>
- <strong>Annualised IRR:</strong> ~89%
+ <strong>Gross Profit (18-month exit):</strong> £1,101,450<br>
+ <strong>Equity Multiple:</strong> 3.15x<br>
+ <strong>Annualised IRR:</strong> ~84%
  </div>
 
  <hr class="section-divider">
 
  <h2>Key Terms & Conditions</h2>
 
- <h3>Co-Investment Structure</h3>
- <p>This proposal outlines a bridged residential conversion strategy. Your equity commitment of £350,000 bridges the acquisition and refurbishment phases, with bridge finance covering the shortfall:</p>
+ <h3>Debt & Equity Structure</h3>
+ <p>This proposal outlines a bridged residential conversion strategy with combined debt facility:</p>
  <ul class="scope-list">
- <li><strong>Acquisition Costs:</strong> Purchase price + Stamp Duty + legal fees (£1,117,500)</li>
- <li><strong>Refurbishment:</strong> Modernisation and 3-flat conversion (£200,000)</li>
- <li><strong>Bridge Finance (0–18 months):</strong> Covers acquisition and refurb shortfall at 0.85–1.0% per month</li>
- <li><strong>Permanent Finance (18+ months):</strong> Refinance to 6% commercial facility on stabilised asset</li>
+ <li><strong>Senior Debt:</strong> £1,000,000 (£700k acquisition + £300k works facility)</li>
+ <li><strong>Purchaser Equity:</strong> £350,000 (cash injection)</li>
+ <li><strong>Total Funding:</strong> £1,350,000 (covers all costs with buffer)</li>
+ <li><strong>Bridge Rate:</strong> 0.85–1.0% per month (18–24 months)</li>
+ <li><strong>Permanent Rate:</strong> 6.0% per annum (refinance @ Month 18)</li>
  </ul>
 
  <h3>Debt Service & Returns</h3>
  <p>Upon stabilisation (Month 18), your equity generates:</p>
  <ul class="scope-list">
- <li><strong>Monthly Cashflow:</strong> £11,500 (post-interest, permanent phase)</li>
- <li><strong>Annual Yield:</strong> £138,000 on £350k equity = 39.4% annual yield</li>
- <li><strong>Exit Profit:</strong> £1,173,450 (after all costs and bridge financing)</li>
- <li><strong>Total Multiple:</strong> 3.35x over 18 months (~89% annualised IRR)</li>
+ <li><strong>Annual NOI:</strong> £180,000</li>
+ <li><strong>Annual Interest (permanent):</strong> £60,000 (£1m @ 6%)</li>
+ <li><strong>Monthly Cashflow:</strong> £10,000 (post-interest)</li>
+ <li><strong>Exit Profit:</strong> £1,101,450 (after all costs and bridge financing)</li>
+ <li><strong>Total Multiple:</strong> 3.15x over 18 months (~84% annualised IRR)</li>
  </ul>
 
  <h3>Next Steps</h3>
  <p>To proceed with this investment opportunity:</p>
  <ul class="scope-list">
- <li><strong>Planning Approval:</strong> Formal planning advice for 3-flat conversion (£2–3k)</li>
- <li><strong>Bridge Finance Lock:</strong> Secure facility terms and drawdown schedule</li>
- <li><strong>Contractor Pricing:</strong> Fixed-price refurbishment quotations</li>
+ <li><strong>Planning Approval:</strong> Formal planning advice for 3-flat conversion</li>
+ <li><strong>Bridge Finance Lock:</strong> Secure facility terms (£1m @ 0.85–1.0%/mo)</li>
+ <li><strong>Contractor Pricing:</strong> Fixed-price quotations for £300k works budget</li>
  <li><strong>Valuation Lock:</strong> Independent appraisal supporting £2m+ refinance base</li>
- <li><strong>Lender Confirmation:</strong> Permanent 6% facility pre-approval for Month 18 refinance</li>
+ <li><strong>Permanent Commitment:</strong> 6% facility pre-approval for Month 18 refinance</li>
  </ul>
 
  <hr class="section-divider">
