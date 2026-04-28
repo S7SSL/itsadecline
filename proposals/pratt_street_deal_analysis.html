@@ -220,6 +220,14 @@
             border-radius: 8px;
             margin: 20px 0;
         }
+        
+        .phase-box {
+            background: #f0f7ff;
+            border-left: 4px solid #3498db;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
     </style>
 </head>
 <body>
@@ -227,7 +235,7 @@
         <div class="header">
             <h1>Pratt Street, Camden NW1</h1>
             <p>Investment & Conversion Brief — Deal Analysis</p>
-            <p style="font-size: 0.95em; margin-top: 10px; opacity: 0.9;">Purchaser: £350k Equity | Senior Debt: £700k @ 5.5%</p>
+            <p style="font-size: 0.95em; margin-top: 10px; opacity: 0.9;">Purchaser: £350k Equity | Bridge Finance: 0.85–1.0%/mo | Permanent: ~6% @ refinance</p>
             <div style="margin-top: 20px; padding: 15px; background: rgba(0,0,0,0.2); border-radius: 8px; font-size: 0.85em; font-weight: 600;">
                 ⚠️ STRICTLY PRIVATE & CONFIDENTIAL — FOR AUTHORISED RECIPIENTS ONLY
             </div>
@@ -302,82 +310,77 @@
                 </table>
             </div>
             
-            <!-- FINANCING STRUCTURE -->
+            <!-- TWO-STAGE FINANCING STRUCTURE -->
             <div class="section">
-                <h2>Financing Structure</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Source</th>
-                            <th class="amount">Amount (£)</th>
-                            <th>% of Total</th>
-                            <th>Terms</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr style="background: #e8f5e9;">
-                            <td><strong>Purchaser Equity</strong></td>
-                            <td class="amount positive"><strong>£350,000</strong></td>
-                            <td><strong>33.3%</strong></td>
-                            <td><strong>Cash equity investment</strong></td>
-                        </tr>
-                        <tr>
-                            <td>Senior Debt (70% LTV)</td>
-                            <td class="amount">£700,000</td>
-                            <td>66.7%</td>
-                            <td>5.5% interest-only per annum</td>
-                        </tr>
-                        <tr style="background: #f8f9fa; font-weight: bold;">
-                            <td><strong>TOTAL FUNDING AVAILABLE</strong></td>
-                            <td class="amount positive"><strong>£1,050,000</strong></td>
-                            <td><strong>100%</strong></td>
-                            <td></td>
-                        </tr>
-                        <tr style="background: #fff9e6; border-top: 2px solid #ffc107;">
-                            <td><strong>Remaining Gap</strong></td>
-                            <td class="amount negative"><strong>-£267,500</strong></td>
-                            <td colspan="2"><strong>vs. £1.318m total project cost (closable via phased refurb or mezz)</strong></td>
-                        </tr>
-                    </tbody>
-                </table>
+                <h2>Two-Stage Financing Structure</h2>
+                
+                <div class="phase-box">
+                    <h3 style="color: #3498db; margin-bottom: 15px;">🔵 PHASE 1: Acquisition & Refurbishment (0–18 months)</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Source</th>
+                                <th class="amount">Amount (£)</th>
+                                <th>Rate / Terms</th>
+                                <th>Monthly Cost</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="background: #e8f5e9;">
+                                <td><strong>Purchaser Equity</strong></td>
+                                <td class="amount positive"><strong>£350,000</strong></td>
+                                <td><strong>Cash injection</strong></td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td>Bridge Finance</td>
+                                <td class="amount">£700,000</td>
+                                <td>0.85–1.0% per month</td>
+                                <td class="amount negative">£5,950–7,000</td>
+                            </tr>
+                            <tr style="background: #f8f9fa; font-weight: bold;">
+                                <td><strong>Total Phase 1 Funding</strong></td>
+                                <td class="amount positive"><strong>£1,050,000</strong></td>
+                                <td colspan="2"><strong>Covers acquisition + most refurb</strong></td>
+                            </tr>
+                            <tr style="background: #fff9e6;">
+                                <td colspan="2"><strong>18-Month Bridge Cost</strong></td>
+                                <td class="amount negative"><strong>£107,100–126,000</strong></td>
+                                <td><strong>(included in exit math)</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="phase-box">
+                    <h3 style="color: #27ae60; margin-bottom: 15px;">🟢 PHASE 2: Hold & Stabilisation (18+ months)</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Source</th>
+                                <th class="amount">Amount (£)</th>
+                                <th>Rate / Terms</th>
+                                <th>Annual Cost</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Long-Term Commercial Finance</td>
+                                <td class="amount">£700,000</td>
+                                <td>~6.0% per annum</td>
+                                <td class="amount negative">£42,000/yr</td>
+                            </tr>
+                            <tr style="background: #f8f9fa;">
+                                <td colspan="2"><strong>Replaces bridge; refinance at stabilised value</strong></td>
+                                <td class="amount"><strong>£3,500/mo</strong></td>
+                                <td><strong>(sustainable from NOI)</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
             
-            <!-- DEBT SERVICE & CASHFLOW -->
-            <div class="section">
-                <h2>Debt Service & Annual Cashflow</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Metric</th>
-                            <th class="amount">Annual</th>
-                            <th class="amount">Monthly</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Stabilised Net Operating Income (NOI)</td>
-                            <td class="amount positive">£180,000</td>
-                            <td class="amount positive">£15,000</td>
-                        </tr>
-                        <tr>
-                            <td>Less: Senior Interest (£700k @ 5.5%)</td>
-                            <td class="amount negative">-£38,500</td>
-                            <td class="amount negative">-£3,208</td>
-                        </tr>
-                        <tr style="background: #e8f5e9; font-weight: bold;">
-                            <td><strong>Annual Cashflow After Finance</strong></td>
-                            <td class="amount positive"><strong>£141,500</strong></td>
-                            <td class="amount positive"><strong>£11,792</strong></td>
-                        </tr>
-                        <tr style="background: #f8f9fa;">
-                            <td><strong>Debt Service Coverage Ratio (DSCR)</strong></td>
-                            <td class="amount positive" colspan="2"><strong>4.68x</strong> — Excellent lender capacity</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            
-            <!-- INCOME & VALUATION SCENARIOS -->
+            <!-- INCOME & VALUATION -->
             <div class="section">
                 <h2>Income Validation & Exit Valuation</h2>
                 <div class="grid">
@@ -436,6 +439,65 @@
                 </table>
             </div>
             
+            <!-- DEBT SERVICE & CASHFLOW -->
+            <div class="section">
+                <h2>Debt Service & Cashflow Analysis</h2>
+                
+                <h3 style="color: #3498db; font-size: 1.2em; margin-top: 20px; margin-bottom: 15px;">Phase 1: Bridge Finance (0–18 months)</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Metric</th>
+                            <th class="amount">Monthly</th>
+                            <th>18-Month Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Bridge Interest Cost (mid-range 0.925%)</td>
+                            <td class="amount negative">-£6,475</td>
+                            <td class="amount negative">-£116,550</td>
+                        </tr>
+                        <tr style="background: #f8f9fa;">
+                            <td><strong>Note:</strong> Property may not generate full NOI during refurb (under construction)</td>
+                            <td colspan="2">Interest-only; no principal reduction</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h3 style="color: #27ae60; font-size: 1.2em; margin-top: 30px; margin-bottom: 15px;">Phase 2: Permanent Finance (18+ months onwards)</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Metric</th>
+                            <th class="amount">Annual</th>
+                            <th class="amount">Monthly</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Stabilised Net Operating Income (NOI)</td>
+                            <td class="amount positive">£180,000</td>
+                            <td class="amount positive">£15,000</td>
+                        </tr>
+                        <tr>
+                            <td>Less: Permanent Finance Interest (£700k @ 6%)</td>
+                            <td class="amount negative">-£42,000</td>
+                            <td class="amount negative">-£3,500</td>
+                        </tr>
+                        <tr style="background: #e8f5e9; font-weight: bold;">
+                            <td><strong>Annual Cashflow After Finance</strong></td>
+                            <td class="amount positive"><strong>£138,000</strong></td>
+                            <td class="amount positive"><strong>£11,500</strong></td>
+                        </tr>
+                        <tr style="background: #f8f9fa;">
+                            <td><strong>Debt Service Coverage Ratio (DSCR)</strong></td>
+                            <td class="amount positive" colspan="2"><strong>4.29x</strong> — Excellent lender capacity</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
             <!-- RETURN ANALYSIS -->
             <div class="section">
                 <h2>Investment Returns & Exit Profit</h2>
@@ -446,7 +508,7 @@
                         <strong>£2,400,000</strong>
                     </div>
                     <div class="metric">
-                        <span>Less: Senior Debt Payoff</span>
+                        <span>Less: Permanent Debt Payoff</span>
                         <strong>-£700,000</strong>
                     </div>
                     <div class="metric">
@@ -454,8 +516,12 @@
                         <strong>-£60,000</strong>
                     </div>
                     <div class="metric">
+                        <span>Less: Bridge Finance Costs (18 months)</span>
+                        <strong>-£116,550</strong>
+                    </div>
+                    <div class="metric">
                         <span>Net Sale Proceeds</span>
-                        <strong>£1,640,000</strong>
+                        <strong>£1,523,450</strong>
                     </div>
                     <div class="metric" style="border-bottom: none; padding-top: 15px; border-top: 2px solid rgba(255,255,255,0.3); margin-top: 15px;">
                         <span style="font-weight: bold; font-size: 1.1em;">Less: Purchaser Equity Invested</span>
@@ -463,22 +529,27 @@
                     </div>
                     <div class="metric" style="border-bottom: none;">
                         <span style="font-weight: bold; font-size: 1.2em; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,0.3);">GROSS PROFIT</span>
-                        <strong style="font-size: 1.3em; color: #4ade80;">£1,290,000</strong>
+                        <strong style="font-size: 1.3em; color: #4ade80;">£1,173,450</strong>
                     </div>
                     <div class="metric" style="border-bottom: none; margin-top: 10px;">
                         <span style="font-weight: bold; font-size: 1.2em;">Equity Multiple</span>
-                        <strong style="font-size: 1.2em; color: #4ade80;">4.7x</strong>
+                        <strong style="font-size: 1.2em; color: #4ade80;">3.35x</strong>
+                    </div>
+                    <div class="metric" style="border-bottom: none; margin-top: 10px;">
+                        <span style="font-weight: bold; font-size: 1.1em;">Annualised Return (18-month hold)</span>
+                        <strong style="font-size: 1.1em; color: #4ade80;">~89% p.a.</strong>
                     </div>
                 </div>
                 <div class="highlight-box">
-                    <strong style="color: #27ae60; font-size: 1.1em;">✅ Key Metrics (Assuming 12–18 Month Hold)</strong>
+                    <strong style="color: #27ae60; font-size: 1.1em;">✅ Key Metrics (18–24 Month Execution)</strong>
                     <ul style="margin-top: 15px; margin-left: 20px; line-height: 1.8;">
                         <li><strong>Annual NOI Yield (on purchase):</strong> 18.0% (£180k ÷ £1m)</li>
                         <li><strong>Project Yield (NOI ÷ total cost):</strong> 13.6% (£180k ÷ £1.318m)</li>
-                        <li><strong>Cashflow Yield (post-debt):</strong> 10.7% (£141.5k ÷ £1.318m)</li>
-                        <li><strong>Gross Profit:</strong> £1,290,000 (on £350k equity)</li>
-                        <li><strong>Equity Multiple:</strong> 4.7x return (12–18 months)</li>
-                        <li><strong>DSCR:</strong> 4.68x (strong debt-service capacity)</li>
+                        <li><strong>Cashflow Yield (post-permanent debt):</strong> 10.5% (£138k ÷ £1.318m)</li>
+                        <li><strong>Gross Profit (after all costs):</strong> £1,173,450</li>
+                        <li><strong>Equity Multiple:</strong> 3.35x (18 months)</li>
+                        <li><strong>Annualised IRR:</strong> ~89% (bridge costs + exit gain)</li>
+                        <li><strong>DSCR (permanent):</strong> 4.29x (strong)</li>
                     </ul>
                 </div>
             </div>
@@ -490,12 +561,17 @@
                     <div class="metric-card" style="border-left-color: #f39c12;">
                         <div class="label">🏗️ Construction Risk</div>
                         <div class="value">Medium</div>
-                        <div class="subtext">£200k refurb budget; contractor selection critical. Fixed-price contract essential.</div>
+                        <div class="subtext">£200k refurb budget; bridge costs accrue during delays. Fixed-price contract essential.</div>
                     </div>
                     <div class="metric-card" style="border-left-color: #f39c12;">
                         <div class="label">📋 Planning Risk</div>
                         <div class="value">Medium</div>
                         <div class="subtext">3-flat conversion subject to formal approval. Architect review positive; building control & fire safety required.</div>
+                    </div>
+                    <div class="metric-card" style="border-left-color: #f39c12;">
+                        <div class="label">💰 Bridge Cost Risk</div>
+                        <div class="value">Medium</div>
+                        <div class="subtext">0.85–1.0%/mo compounds during 18-month hold. 30-day delays cost ~£7k. Refinance timing critical.</div>
                     </div>
                     <div class="metric-card" style="border-left-color: #27ae60;">
                         <div class="label">💷 Lettings Risk</div>
@@ -503,118 +579,57 @@
                         <div class="subtext">Camden demand proven; £180k NOI conservatively underwritten; 3-unit diversification.</div>
                     </div>
                     <div class="metric-card" style="border-left-color: #27ae60;">
-                        <div class="label">💳 Financing Risk</div>
+                        <div class="label">💳 Refinance Risk</div>
                         <div class="value">Low</div>
-                        <div class="subtext">70% LTV conservative; 4.68x DSCR excellent; £350k equity cushion strong.</div>
+                        <div class="subtext">6% commercial rate reasonable; stable 4.29x DSCR supports refinance. Asset value supports refi at £2m+.</div>
                     </div>
                     <div class="metric-card" style="border-left-color: #27ae60;">
                         <div class="label">📍 Location Risk</div>
                         <div class="value">Low</div>
                         <div class="subtext">Camden NW1: premium London, proven rental demand, strong capital appreciation.</div>
                     </div>
-                    <div class="metric-card" style="border-left-color: #f39c12;">
-                        <div class="label">💰 Cost Overrun Risk</div>
-                        <div class="value">Medium</div>
-                        <div class="subtext">£200k refurb budget; market material volatility. Equity cushion buffers modest overruns.</div>
-                    </div>
                 </div>
             </div>
             
-            <!-- FUNDING GAP CLOSURE -->
+            <!-- EXECUTION TIMELINE -->
             <div class="section">
-                <h2>Funding Gap Closure (£267,500)</h2>
-                <p style="color: #636e72; margin-bottom: 20px;">
-                    Total project cost is £1,317,500. With £350k equity + £700k debt, there is a £267,500 remaining gap. Here are executable closure strategies:
-                </p>
-                <div style="margin-bottom: 30px;">
-                    <h3 style="color: #27ae60; font-size: 1.15em; margin-bottom: 15px;">✅ OPTION A: Phased Refurbishment (RECOMMENDED)</h3>
-                    <table>
-                        <tbody>
-                            <tr>
-                                <td style="width: 30%; font-weight: bold;">Strategy</td>
-                                <td>Acquire at £1m, minimal refurb Year 1 (£50k only for lettings-ready &amp; cosmetics), then Phase 2 refurb (£150k) post-stabilisation. Refinance stabilised asset into £2m+ valuation; use refinance proceeds to fund Phase 2.</td>
-                            </tr>
-                            <tr style="background: #f8f9fa;">
-                                <td style="font-weight: bold;">Year 1 Spend</td>
-                                <td>£1,117,500 (purchase + SDLT + legal + minimal refurb)</td>
-                            </tr>
-                            <tr>
-                                <td style="font-weight: bold;">Year 1 Cashflow</td>
-                                <td>£141,500/yr from day 1 (asset lettings-ready, generating NOI)</td>
-                            </tr>
-                            <tr style="background: #f8f9fa;">
-                                <td style="font-weight: bold;">Month 12-18</td>
-                                <td>Refinance stabilised asset @ 7.5%+ cap (£2m+ valuation). Pull £400k net cash. Fund Phase 2 refurb + pay down debt or distribute to equity.</td>
-                            </tr>
-                            <tr>
-                                <td style="font-weight: bold;">Pros</td>
-                                <td>✅ Lower Year 1 capital, ✅ immediate strong cashflow, ✅ refinance funds Phase 2, ✅ asset proves itself before full refurb</td>
-                            </tr>
-                            <tr style="background: #f8f9fa;">
-                                <td style="font-weight: bold;">Cons</td>
-                                <td>⚠️ Full refurb takes 18–24 months vs 12 months, ⚠️ Phase 2 timing depends on refinance market</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div style="margin-bottom: 30px;">
-                    <h3 style="color: #f39c12; font-size: 1.15em; margin-bottom: 15px;">⚠️ OPTION B: Mezzanine Debt</h3>
-                    <table>
-                        <tbody>
-                            <tr>
-                                <td style="width: 30%; font-weight: bold;">Structure</td>
-                                <td>Purchaser £350k equity + Senior £700k @ 5.5% + Mezzanine £300k @ 12–15% coupon</td>
-                            </tr>
-                            <tr style="background: #f8f9fa;">
-                                <td style="font-weight: bold;">Total Funded</td>
-                                <td>£1,350,000 (covers full project cost)</td>
-                            </tr>
-                            <tr>
-                                <td style="font-weight: bold;">Annual Interest Cost</td>
-                                <td>Senior: £38.5k + Mezz: £36–45k = £74.5–83.5k total</td>
-                            </tr>
-                            <tr style="background: #f8f9fa;">
-                                <td style="font-weight: bold;">Revised Cashflow</td>
-                                <td>£180k NOI - £74.5–83.5k interest = £96.5–105.5k/yr (still positive, but compressed)</td>
-                            </tr>
-                            <tr>
-                                <td style="font-weight: bold;">Revised DSCR</td>
-                                <td>2.15–2.42x (acceptable, but tighter than 4.68x with phased refurb)</td>
-                            </tr>
-                            <tr style="background: #f8f9fa;">
-                                <td style="font-weight: bold;">Pros</td>
-                                <td>✅ Full refurb Year 1, ✅ complete asset immediately, ✅ faster to stabilised value</td>
-                            </tr>
-                            <tr>
-                                <td style="font-weight: bold;">Cons</td>
-                                <td>❌ Expensive coupon (~£40k/yr), ❌ DSCR tighter, ❌ Lender may balk at stacking two debt layers, ❌ equity return compressed by mezz cost</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div>
-                    <h3 style="color: #667eea; font-size: 1.15em; margin-bottom: 15px;">💡 OPTION C: Vendor Financing</h3>
-                    <table>
-                        <tbody>
-                            <tr>
-                                <td style="width: 30%; font-weight: bold;">Approach</td>
-                                <td>Negotiate £100k vendor note @ 5% interest (deferred to refinance). Reduces immediate gap from £267.5k to £167.5k. Can combine with minimal phased refurb to close fully.</td>
-                            </tr>
-                            <tr style="background: #f8f9fa;">
-                                <td style="font-weight: bold;">Realistic?</td>
-                                <td>Depends on vendor motivation. Useful if vendor wants steady income stream vs lump-sum exit.</td>
-                            </tr>
-                            <tr>
-                                <td style="font-weight: bold;">Pros</td>
-                                <td>✅ Cheap capital (5%), ✅ negotiated terms (deferral), ✅ shows seller is vested in deal</td>
-                            </tr>
-                            <tr style="background: #f8f9fa;">
-                                <td style="font-weight: bold;">Cons</td>
-                                <td>⚠️ Difficult to negotiate; ⚠️ lender may prefer traditional debt only; ⚠️ vendor risk if refinance delayed</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                <h2>Execution Timeline & Milestones</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Phase</th>
+                            <th>Timeline</th>
+                            <th>Key Activities</th>
+                            <th>Finance Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Month 0–2</strong></td>
+                            <td>Acquisition</td>
+                            <td>Exchange, completion, SDLT, legal closure</td>
+                            <td>Bridge drawn (Equity + £700k)</td>
+                        </tr>
+                        <tr style="background: #f8f9fa;">
+                            <td><strong>Month 2–12</strong></td>
+                            <td>Refurbishment</td>
+                            <td>Planning approval, build works, minimal lettings prep</td>
+                            <td>Bridge accruing interest (£6.5k/mo)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Month 12–18</strong></td>
+                            <td>Lettings & Stabilisation</td>
+                            <td>Full lettings, achieve £180k NOI target</td>
+                            <td>Bridge still accruing; refinance appraisal underway</td>
+                        </tr>
+                        <tr style="background: #e8f5e9; font-weight: bold;">
+                            <td><strong>Month 18+</strong></td>
+                            <td>Hold & Exit Optionality</td>
+                            <td>Refinance to permanent £700k @ 6%, collect cashflow, or sell at £2.4m+ value</td>
+                            <td>Permanent finance replaces bridge; stable £138k/yr cashflow</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
             
             <!-- DEAL VERDICT -->
@@ -622,31 +637,31 @@
                 <h2>Deal Verdict & Recommendation</h2>
                 <div style="margin-top: 20px;">
                     <p style="color: #636e72; margin-bottom: 15px;">
-                        <strong>Summary:</strong> This is a <strong>strong income-focused buy-to-let conversion play</strong> with excellent equity returns and manageable leverage. The £350k equity investment provides a solid cushion and drives a 4.7x return at exit (7.5% cap rate).
+                        <strong>Summary:</strong> This is a <strong>strong bridged acquisition & refurb play</strong> with solid permanent financing exit. The two-stage finance model (bridge to permanent) is efficient and reduces long-term leverage. Bridge costs are significant but justified by the 3.35x equity multiple and 89% annualised return.
                     </p>
                     <p style="margin-bottom: 20px;">
-                        <span class="rating-box strong">✅ RECOMMEND: PROCEED (Phased Refurb Strategy)</span>
+                        <span class="rating-box strong">✅ RECOMMEND: PROCEED (Bridge → Permanent Strategy)</span>
                     </p>
                     <div class="footnote">
                         <strong>Key Strengths:</strong>
                         <ul style="margin-top: 10px; margin-left: 20px; line-height: 1.8;">
-                            <li>✅ <strong>Discounted entry:</strong> £1m vs £1.3m list = 23% discount + value-add asset</li>
-                            <li>✅ <strong>Strong NOI day 1:</strong> £180k stabilised (18% on £1m purchase) covers debt 4.7x over</li>
-                            <li>✅ <strong>Conservative leverage:</strong> 70% LTV, 4.68x DSCR, £350k equity cushion</li>
-                            <li>✅ <strong>Significant exit upside:</strong> £2.4m stabilised value = £1.29m profit, 4.7x equity multiple</li>
-                            <li>✅ <strong>Low letting risk:</strong> Camden NW1, proven demand, 3-flat diversification</li>
-                            <li>✅ <strong>Phased execution:</strong> Acquire, minimal Year 1 refurb, refinance, fund Phase 2 — keeps capital efficient</li>
+                            <li>✅ <strong>Discounted entry:</strong> £1m vs £1.3m list = 23% discount</li>
+                            <li>✅ <strong>Strong stabilised NOI:</strong> £180k/yr (18% on purchase) supports permanent 6% debt 4.29x over</li>
+                            <li>✅ <strong>Efficient two-stage finance:</strong> Bridge covers 0–18 months, permanent locks in at £2.4m value</li>
+                            <li>✅ <strong>Conservative exit yield:</strong> 7.5% cap conservative; actual market likely 8–9%</li>
+                            <li>✅ <strong>Equity cushion:</strong> £350k provides buffer for cost overruns or market softness</li>
+                            <li>✅ <strong>Significant profit:</strong> £1.17m gross profit, 3.35x multiple in 18 months</li>
                         </ul>
                     </div>
                     <div style="margin-top: 20px; background: #fff9e6; border-left: 4px solid #ffc107; padding: 20px; border-radius: 8px; color: #856404;">
-                        <strong>Immediate Next Steps (in order):</strong>
+                        <strong>Critical Next Steps (in priority order):</strong>
                         <ol style="margin-top: 10px; margin-left: 20px; line-height: 1.8;">
-                            <li><strong>Confirm planning route:</strong> Obtain formal planning advice for 3-flat conversion (cost ~£2–3k). Validates feasibility &amp; refinance case.</li>
-                            <li><strong>Lock contractor pricing:</strong> Competitive fixed-price tenders for both Year 1 minimal refurb (£50k) and Phase 2 scope (£150k).</li>
-                            <li><strong>Agree senior debt terms:</strong> Confirm £700k @ 5.5% IO with lender. Ensure drawdown facility supports staged acquisition + refurb spend.</li>
-                            <li><strong>Validate NOI assumptions:</strong> Local lettings agents confirm £180k achievable across 3-unit rental mix for Camden location.</li>
-                            <li><strong>Independent valuation (post-acquisition):</strong> Confirm £2m+ refinance base at Year 12–18. Essential for Phase 2 funding unlock.</li>
-                            <li><strong>Close funding gap:</strong> Decide between phased refurb (recommended), mezzanine, or vendor financing based on lender &amp; timing constraints.</li>
+                            <li><strong>Bridge finance agreement:</strong> Lock 0.85–1.0% rate, 18–24 month term, refinance exit clause</li>
+                            <li><strong>Confirm planning route:</strong> Formal planning advice for 3-flat conversion (£2–3k)</li>
+                            <li><strong>Lock refurb pricing:</strong> Fixed-price contractor tenders (£200k budget)</li>
+                            <li><strong>Permanent finance commitment:</strong> Confirm 6% commercial rate available at Month 18 refinance</li>
+                            <li><strong>Valuation basis:</strong> Independent appraisal supporting £2m+ refinance value</li>
+                            <li><strong>Lettings validation:</strong> Local agent confirmation of £180k NOI across 3-unit mix</li>
                         </ol>
                     </div>
                 </div>
@@ -666,23 +681,24 @@
                     <strong>ASSUMPTIONS & LIMITATIONS:</strong> This analysis is based on the April 2026 Investment & Conversion Brief and current market assumptions. All figures are subject to and contingent upon:
                     <ul style="margin-top: 8px; margin-left: 20px;">
                         <li>Satisfactory legal due diligence and title verification</li>
+                        <li>Bridge finance agreement at 0.85–1.0% per month for 18–24 months</li>
                         <li>Planning permission approval for 3-flat residential conversion</li>
-                        <li>Independent valuation confirmation post-acquisition</li>
+                        <li>Independent valuation confirmation post-acquisition (supporting £2m+ refi base)</li>
                         <li>Building control sign-off and fire safety compliance</li>
-                        <li>Lender approval and final financing terms</li>
-                        <li>Contractor fixed-price quotations and delivery</li>
+                        <li>Permanent commercial finance at ~6% annual for long-term hold</li>
+                        <li>Contractor fixed-price quotations and on-time delivery</li>
                         <li>Achievability of stabilised £180,000 NOI based on market lettings</li>
-                        <li>Exit yield assumptions: 7.5% cap rate is illustrative based on market comps; actual yields may vary materially based on market conditions, interest rates, and comparable transactions</li>
+                        <li>Exit yield assumptions: 7.5% cap rate is illustrative based on market comps; actual yields may vary materially</li>
                     </ul>
                 </p>
                 <p style="font-size: 0.85em; line-height: 1.6; color: #636e72; margin-bottom: 15px;">
-                    <strong>NO WARRANTIES:</strong> This analysis is provided on an "as-is" basis without warranty of accuracy, completeness, or fitness for any purpose. Past performance or market assumptions do not guarantee future results. Property investment carries significant risk, including but not limited to loss of capital, illiquidity, construction delays, cost overruns, planning refusal, letting defaults, and interest rate volatility.
+                    <strong>NO WARRANTIES:</strong> This analysis is provided on an "as-is" basis without warranty of accuracy, completeness, or fitness for any purpose. Past performance or market assumptions do not guarantee future results. Property investment carries significant risk, including but not limited to loss of capital, illiquidity, construction delays, cost overruns, planning refusal, letting defaults, bridge refinance failure, and interest rate volatility.
                 </p>
                 <p style="font-size: 0.85em; line-height: 1.6; color: #636e72; margin-bottom: 15px;">
                     <strong>USE RESTRICTIONS:</strong> This document is intended for the sole use of the designated recipient(s) for evaluation purposes only. Recipients may not share, distribute, publish, or disclose this analysis without prior written consent from the originator. Retention of this document constitutes acceptance of these terms.
                 </p>
                 <p style="font-size: 0.85em; line-height: 1.6; color: #636e72;">
-                    <strong>Generated:</strong> 28 April 2026, 10:03 GMT+1 | <strong>Telegram:</strong> msg 6059 (612589060) | <strong>Scenario:</strong> £1m Funding (£350k Purchaser Equity + £700k Senior Debt @ 5.5% IO) | <strong>Status:</strong> Confidential — Under Offer, Due Diligence Phase
+                    <strong>Generated:</strong> 28 April 2026, 10:25 GMT+1 | <strong>Telegram:</strong> msg 6070 (612589060) | <strong>Financing:</strong> Bridge 0.85–1.0%/mo (18mo) → Permanent 6% @ refinance | <strong>Status:</strong> Confidential — Under Offer, Due Diligence Phase
                 </p>
                 <p style="font-size: 0.8em; color: #95a5a6; margin-top: 10px; font-weight: 600;">© itsadecline.com - Kaizen Finance Ltd | All Rights Reserved</p>
             </div>
