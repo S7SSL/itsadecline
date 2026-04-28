@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pratt Street, Camden — Investment Analysis</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #2d3436 0%, #636e72 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 30px;
+        }
+        
+        .section:last-child {
+            border-bottom: none;
+        }
+        
+        .section h2 {
+            color: #2d3436;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+            display: inline-block;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .metric-card {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            border-radius: 8px;
+            transition: transform 0.2s;
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.2);
+        }
+        
+        .metric-card .label {
+            color: #636e72;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+        
+        .metric-card .value {
+            color: #2d3436;
+            font-size: 1.8em;
+            font-weight: bold;
+        }
+        
+        .metric-card .subtext {
+            color: #95a5a6;
+            font-size: 0.85em;
+            margin-top: 5px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        table thead {
+            background: #667eea;
+            color: white;
+        }
+        
+        table th, table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        
+        table tbody tr:hover {
+            background: #f8f9fa;
+        }
+        
+        table td.amount {
+            text-align: right;
+            font-weight: 600;
+            color: #2d3436;
+        }
+        
+        .positive {
+            color: #27ae60;
+        }
+        
+        .negative {
+            color: #e74c3c;
+        }
+        
+        .summary-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 8px;
+            margin: 30px 0;
+        }
+        
+        .summary-box h3 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+        }
+        
+        .summary-box .metric {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .summary-box .metric:last-child {
+            border-bottom: none;
+        }
+        
+        .rating-box {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 0.95em;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+        
+        .rating-box.strong {
+            background: #27ae60;
+        }
+        
+        .rating-box.moderate {
+            background: #f39c12;
+        }
+        
+        .rating-box.weak {
+            background: #e74c3c;
+        }
+        
+        .footer {
+            background: #ecf0f1;
+            padding: 20px 40px;
+            text-align: center;
+            color: #636e72;
+            font-size: 0.9em;
+        }
+        
+        .footnote {
+            background: #e8f5e9;
+            border-left: 4px solid #27ae60;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+            color: #2d3436;
+            font-size: 0.95em;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #e8f5e9 0%, #f1f8e9 100%);
+            border: 2px solid #27ae60;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Pratt Street, Camden NW1</h1>
+            <p>Investment & Conversion Brief — Deal Analysis</p>
+            <p style="font-size: 0.95em; margin-top: 10px; opacity: 0.9;">Purchaser: £350k Equity | Senior Debt: £700k @ 5.5%</p>
+            <div style="margin-top: 20px; padding: 15px; background: rgba(0,0,0,0.2); border-radius: 8px; font-size: 0.85em; font-weight: 600;">
+                ⚠️ STRICTLY PRIVATE & CONFIDENTIAL — FOR AUTHORISED RECIPIENTS ONLY
+            </div>
+        </div>
+        
+        <div class="content">
+            <!-- PROPERTY OVERVIEW -->
+            <div class="section">
+                <h2>Property Overview</h2>
+                <div class="grid">
+                    <div class="metric-card">
+                        <div class="label">Location</div>
+                        <div class="value">Pratt Street, Camden NW1</div>
+                        <div class="subtext">Freehold terraced property</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="label">Conversion Target</div>
+                        <div class="value">3 Flats</div>
+                        <div class="subtext">Self-contained residential units</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="label">Current Status</div>
+                        <div class="value">Under Offer</div>
+                        <div class="subtext">Funding & valuation review</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="label">Rightmove Ref</div>
+                        <div class="value">171991325</div>
+                        <div class="subtext">Listed: £1,300,000</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ACQUISITION & PROJECT COSTS -->
+            <div class="section">
+                <h2>Acquisition & Project Costs</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Cost Component</th>
+                            <th class="amount">Amount (£)</th>
+                            <th>Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Purchase Price (Target)</td>
+                            <td class="amount">£1,000,000</td>
+                            <td>Discount to list (£1.3m) = 23% discount</td>
+                        </tr>
+                        <tr>
+                            <td>Stamp Duty</td>
+                            <td class="amount">£80,000</td>
+                            <td>5% SDLT on £1m purchase</td>
+                        </tr>
+                        <tr>
+                            <td>Legal & Professional</td>
+                            <td class="amount">£37,500</td>
+                            <td>Conveyancing, surveys, transaction costs</td>
+                        </tr>
+                        <tr>
+                            <td>Refurbishment & Reconfiguration</td>
+                            <td class="amount">£200,000</td>
+                            <td>Modernisation + 3-flat conversion</td>
+                        </tr>
+                        <tr style="background: #e8f5e9; font-weight: bold;">
+                            <td><strong>TOTAL PROJECT COST</strong></td>
+                            <td class="amount positive"><strong>£1,317,500</strong></td>
+                            <td><strong>All-in including acquisition & development</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- FINANCING STRUCTURE -->
+            <div class="section">
+                <h2>Financing Structure</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Source</th>
+                            <th class="amount">Amount (£)</th>
+                            <th>% of Total</th>
+                            <th>Terms</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="background: #e8f5e9;">
+                            <td><strong>Purchaser Equity</strong></td>
+                            <td class="amount positive"><strong>£350,000</strong></td>
+                            <td><strong>33.3%</strong></td>
+                            <td><strong>Cash equity investment</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Senior Debt (70% LTV)</td>
+                            <td class="amount">£700,000</td>
+                            <td>66.7%</td>
+                            <td>5.5% interest-only per annum</td>
+                        </tr>
+                        <tr style="background: #f8f9fa; font-weight: bold;">
+                            <td><strong>TOTAL FUNDING AVAILABLE</strong></td>
+                            <td class="amount positive"><strong>£1,050,000</strong></td>
+                            <td><strong>100%</strong></td>
+                            <td></td>
+                        </tr>
+                        <tr style="background: #fff9e6; border-top: 2px solid #ffc107;">
+                            <td><strong>Remaining Gap</strong></td>
+                            <td class="amount negative"><strong>-£267,500</strong></td>
+                            <td colspan="2"><strong>vs. £1.318m total project cost (closable via phased refurb or mezz)</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- DEBT SERVICE & CASHFLOW -->
+            <div class="section">
+                <h2>Debt Service & Annual Cashflow</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Metric</th>
+                            <th class="amount">Annual</th>
+                            <th class="amount">Monthly</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Stabilised Net Operating Income (NOI)</td>
+                            <td class="amount positive">£180,000</td>
+                            <td class="amount positive">£15,000</td>
+                        </tr>
+                        <tr>
+                            <td>Less: Senior Interest (£700k @ 5.5%)</td>
+                            <td class="amount negative">-£38,500</td>
+                            <td class="amount negative">-£3,208</td>
+                        </tr>
+                        <tr style="background: #e8f5e9; font-weight: bold;">
+                            <td><strong>Annual Cashflow After Finance</strong></td>
+                            <td class="amount positive"><strong>£141,500</strong></td>
+                            <td class="amount positive"><strong>£11,792</strong></td>
+                        </tr>
+                        <tr style="background: #f8f9fa;">
+                            <td><strong>Debt Service Coverage Ratio (DSCR)</strong></td>
+                            <td class="amount positive" colspan="2"><strong>4.68x</strong> — Excellent lender capacity</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- INCOME & VALUATION SCENARIOS -->
+            <div class="section">
+                <h2>Income Validation & Exit Valuation</h2>
+                <div class="grid">
+                    <div class="metric-card">
+                        <div class="label">Conversion Units</div>
+                        <div class="value">3 Flats</div>
+                        <div class="subtext">Self-contained residential</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="label">Stabilised NOI</div>
+                        <div class="value">£180,000</div>
+                        <div class="subtext">After operating expenses</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="label">Monthly Rent</div>
+                        <div class="value">£15,000</div>
+                        <div class="subtext">Average monthly income</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="label">Per-Room Equivalent</div>
+                        <div class="value">£1,364/mo</div>
+                        <div class="subtext">11-room rental model</div>
+                    </div>
+                </div>
+                <h3 style="margin-top: 30px; color: #2d3436; font-size: 1.3em;">Valuation Sensitivity (Based on £180k NOI)</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Yield / Cap Rate</th>
+                            <th class="amount">Implied Exit Value</th>
+                            <th>Market Context</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>10.0% yield</td>
+                            <td class="amount">£1,800,000</td>
+                            <td>Conservative</td>
+                        </tr>
+                        <tr>
+                            <td>9.0% yield</td>
+                            <td class="amount">£2,000,000</td>
+                            <td>Mid-range</td>
+                        </tr>
+                        <tr>
+                            <td>8.0% yield</td>
+                            <td class="amount">£2,250,000</td>
+                            <td>Growth scenario</td>
+                        </tr>
+                        <tr style="background: #e8f5e9; font-weight: bold;">
+                            <td>7.5% yield</td>
+                            <td class="amount positive">£2,400,000</td>
+                            <td><strong>Base case (market comps)</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- RETURN ANALYSIS -->
+            <div class="section">
+                <h2>Investment Returns & Exit Profit</h2>
+                <div class="summary-box">
+                    <h3>Equity Return Scenario (7.5% Exit Yield)</h3>
+                    <div class="metric">
+                        <span>Stabilised Exit Value</span>
+                        <strong>£2,400,000</strong>
+                    </div>
+                    <div class="metric">
+                        <span>Less: Senior Debt Payoff</span>
+                        <strong>-£700,000</strong>
+                    </div>
+                    <div class="metric">
+                        <span>Less: Agent Fees (2.5%)</span>
+                        <strong>-£60,000</strong>
+                    </div>
+                    <div class="metric">
+                        <span>Net Sale Proceeds</span>
+                        <strong>£1,640,000</strong>
+                    </div>
+                    <div class="metric" style="border-bottom: none; padding-top: 15px; border-top: 2px solid rgba(255,255,255,0.3); margin-top: 15px;">
+                        <span style="font-weight: bold; font-size: 1.1em;">Less: Purchaser Equity Invested</span>
+                        <strong style="font-size: 1.1em;">-£350,000</strong>
+                    </div>
+                    <div class="metric" style="border-bottom: none;">
+                        <span style="font-weight: bold; font-size: 1.2em; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,0.3);">GROSS PROFIT</span>
+                        <strong style="font-size: 1.3em; color: #4ade80;">£1,290,000</strong>
+                    </div>
+                    <div class="metric" style="border-bottom: none; margin-top: 10px;">
+                        <span style="font-weight: bold; font-size: 1.2em;">Equity Multiple</span>
+                        <strong style="font-size: 1.2em; color: #4ade80;">4.7x</strong>
+                    </div>
+                </div>
+                <div class="highlight-box">
+                    <strong style="color: #27ae60; font-size: 1.1em;">✅ Key Metrics (Assuming 12–18 Month Hold)</strong>
+                    <ul style="margin-top: 15px; margin-left: 20px; line-height: 1.8;">
+                        <li><strong>Annual NOI Yield (on purchase):</strong> 18.0% (£180k ÷ £1m)</li>
+                        <li><strong>Project Yield (NOI ÷ total cost):</strong> 13.6% (£180k ÷ £1.318m)</li>
+                        <li><strong>Cashflow Yield (post-debt):</strong> 10.7% (£141.5k ÷ £1.318m)</li>
+                        <li><strong>Gross Profit:</strong> £1,290,000 (on £350k equity)</li>
+                        <li><strong>Equity Multiple:</strong> 4.7x return (12–18 months)</li>
+                        <li><strong>DSCR:</strong> 4.68x (strong debt-service capacity)</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- RISK ASSESSMENT -->
+            <div class="section">
+                <h2>Risk Assessment & Mitigants</h2>
+                <div class="grid">
+                    <div class="metric-card" style="border-left-color: #f39c12;">
+                        <div class="label">🏗️ Construction Risk</div>
+                        <div class="value">Medium</div>
+                        <div class="subtext">£200k refurb budget; contractor selection critical. Fixed-price contract essential.</div>
+                    </div>
+                    <div class="metric-card" style="border-left-color: #f39c12;">
+                        <div class="label">📋 Planning Risk</div>
+                        <div class="value">Medium</div>
+                        <div class="subtext">3-flat conversion subject to formal approval. Architect review positive; building control & fire safety required.</div>
+                    </div>
+                    <div class="metric-card" style="border-left-color: #27ae60;">
+                        <div class="label">💷 Lettings Risk</div>
+                        <div class="value">Low</div>
+                        <div class="subtext">Camden demand proven; £180k NOI conservatively underwritten; 3-unit diversification.</div>
+                    </div>
+                    <div class="metric-card" style="border-left-color: #27ae60;">
+                        <div class="label">💳 Financing Risk</div>
+                        <div class="value">Low</div>
+                        <div class="subtext">70% LTV conservative; 4.68x DSCR excellent; £350k equity cushion strong.</div>
+                    </div>
+                    <div class="metric-card" style="border-left-color: #27ae60;">
+                        <div class="label">📍 Location Risk</div>
+                        <div class="value">Low</div>
+                        <div class="subtext">Camden NW1: premium London, proven rental demand, strong capital appreciation.</div>
+                    </div>
+                    <div class="metric-card" style="border-left-color: #f39c12;">
+                        <div class="label">💰 Cost Overrun Risk</div>
+                        <div class="value">Medium</div>
+                        <div class="subtext">£200k refurb budget; market material volatility. Equity cushion buffers modest overruns.</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- FUNDING GAP CLOSURE -->
+            <div class="section">
+                <h2>Funding Gap Closure (£267,500)</h2>
+                <p style="color: #636e72; margin-bottom: 20px;">
+                    Total project cost is £1,317,500. With £350k equity + £700k debt, there is a £267,500 remaining gap. Here are executable closure strategies:
+                </p>
+                <div style="margin-bottom: 30px;">
+                    <h3 style="color: #27ae60; font-size: 1.15em; margin-bottom: 15px;">✅ OPTION A: Phased Refurbishment (RECOMMENDED)</h3>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td style="width: 30%; font-weight: bold;">Strategy</td>
+                                <td>Acquire at £1m, minimal refurb Year 1 (£50k only for lettings-ready &amp; cosmetics), then Phase 2 refurb (£150k) post-stabilisation. Refinance stabilised asset into £2m+ valuation; use refinance proceeds to fund Phase 2.</td>
+                            </tr>
+                            <tr style="background: #f8f9fa;">
+                                <td style="font-weight: bold;">Year 1 Spend</td>
+                                <td>£1,117,500 (purchase + SDLT + legal + minimal refurb)</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold;">Year 1 Cashflow</td>
+                                <td>£141,500/yr from day 1 (asset lettings-ready, generating NOI)</td>
+                            </tr>
+                            <tr style="background: #f8f9fa;">
+                                <td style="font-weight: bold;">Month 12-18</td>
+                                <td>Refinance stabilised asset @ 7.5%+ cap (£2m+ valuation). Pull £400k net cash. Fund Phase 2 refurb + pay down debt or distribute to equity.</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold;">Pros</td>
+                                <td>✅ Lower Year 1 capital, ✅ immediate strong cashflow, ✅ refinance funds Phase 2, ✅ asset proves itself before full refurb</td>
+                            </tr>
+                            <tr style="background: #f8f9fa;">
+                                <td style="font-weight: bold;">Cons</td>
+                                <td>⚠️ Full refurb takes 18–24 months vs 12 months, ⚠️ Phase 2 timing depends on refinance market</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div style="margin-bottom: 30px;">
+                    <h3 style="color: #f39c12; font-size: 1.15em; margin-bottom: 15px;">⚠️ OPTION B: Mezzanine Debt</h3>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td style="width: 30%; font-weight: bold;">Structure</td>
+                                <td>Purchaser £350k equity + Senior £700k @ 5.5% + Mezzanine £300k @ 12–15% coupon</td>
+                            </tr>
+                            <tr style="background: #f8f9fa;">
+                                <td style="font-weight: bold;">Total Funded</td>
+                                <td>£1,350,000 (covers full project cost)</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold;">Annual Interest Cost</td>
+                                <td>Senior: £38.5k + Mezz: £36–45k = £74.5–83.5k total</td>
+                            </tr>
+                            <tr style="background: #f8f9fa;">
+                                <td style="font-weight: bold;">Revised Cashflow</td>
+                                <td>£180k NOI - £74.5–83.5k interest = £96.5–105.5k/yr (still positive, but compressed)</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold;">Revised DSCR</td>
+                                <td>2.15–2.42x (acceptable, but tighter than 4.68x with phased refurb)</td>
+                            </tr>
+                            <tr style="background: #f8f9fa;">
+                                <td style="font-weight: bold;">Pros</td>
+                                <td>✅ Full refurb Year 1, ✅ complete asset immediately, ✅ faster to stabilised value</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold;">Cons</td>
+                                <td>❌ Expensive coupon (~£40k/yr), ❌ DSCR tighter, ❌ Lender may balk at stacking two debt layers, ❌ equity return compressed by mezz cost</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <h3 style="color: #667eea; font-size: 1.15em; margin-bottom: 15px;">💡 OPTION C: Vendor Financing</h3>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td style="width: 30%; font-weight: bold;">Approach</td>
+                                <td>Negotiate £100k vendor note @ 5% interest (deferred to refinance). Reduces immediate gap from £267.5k to £167.5k. Can combine with minimal phased refurb to close fully.</td>
+                            </tr>
+                            <tr style="background: #f8f9fa;">
+                                <td style="font-weight: bold;">Realistic?</td>
+                                <td>Depends on vendor motivation. Useful if vendor wants steady income stream vs lump-sum exit.</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold;">Pros</td>
+                                <td>✅ Cheap capital (5%), ✅ negotiated terms (deferral), ✅ shows seller is vested in deal</td>
+                            </tr>
+                            <tr style="background: #f8f9fa;">
+                                <td style="font-weight: bold;">Cons</td>
+                                <td>⚠️ Difficult to negotiate; ⚠️ lender may prefer traditional debt only; ⚠️ vendor risk if refinance delayed</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- DEAL VERDICT -->
+            <div class="section">
+                <h2>Deal Verdict & Recommendation</h2>
+                <div style="margin-top: 20px;">
+                    <p style="color: #636e72; margin-bottom: 15px;">
+                        <strong>Summary:</strong> This is a <strong>strong income-focused buy-to-let conversion play</strong> with excellent equity returns and manageable leverage. The £350k equity investment provides a solid cushion and drives a 4.7x return at exit (7.5% cap rate).
+                    </p>
+                    <p style="margin-bottom: 20px;">
+                        <span class="rating-box strong">✅ RECOMMEND: PROCEED (Phased Refurb Strategy)</span>
+                    </p>
+                    <div class="footnote">
+                        <strong>Key Strengths:</strong>
+                        <ul style="margin-top: 10px; margin-left: 20px; line-height: 1.8;">
+                            <li>✅ <strong>Discounted entry:</strong> £1m vs £1.3m list = 23% discount + value-add asset</li>
+                            <li>✅ <strong>Strong NOI day 1:</strong> £180k stabilised (18% on £1m purchase) covers debt 4.7x over</li>
+                            <li>✅ <strong>Conservative leverage:</strong> 70% LTV, 4.68x DSCR, £350k equity cushion</li>
+                            <li>✅ <strong>Significant exit upside:</strong> £2.4m stabilised value = £1.29m profit, 4.7x equity multiple</li>
+                            <li>✅ <strong>Low letting risk:</strong> Camden NW1, proven demand, 3-flat diversification</li>
+                            <li>✅ <strong>Phased execution:</strong> Acquire, minimal Year 1 refurb, refinance, fund Phase 2 — keeps capital efficient</li>
+                        </ul>
+                    </div>
+                    <div style="margin-top: 20px; background: #fff9e6; border-left: 4px solid #ffc107; padding: 20px; border-radius: 8px; color: #856404;">
+                        <strong>Immediate Next Steps (in order):</strong>
+                        <ol style="margin-top: 10px; margin-left: 20px; line-height: 1.8;">
+                            <li><strong>Confirm planning route:</strong> Obtain formal planning advice for 3-flat conversion (cost ~£2–3k). Validates feasibility &amp; refinance case.</li>
+                            <li><strong>Lock contractor pricing:</strong> Competitive fixed-price tenders for both Year 1 minimal refurb (£50k) and Phase 2 scope (£150k).</li>
+                            <li><strong>Agree senior debt terms:</strong> Confirm £700k @ 5.5% IO with lender. Ensure drawdown facility supports staged acquisition + refurb spend.</li>
+                            <li><strong>Validate NOI assumptions:</strong> Local lettings agents confirm £180k achievable across 3-unit rental mix for Camden location.</li>
+                            <li><strong>Independent valuation (post-acquisition):</strong> Confirm £2m+ refinance base at Year 12–18. Essential for Phase 2 funding unlock.</li>
+                            <li><strong>Close funding gap:</strong> Decide between phased refurb (recommended), mezzanine, or vendor financing based on lender &amp; timing constraints.</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <div style="border-top: 3px solid #d9534f; padding-top: 20px; margin-top: 20px;">
+                <p style="font-weight: 700; color: #d9534f; margin-bottom: 15px;">⚠️ STRICTLY PRIVATE & CONFIDENTIAL</p>
+                <p style="font-size: 0.85em; line-height: 1.6; color: #636e72; margin-bottom: 15px;">
+                    <strong>CONFIDENTIALITY & DISCLAIMER:</strong> This document contains proprietary, confidential, and legally privileged information intended solely for the named recipient(s). Unauthorised access, use, reproduction, disclosure, or distribution is strictly prohibited and may constitute a breach of law. If you have received this document in error, please notify the sender immediately and destroy all copies.
+                </p>
+                <p style="font-size: 0.85em; line-height: 1.6; color: #636e72; margin-bottom: 15px;">
+                    <strong>NOT AN OFFER:</strong> This analysis does not constitute an offer to sell, a solicitation of an offer to buy, or a recommendation to purchase any security or investment. All investment decisions must be made independently with advice from qualified legal, financial, and tax advisors.
+                </p>
+                <p style="font-size: 0.85em; line-height: 1.6; color: #636e72; margin-bottom: 15px;">
+                    <strong>ASSUMPTIONS & LIMITATIONS:</strong> This analysis is based on the April 2026 Investment & Conversion Brief and current market assumptions. All figures are subject to and contingent upon:
+                    <ul style="margin-top: 8px; margin-left: 20px;">
+                        <li>Satisfactory legal due diligence and title verification</li>
+                        <li>Planning permission approval for 3-flat residential conversion</li>
+                        <li>Independent valuation confirmation post-acquisition</li>
+                        <li>Building control sign-off and fire safety compliance</li>
+                        <li>Lender approval and final financing terms</li>
+                        <li>Contractor fixed-price quotations and delivery</li>
+                        <li>Achievability of stabilised £180,000 NOI based on market lettings</li>
+                        <li>Exit yield assumptions: 7.5% cap rate is illustrative based on market comps; actual yields may vary materially based on market conditions, interest rates, and comparable transactions</li>
+                    </ul>
+                </p>
+                <p style="font-size: 0.85em; line-height: 1.6; color: #636e72; margin-bottom: 15px;">
+                    <strong>NO WARRANTIES:</strong> This analysis is provided on an "as-is" basis without warranty of accuracy, completeness, or fitness for any purpose. Past performance or market assumptions do not guarantee future results. Property investment carries significant risk, including but not limited to loss of capital, illiquidity, construction delays, cost overruns, planning refusal, letting defaults, and interest rate volatility.
+                </p>
+                <p style="font-size: 0.85em; line-height: 1.6; color: #636e72; margin-bottom: 15px;">
+                    <strong>USE RESTRICTIONS:</strong> This document is intended for the sole use of the designated recipient(s) for evaluation purposes only. Recipients may not share, distribute, publish, or disclose this analysis without prior written consent from the originator. Retention of this document constitutes acceptance of these terms.
+                </p>
+                <p style="font-size: 0.85em; line-height: 1.6; color: #636e72;">
+                    <strong>Generated:</strong> 28 April 2026, 10:03 GMT+1 | <strong>Telegram:</strong> msg 6059 (612589060) | <strong>Scenario:</strong> £1m Funding (£350k Purchaser Equity + £700k Senior Debt @ 5.5% IO) | <strong>Status:</strong> Confidential — Under Offer, Due Diligence Phase
+                </p>
+                <p style="font-size: 0.8em; color: #95a5a6; margin-top: 10px; font-weight: 600;">© itsadecline.com - Kaizen Finance Ltd | All Rights Reserved</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
