@@ -476,59 +476,37 @@
             let additionalScope = 0;
             let prelimsOHP = 0;
             
-            // Collect all costs
-            const costInputs = document.querySelectorAll('.cost-input');
-            const rows = document.querySelectorAll('tr.editable');
+            const tbody = document.querySelector('table tbody');
+            const rows = tbody.querySelectorAll('tr');
             
-            rows.forEach((row, index) => {
-                const input = row.querySelector('.cost-input');
-                if (input) {
-                    const value = parseFloat(input.value) || 0;
-                    
-                    if (row.closest('tbody').innerHTML.includes('Base Works')) {
-                        baseWorks += value;
-                    } else if (row.closest('tbody').innerHTML.includes('Additional Scope')) {
-                        additionalScope += value;
-                    } else if (row.closest('tbody').innerHTML.includes('Prelims')) {
-                        prelimsOHP += value;
-                    }
-                }
-            });
-            
-            // Actually, let's count by section header proximity
-            let isBase = false;
-            let isAdditional = false;
-            let isPrelims = false;
-            
-            baseWorks = 0;
-            additionalScope = 0;
-            prelimsOHP = 0;
+            let currentSection = null;
             
             rows.forEach(row => {
-                // Check if this is a section header
+                // Detect section headers
                 if (row.classList.contains('section-header')) {
                     if (row.textContent.includes('BASE CONSTRUCTION')) {
-                        isBase = true;
-                        isAdditional = false;
-                        isPrelims = false;
+                        currentSection = 'base';
                     } else if (row.textContent.includes('ADDITIONAL SCOPE')) {
-                        isBase = false;
-                        isAdditional = true;
-                        isPrelims = false;
+                        currentSection = 'additional';
                     } else if (row.textContent.includes('PRELIMS')) {
-                        isBase = false;
-                        isAdditional = false;
-                        isPrelims = true;
+                        currentSection = 'prelims';
                     }
+                    return; // Skip header rows
                 }
                 
-                // Add value if in correct section
+                // Skip subtotal/total rows
+                if (row.classList.contains('section-total') || row.classList.contains('grand-total') || row.classList.contains('subtotal')) {
+                    return;
+                }
+                
+                // Get input value if exists
                 const input = row.querySelector('.cost-input');
-                if (input && !row.classList.contains('section-header')) {
+                if (input && currentSection) {
                     const value = parseFloat(input.value) || 0;
-                    if (isBase) baseWorks += value;
-                    else if (isAdditional) additionalScope += value;
-                    else if (isPrelims) prelimsOHP += value;
+                    
+                    if (currentSection === 'base') baseWorks += value;
+                    else if (currentSection === 'additional') additionalScope += value;
+                    else if (currentSection === 'prelims') prelimsOHP += value;
                 }
             });
             
