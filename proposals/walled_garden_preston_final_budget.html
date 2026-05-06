@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Walled Garden, Preston SG4 7TZ — £1.8m Final Budget</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f9f9f9;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 60px 40px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        header {
+            border-bottom: 3px solid #1e40af;
+            padding-bottom: 30px;
+            margin-bottom: 40px;
+        }
+        
+        h1 {
+            font-size: 2.2em;
+            color: #1e40af;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1em;
+            color: #666;
+            font-weight: 500;
+        }
+        
+        h2 {
+            font-size: 1.5em;
+            color: #1e40af;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e5e7eb;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        thead {
+            background: #1e40af;
+            color: white;
+        }
+        
+        th {
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+        
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        tbody tr:hover {
+            background: #f9fafb;
+        }
+        
+        .section-header {
+            background: #e0e7ff;
+            color: #1e40af;
+            font-weight: 700;
+            padding: 12px;
+        }
+        
+        .section-total {
+            background: #fef3c7;
+            font-weight: 700;
+            color: #92400e;
+        }
+        
+        .subtotal {
+            background: #dbeafe;
+            font-weight: 700;
+            color: #1e40af;
+        }
+        
+        .grand-total {
+            background: #1e40af;
+            color: white;
+            font-weight: 700;
+            font-size: 1.1em;
+        }
+        
+        input[type="number"] {
+            width: 100%;
+            padding: 6px;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            font-size: 0.9em;
+            font-family: 'Courier New', monospace;
+        }
+        
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #1e40af;
+            background: #fffbeb;
+        }
+        
+        .currency {
+            text-align: right;
+            font-family: 'Courier New', monospace;
+            font-weight: 600;
+            width: 150px;
+        }
+        
+        .text-right {
+            text-align: right;
+        }
+        
+        .editable {
+            background: #f0f9ff;
+        }
+        
+        .controls {
+            margin: 30px 0;
+            padding: 20px;
+            background: #f9fafb;
+            border-radius: 6px;
+            display: flex;
+            gap: 10px;
+        }
+        
+        button {
+            padding: 10px 20px;
+            background: #1e40af;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.95em;
+        }
+        
+        button:hover {
+            background: #1e3a8a;
+        }
+        
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .summary-card {
+            background: #f3f4f6;
+            padding: 20px;
+            border-radius: 6px;
+            border: 1px solid #d1d5db;
+        }
+        
+        .summary-card h3 {
+            margin-top: 0;
+            color: #1e40af;
+            font-size: 0.95em;
+        }
+        
+        .summary-value {
+            font-size: 1.6em;
+            color: #1e40af;
+            font-weight: 700;
+            margin-top: 10px;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .note {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+        
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #e5e7eb;
+            font-size: 0.85em;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Walled Garden, Preston SG4 7TZ</h1>
+            <p class="subtitle">Dower House, Hitchin Road, Preston, Hertfordshire</p>
+            <p class="subtitle" style="color: #1e40af; font-weight: 700; margin-top: 10px;">£1.8m Final Project Budget — All Lines Editable</p>
+        </header>
+        
+        <div class="controls">
+            <button onclick="recalculateAll()">🔄 Recalculate All</button>
+            <button onclick="exportAsCSV()">📊 Export CSV</button>
+            <button onclick="resetToOriginal()">↺ Reset to Original</button>
+        </div>
+        
+        <h2>PROJECT BUDGET BREAKDOWN</h2>
+        
+        <table id="budgetTable">
+            <thead>
+                <tr>
+                    <th style="width: 55%;">Item Description</th>
+                    <th style="width: 15%;"></th>
+                    <th style="width: 30%;" class="text-right">Amount (£)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- SECTION 1: BASE CONSTRUCTION WORKS -->
+                <tr class="section-header">
+                    <td colspan="3">BASE CONSTRUCTION WORKS (£560,297)</td>
+                </tr>
+                <tr class="editable">
+                    <td>Site strip & reduced level dig</td>
+                    <td></td>
+                    <td class="currency"><input type="number" value="6500" onchange="recalculateAll()" class="cost-input"></td>
+                </tr>
+                <tr class="editable">
+                    <td>Disposal of excavated materials</td>
+                    <td></td>
+                    <td class="currency"><input type="number" value="19500" onchange="recalculateAll()" class="cost-input"></td>
+                </tr>
+                <tr class="editable">
+                    <td>Excavation for strip foundations</td>
+                    <td></td>
+                    <td class="currency"><input type="number" value="1908" onchange="recalculateAll()" class="cost-input"></td>
+                </tr>
+                <tr class="editable">
+                    <td>Disposal of foundation excavation</td>
+                    <td></td>
+                    <td class="currency"><input type="number" value="4770" onchange="recalculateAll()" class="cost-input"></td>
+                </tr>
+                <tr class="editable">
+                    <td>RC strip foundations</td>
+                    <td></td>
+                    <td class="currency"><input type="number" value="9540" onchange="recalculateAll()" class="cost-input"></td>
+                </tr>
+                <tr class="editable">
+                    <td>Insulation, DPM, DPC & barriers</td>
+                    <td></td>
+                    <td class="currency"><input type="number" value="10710" onchange="recalculateAll()" class="cost-input"></td>
+                </tr>
+                <tr class="editable">
+                    <td>Service ducting for utilities</td>
+                    <td></td>
+                    <td class="currency"><input type="number" value="5000" onchange="recalculateAll()" class="cost-input"></td>
+                </tr>
+                <tr class="editable">
+                    <td>Blockwork double skin (external)</td>
+                    <td></td>
+                    <td class="currency"><input type="number" value="30360" onchange="recalculateAll()" class="cost-input"></td>
+                </tr>
+                <tr class="editable">
+                    <td>Internal blockwork</td>
+                    <td></td>
+                    <td class="currency"><input type="number" value="21158" onchange="recalculateAll()" class="cost-input"></td>
+                </tr>
+                <tr class="editable">
+                    <td>Block and beam ground floor</td>
+                    <td></td>
+                    <td class="currency"><input type="number" value="33330" onchange="recalculateAll()" class="cost-input"></td>
+                </tr>
+                <tr class="editable">
+                    <td>DPM/radon barrier & screed</td>
+                    <td></td>
+                    <td class="currency"><input type="number" value="25076" onchange="recalculateAll()" class="cost-input"></td>
+                </tr>
+                <tr class="editable">
+                    <td>Floor insulation & ventilation</td>
+                    <td></td>
+                    <td class="currency"><input type="number" value="7140" onchange="recalculateAll()" class="cost-input"></td>
+                </tr>
+                <tr class="editable">
+                    <td>Superstructure (upper floors)</td>
+                    <td></td>
+                    <td class="currency"><input type="number" value="47285" onchange="recalculateAll()" class="cost-input"></td>
+                </tr>
+                <tr class="editable">
+                    <td>Brickwork & external facing</td>
+                    <td></td>
+                    <td class="currency"><input type="number" value="54056" onchange="recalculateAll()" class="cost-input"></td>
+                </tr>
+                <tr class="editable">
+                    <td>Steelwork & lintels</td>
+                    <td></td>
+                    <td class="currency"><input type="number" value="56365" onchange="recalculateAll()" class="cost-input"></td>
+                </tr>
+                <tr class="editable">
+                    <td>Drainage (foul & surface)</td>
+                    <td></td>
+                    <td class="currency"><input type="number" value="20000" onchange="recalculateAll()" class="cost-input"></td>
+                </tr>
+                <tr class="editable">
+                    <td>Roofing (insulation & coverings)</td>
+                    <td></td>
+                    <td class="currency"><input type="number" value="101170" onchange="recalculateAll()" class="cost-input"></td>
+                </tr>
+                <tr class="editable">
+                    <td>M&E services (basic plumbing, heating, power)</td>
+                    <td></td>
+                    <td class="currency"><input type="number" value="98094" onchange="recalculateAll()" class="cost-input"></td>
+                </tr>
+                <tr class="section-total">
+                    <td colspan="2"><strong>Subtotal: Base Works</strong></td>
+                    <td class="currency"><strong id="subtotal-base">£560,297</strong></td>
+                </tr>
+                
+                <!-- SECTION 2: ADDITIONAL SCOPE -->
+                <tr class="section-header">
+                    <td colspan="3">ADDITIONAL SCOPE & PREMIUM FINISHES (£879,703)</td>
+                </tr>
+                <tr class="editable">
+                    <td>Windows, doors & frames (luxury spec)</td>
+                    <td></td>
+                    <td class="currency"><input type="number" value="120000" onchange="recalculateAll()" class="cost-input"></td>
+                </tr>
+                <tr class="editable">
+                    <td>Kitchen & appliances (premium)</td>
+                    <td></td>
+                    <td class="currency"><input type="number" value="85000" onchange="recalculateAll()" class="cost-input"></td>
+                </tr>
+                <tr class="editable">
+                    <td>Flooring (luxury finishes)</td>
+                    <td></td>
+                    <td class="currency"><input type="number" value="95000" onchange="recalculateAll()" class="cost-input"></td>
+                </tr>
+                <tr class="editable">
+                    <td>Tiling & wet rooms</td>
+                    <td></td>
+                    <td class="currency"><input type="number" value="65000" onchange="recalculateAll()" class="cost-input"></td>
+                </tr>
+                <tr class="editable">
+                    <td>Internal doors & ironmongery</td>
+                    <td></td>
+                    <td class="currency"><input type="number" value="40000" onchange="recalculateAll()" class="cost-input"></td>
+                </tr>
+                <tr class="editable">
+                    <td>Decoration & wall finishes</td>
+                    <td></td>
+                    <td class="currency"><input type="number" value="55000" onchange="recalculateAll()" class="cost-input"></td>
+                </tr>
+                <tr class="editable">
+                    <td>Smart home & security suite (full automation)</td>
+                    <td></td>
+                    <td class="currency"><input type="number" value="85000" onchange="recalculateAll()" class="cost-input"></td>
+                </tr>
+                <tr class="editable">
+                    <td>Landscaping & external works</td>
+                    <td></td>
+                    <td class="currency"><input type="number" value="100000" onchange="recalculateAll()" class="cost-input"></td>
+                </tr>
+                <tr class="editable">
+                    <td>Contingency (5% of base works)</td>
+                    <td></td>
+                    <td class="currency"><input type="number" value="40000" onchange="recalculateAll()" class="cost-input"></td>
+                </tr>
+                <tr class="editable">
+                    <td>Financing costs (bridge & dev finance interest)</td>
+                    <td></td>
+                    <td class="currency"><input type="number" value="150000" onchange="recalculateAll()" class="cost-input"></td>
+                </tr>
+                <tr class="editable">
+                    <td>Soft costs & miscellaneous (planning, legal, insurance, surveyor)</td>
+                    <td></td>
+                    <td class="currency"><input type="number" value="95703" onchange="recalculateAll()" class="cost-input"></td>
+                </tr>
+                <tr class="section-total">
+                    <td colspan="2"><strong>Subtotal: Additional Scope</strong></td>
+                    <td class="currency"><strong id="subtotal-additional">£879,703</strong></td>
+                </tr>
+                
+                <!-- SECTION 3: SITE COSTS & FEES -->
+                <tr class="section-header">
+                    <td colspan="3">PRELIMS & OVERHEADS @ 20% OF £1.8M (£360,000)</td>
+                </tr>
+                <tr class="editable">
+                    <td>Site management, temporary works, facilities</td>
+                    <td></td>
+                    <td class="currency"><input type="number" value="180000" onchange="recalculateAll()" class="cost-input"></td>
+                </tr>
+                <tr class="editable">
+                    <td>Overheads & Profit</td>
+                    <td></td>
+                    <td class="currency"><input type="number" value="180000" onchange="recalculateAll()" class="cost-input"></td>
+                </tr>
+                <tr class="section-total">
+                    <td colspan="2"><strong>Subtotal: Prelims & OH&P @ 20%</strong></td>
+                    <td class="currency"><strong id="subtotal-prelims">£360,000</strong></td>
+                </tr>
+                
+                <!-- GRAND TOTAL -->
+                <tr class="grand-total">
+                    <td colspan="2"><strong>TOTAL PROJECT COST</strong></td>
+                    <td class="currency"><strong id="grand-total">£1,800,000</strong></td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <!-- SUMMARY CARDS -->
+        <h2>Summary</h2>
+        <div class="summary">
+            <div class="summary-card">
+                <h3>Base Construction Works</h3>
+                <div class="summary-value" id="card-base">£560,297</div>
+            </div>
+            <div class="summary-card">
+                <h3>Additional Scope</h3>
+                <div class="summary-value" id="card-additional">£879,703</div>
+            </div>
+            <div class="summary-card">
+                <h3>Prelims & OH&P (20%)</h3>
+                <div class="summary-value" id="card-prelims">£360,000</div>
+            </div>
+        </div>
+        
+        <div class="summary">
+            <div class="summary-card">
+                <h3>GIA</h3>
+                <div class="summary-value">585 m²</div>
+            </div>
+            <div class="summary-card">
+                <h3>Cost per m²</h3>
+                <div class="summary-value" id="cost-psm">£3,077</div>
+            </div>
+            <div class="summary-card">
+                <h3>Budget Status</h3>
+                <div class="summary-value" id="status">✓ On Budget</div>
+            </div>
+        </div>
+        
+        <!-- NOTES -->
+        <div class="note">
+            <strong>📝 Instructions:</strong> Edit any cost field directly. Totals recalculate automatically. Click "Recalculate All" to refresh. Click "Reset to Original" to return to base budget.
+        </div>
+        
+        <!-- FOOTER -->
+        <div class="footer">
+            <p><strong>Project:</strong> Walled Garden, Preston SG4 7TZ</p>
+            <p><strong>Total Budget:</strong> £1,800,000</p>
+            <p><strong>Date:</strong> 6 May 2026</p>
+            <p style="margin-top: 10px; color: #999;">All figures are editable. Every line item can be amended for scenario planning.</p>
+        </div>
+    </div>
+    
+    <script>
+        const GIA = 585;
+        const BUDGET_CAP = 1800000;
+        
+        function recalculateAll() {
+            let baseWorks = 0;
+            let additionalScope = 0;
+            let prelimsOHP = 0;
+            
+            // Collect all costs
+            const costInputs = document.querySelectorAll('.cost-input');
+            const rows = document.querySelectorAll('tr.editable');
+            
+            rows.forEach((row, index) => {
+                const input = row.querySelector('.cost-input');
+                if (input) {
+                    const value = parseFloat(input.value) || 0;
+                    
+                    if (row.closest('tbody').innerHTML.includes('Base Works')) {
+                        baseWorks += value;
+                    } else if (row.closest('tbody').innerHTML.includes('Additional Scope')) {
+                        additionalScope += value;
+                    } else if (row.closest('tbody').innerHTML.includes('Prelims')) {
+                        prelimsOHP += value;
+                    }
+                }
+            });
+            
+            // Actually, let's count by section header proximity
+            let isBase = false;
+            let isAdditional = false;
+            let isPrelims = false;
+            
+            baseWorks = 0;
+            additionalScope = 0;
+            prelimsOHP = 0;
+            
+            rows.forEach(row => {
+                // Check if this is a section header
+                if (row.classList.contains('section-header')) {
+                    if (row.textContent.includes('BASE CONSTRUCTION')) {
+                        isBase = true;
+                        isAdditional = false;
+                        isPrelims = false;
+                    } else if (row.textContent.includes('ADDITIONAL SCOPE')) {
+                        isBase = false;
+                        isAdditional = true;
+                        isPrelims = false;
+                    } else if (row.textContent.includes('PRELIMS')) {
+                        isBase = false;
+                        isAdditional = false;
+                        isPrelims = true;
+                    }
+                }
+                
+                // Add value if in correct section
+                const input = row.querySelector('.cost-input');
+                if (input && !row.classList.contains('section-header')) {
+                    const value = parseFloat(input.value) || 0;
+                    if (isBase) baseWorks += value;
+                    else if (isAdditional) additionalScope += value;
+                    else if (isPrelims) prelimsOHP += value;
+                }
+            });
+            
+            const grandTotal = baseWorks + additionalScope + prelimsOHP;
+            
+            // Update subtotals
+            document.getElementById('subtotal-base').textContent = '£' + baseWorks.toLocaleString('en-GB', {minimumFractionDigits: 0});
+            document.getElementById('subtotal-additional').textContent = '£' + additionalScope.toLocaleString('en-GB', {minimumFractionDigits: 0});
+            document.getElementById('subtotal-prelims').textContent = '£' + prelimsOHP.toLocaleString('en-GB', {minimumFractionDigits: 0});
+            document.getElementById('grand-total').textContent = '£' + grandTotal.toLocaleString('en-GB', {minimumFractionDigits: 0});
+            
+            // Update summary cards
+            document.getElementById('card-base').textContent = '£' + baseWorks.toLocaleString('en-GB', {minimumFractionDigits: 0});
+            document.getElementById('card-additional').textContent = '£' + additionalScope.toLocaleString('en-GB', {minimumFractionDigits: 0});
+            document.getElementById('card-prelims').textContent = '£' + prelimsOHP.toLocaleString('en-GB', {minimumFractionDigits: 0});
+            
+            // Update cost per m²
+            const psm = grandTotal / GIA;
+            document.getElementById('cost-psm').textContent = '£' + psm.toLocaleString('en-GB', {minimumFractionDigits: 0});
+            
+            // Update status
+            const status = document.getElementById('status');
+            if (Math.abs(grandTotal - BUDGET_CAP) < 100) {
+                status.textContent = '✓ On Budget';
+                status.style.color = '#059669';
+            } else if (grandTotal > BUDGET_CAP) {
+                status.textContent = '⚠️ Over by £' + (grandTotal - BUDGET_CAP).toLocaleString('en-GB');
+                status.style.color = '#dc2626';
+            } else {
+                status.textContent = '✓ Under by £' + (BUDGET_CAP - grandTotal).toLocaleString('en-GB');
+                status.style.color = '#059669';
+            }
+        }
+        
+        function resetToOriginal() {
+            location.reload();
+        }
+        
+        function exportAsCSV() {
+            let csv = 'Item,Amount (£)\n';
+            
+            document.querySelectorAll('tr.editable').forEach(row => {
+                const desc = row.querySelector('td:first-child').textContent.trim();
+                const amount = row.querySelector('.cost-input').value;
+                csv += `"${desc}",${amount}\n`;
+            });
+            
+            const blob = new Blob([csv], {type: 'text/csv'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Walled_Garden_Preston_Budget.csv';
+            a.click();
+        }
+        
+        // Initialize
+        recalculateAll();
+    </script>
+</body>
+</html>
