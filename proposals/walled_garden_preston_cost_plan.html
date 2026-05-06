@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Walled Garden, Paignton — Interactive Cost Plan</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f9f9f9;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 60px 40px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        header {
+            border-bottom: 3px solid #1e40af;
+            padding-bottom: 30px;
+            margin-bottom: 40px;
+        }
+        
+        h1 {
+            font-size: 2.2em;
+            color: #1e40af;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1em;
+            color: #666;
+            font-weight: 500;
+        }
+        
+        h2 {
+            font-size: 1.5em;
+            color: #1e40af;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e5e7eb;
+        }
+        
+        h3 {
+            font-size: 1.1em;
+            color: #1e40af;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        
+        .property-info {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin: 30px 0;
+            padding: 20px;
+            background: #f0f9ff;
+            border-radius: 6px;
+            border-left: 4px solid #1e40af;
+        }
+        
+        .info-box {
+            padding: 10px 0;
+        }
+        
+        .info-label {
+            font-size: 0.85em;
+            color: #666;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .info-value {
+            font-size: 1.3em;
+            color: #1e40af;
+            font-weight: 700;
+        }
+        
+        .info-unit {
+            font-size: 0.85em;
+            color: #999;
+            font-weight: 400;
+        }
+        
+        /* Cost Plan Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        thead {
+            background: #1e40af;
+            color: white;
+        }
+        
+        th {
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+        
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        tbody tr:hover {
+            background: #f9fafb;
+        }
+        
+        .section-header {
+            background: #e0e7ff;
+            color: #1e40af;
+            font-weight: 700;
+            padding: 12px;
+        }
+        
+        .section-total {
+            background: #fef3c7;
+            font-weight: 700;
+            color: #92400e;
+        }
+        
+        .subtotal {
+            background: #dbeafe;
+            font-weight: 700;
+            color: #1e40af;
+        }
+        
+        .grand-total {
+            background: #1e40af;
+            color: white;
+            font-weight: 700;
+            font-size: 1.1em;
+        }
+        
+        /* Editable Input */
+        input[type="number"] {
+            width: 100%;
+            padding: 6px;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            font-size: 0.9em;
+            font-family: 'Courier New', monospace;
+        }
+        
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #1e40af;
+            background: #fffbeb;
+        }
+        
+        .currency {
+            text-align: right;
+            font-family: 'Courier New', monospace;
+            font-weight: 600;
+        }
+        
+        .text-right {
+            text-align: right;
+        }
+        
+        .editable {
+            background: #f0f9ff;
+            cursor: pointer;
+        }
+        
+        /* Summary Cards */
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 40px 0;
+        }
+        
+        .summary-card {
+            background: #f3f4f6;
+            padding: 20px;
+            border-radius: 6px;
+            border: 1px solid #d1d5db;
+        }
+        
+        .summary-card h3 {
+            margin-top: 0;
+            color: #1e40af;
+            font-size: 0.95em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .summary-value {
+            font-size: 1.8em;
+            color: #1e40af;
+            font-weight: 700;
+            margin-top: 10px;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .summary-unit {
+            font-size: 0.85em;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .controls {
+            margin: 30px 0;
+            padding: 20px;
+            background: #f9fafb;
+            border-radius: 6px;
+            display: flex;
+            gap: 10px;
+        }
+        
+        button {
+            padding: 10px 20px;
+            background: #1e40af;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.95em;
+        }
+        
+        button:hover {
+            background: #1e3a8a;
+        }
+        
+        .note {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+        
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #e5e7eb;
+            font-size: 0.85em;
+            color: #666;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+            }
+            
+            h1 {
+                font-size: 1.6em;
+            }
+            
+            .property-info {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .summary {
+                grid-template-columns: 1fr;
+            }
+            
+            th, td {
+                padding: 8px;
+                font-size: 0.85em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Walled Garden, Paignton</h1>
+            <p class="subtitle">Interactive Cost Plan — Editable Construction Budget</p>
+            <p class="subtitle" style="color: #999; margin-top: 10px;">Last Updated: 6 May 2026</p>
+        </header>
+        
+        <!-- PROPERTY SUMMARY -->
+        <div class="property-info">
+            <div class="info-box">
+                <div class="info-label">Gross Internal Area</div>
+                <div class="info-value">585 <span class="info-unit">m²</span></div>
+            </div>
+            <div class="info-box">
+                <div class="info-label">Total Construction Cost</div>
+                <div class="info-value" id="total-display">£790,019</div>
+            </div>
+            <div class="info-box">
+                <div class="info-label">Cost per m²</div>
+                <div class="info-value" id="cost-per-sqm">£1,351</div>
+            </div>
+            <div class="info-box">
+                <div class="info-label">Cost Type</div>
+                <div class="info-value">Shell + Core</div>
+            </div>
+        </div>
+        
+        <!-- CONTROLS -->
+        <div class="controls">
+            <button onclick="recalculateAll()">🔄 Recalculate All</button>
+            <button onclick="exportAsCSV()">📊 Export CSV</button>
+            <button onclick="resetToOriginal()">↺ Reset to Original</button>
+        </div>
+        
+        <!-- NOTE -->
+        <div class="note">
+            <strong>⚠️ Important:</strong> This cost plan is a <strong>SHELL only</strong>. It excludes: windows, doors, kitchens, tiling, flooring, internal decoration, and landscaping. Budget additional £200–400/m² for fit-out depending on specification.
+        </div>
+        
+        <!-- CONSTRUCTION COSTS TABLE -->
+        <h2>Construction Cost Breakdown</h2>
+        
+        <table id="costTable">
+            <thead>
+                <tr>
+                    <th style="width: 50%;">Item Description</th>
+                    <th style="width: 10%;">Qty</th>
+                    <th style="width: 10%;">Unit</th>
+                    <th style="width: 15%;">Rate (£)</th>
+                    <th style="width: 15%;" class="text-right">Total (£)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- SECTION 1: SUBSTRUCTURE & EXTERNAL WORKS -->
+                <tr class="section-header">
+                    <td colspan="5">SUBSTRUCTURE & EXTERNAL WORKS</td>
+                </tr>
+                <tr class="editable">
+                    <td>Site strip & reduced level dig (500mm)</td>
+                    <td><input type="number" value="325" onchange="recalculateAll()" class="qty-input"></td>
+                    <td>m³</td>
+                    <td><input type="number" value="20" onchange="recalculateAll()" class="rate-input"></td>
+                    <td class="currency" id="cost-1">£6,500</td>
+                </tr>
+                <tr class="editable">
+                    <td>Disposal of excavated materials</td>
+                    <td><input type="number" value="325" onchange="recalculateAll()" class="qty-input"></td>
+                    <td>m³</td>
+                    <td><input type="number" value="60" onchange="recalculateAll()" class="rate-input"></td>
+                    <td class="currency" id="cost-2">£19,500</td>
+                </tr>
+                <tr class="editable">
+                    <td>Excavation for strip foundations (600mm)</td>
+                    <td><input type="number" value="95.4" onchange="recalculateAll()" class="qty-input"></td>
+                    <td>m³</td>
+                    <td><input type="number" value="20" onchange="recalculateAll()" class="rate-input"></td>
+                    <td class="currency" id="cost-3">£1,908</td>
+                </tr>
+                <tr class="editable">
+                    <td>Disposal of foundation excavation</td>
+                    <td><input type="number" value="95.4" onchange="recalculateAll()" class="qty-input"></td>
+                    <td>m³</td>
+                    <td><input type="number" value="50" onchange="recalculateAll()" class="rate-input"></td>
+                    <td class="currency" id="cost-4">£4,770</td>
+                </tr>
+                <tr class="editable">
+                    <td>RC strip foundations (450 x 200)</td>
+                    <td><input type="number" value="23.85" onchange="recalculateAll()" class="qty-input"></td>
+                    <td>m³</td>
+                    <td><input type="number" value="400" onchange="recalculateAll()" class="rate-input"></td>
+                    <td class="currency" id="cost-5">£9,540</td>
+                </tr>
+                <tr class="editable">
+                    <td>Insulation, DPM, DPC & barriers</td>
+                    <td><input type="number" value="238" onchange="recalculateAll()" class="qty-input"></td>
+                    <td>m²</td>
+                    <td><input type="number" value="45" onchange="recalculateAll()" class="rate-input"></td>
+                    <td class="currency" id="cost-6">£10,710</td>
+                </tr>
+                <tr class="editable">
+                    <td>Service ducting for utilities</td>
+                    <td><input type="number" value="1" onchange="recalculateAll()" class="qty-input"></td>
+                    <td>nr</td>
+                    <td><input type="number" value="5000" onchange="recalculateAll()" class="rate-input"></td>
+                    <td class="currency" id="cost-7">£5,000</td>
+                </tr>
+                <tr class="editable">
+                    <td>Blockwork double skin (100mm, 7.3kN)</td>
+                    <td><input type="number" value="138" onchange="recalculateAll()" class="qty-input"></td>
+                    <td>m²</td>
+                    <td><input type="number" value="220" onchange="recalculateAll()" class="rate-input"></td>
+                    <td class="currency" id="cost-8">£30,360</td>
+                </tr>
+                <tr class="editable">
+                    <td>Internal blockwork (215mm)</td>
+                    <td><input type="number" value="128" onchange="recalculateAll()" class="qty-input"></td>
+                    <td>m²</td>
+                    <td><input type="number" value="165.3" onchange="recalculateAll()" class="rate-input"></td>
+                    <td class="currency" id="cost-9">£21,158</td>
+                </tr>
+                <tr class="section-total">
+                    <td colspan="4"><strong>Substructure & External Works Subtotal</strong></td>
+                    <td class="currency"><strong id="subtotal-1">£109,446</strong></td>
+                </tr>
+                
+                <!-- SECTION 2: GROUND FLOOR STRUCTURE -->
+                <tr class="section-header">
+                    <td colspan="5">GROUND FLOOR STRUCTURE</td>
+                </tr>
+                <tr class="editable">
+                    <td>Block and beam floor (inc screed)</td>
+                    <td><input type="number" value="606" onchange="recalculateAll()" class="qty-input"></td>
+                    <td>m²</td>
+                    <td><input type="number" value="55" onchange="recalculateAll()" class="rate-input"></td>
+                    <td class="currency" id="cost-10">£33,330</td>
+                </tr>
+                <tr class="editable">
+                    <td>DPM/radon barrier (1200g, 300mm laps)</td>
+                    <td><input type="number" value="606" onchange="recalculateAll()" class="qty-input"></td>
+                    <td>m²</td>
+                    <td><input type="number" value="5.65" onchange="recalculateAll()" class="rate-input"></td>
+                    <td class="currency" id="cost-11">£3,424</td>
+                </tr>
+                <tr class="editable">
+                    <td>Floor insulation (Celotex XR4000, 140mm)</td>
+                    <td><input type="number" value="138" onchange="recalculateAll()" class="qty-input"></td>
+                    <td>m²</td>
+                    <td><input type="number" value="30" onchange="recalculateAll()" class="rate-input"></td>
+                    <td class="currency" id="cost-12">£4,140</td>
+                </tr>
+                <tr class="editable">
+                    <td>Screed & separating layer (75mm)</td>
+                    <td><input type="number" value="606" onchange="recalculateAll()" class="qty-input"></td>
+                    <td>m²</td>
+                    <td><input type="number" value="35.73" onchange="recalculateAll()" class="rate-input"></td>
+                    <td class="currency" id="cost-13">£21,652</td>
+                </tr>
+                <tr class="editable">
+                    <td>Underfloor void ventilation (pericope vents)</td>
+                    <td><input type="number" value="1" onchange="recalculateAll()" class="qty-input"></td>
+                    <td>nr</td>
+                    <td><input type="number" value="3000" onchange="recalculateAll()" class="rate-input"></td>
+                    <td class="currency" id="cost-14">£3,000</td>
+                </tr>
+                <tr class="section-total">
+                    <td colspan="4"><strong>Ground Floor Structure Subtotal</strong></td>
+                    <td class="currency"><strong id="subtotal-2">£65,546</strong></td>
+                </tr>
+                
+                <!-- SECTION 3: SUPERSTRUCTURE -->
+                <tr class="section-header">
+                    <td colspan="5">SUPERSTRUCTURE (ABOVE GROUND)</td>
+                </tr>
+                <tr class="editable">
+                    <td>Block and beam upper floors (inc screed)</td>
+                    <td><input type="number" value="382" onchange="recalculateAll()" class="qty-input"></td>
+                    <td>m²</td>
+                    <td><input type="number" value="55" onchange="recalculateAll()" class="rate-input"></td>
+                    <td class="currency" id="cost-15">£21,010</td>
+                </tr>
+                <tr class="editable">
+                    <td>DPM & separating layer</td>
+                    <td><input type="number" value="382" onchange="recalculateAll()" class="qty-input"></td>
+                    <td>m²</td>
+                    <td><input type="number" value="5.65" onchange="recalculateAll()" class="rate-input"></td>
+                    <td class="currency" id="cost-16">£2,158</td>
+                </tr>
+                <tr class="editable">
+                    <td>Floor insulation (140mm)</td>
+                    <td><input type="number" value="382" onchange="recalculateAll()" class="qty-input"></td>
+                    <td>m²</td>
+                    <td><input type="number" value="30" onchange="recalculateAll()" class="rate-input"></td>
+                    <td class="currency" id="cost-17">£11,460</td>
+                </tr>
+                <tr class="editable">
+                    <td>Screed & separating layer (75mm)</td>
+                    <td><input type="number" value="382" onchange="recalculateAll()" class="qty-input"></td>
+                    <td>m²</td>
+                    <td><input type="number" value="35.73" onchange="recalculateAll()" class="rate-input"></td>
+                    <td class="currency" id="cost-18">£13,659</td>
+                </tr>
+                <tr class="editable">
+                    <td>Internal walls (blockwork)</td>
+                    <td><input type="number" value="275" onchange="recalculateAll()" class="qty-input"></td>
+                    <td>m²</td>
+                    <td><input type="number" value="165.3" onchange="recalculateAll()" class="rate-input"></td>
+                    <td class="currency" id="cost-19">£45,458</td>
+                </tr>
+                <tr class="section-total">
+                    <td colspan="4"><strong>Superstructure Subtotal</strong></td>
+                    <td class="currency"><strong id="subtotal-3">£93,745</strong></td>
+                </tr>
+                
+                <!-- SECTION 4: EXTERNAL -->
+                <tr class="section-header">
+                    <td colspan="5">EXTERNAL WORKS & ROOFING</td>
+                </tr>
+                <tr class="editable">
+                    <td>Brickwork (external facing)</td>
+                    <td><input type="number" value="280" onchange="recalculateAll()" class="qty-input"></td>
+                    <td>m²</td>
+                    <td><input type="number" value="65" onchange="recalculateAll()" class="rate-input"></td>
+                    <td class="currency" id="cost-20">£18,200</td>
+                </tr>
+                <tr class="editable">
+                    <td>Parapet & coping details</td>
+                    <td><input type="number" value="108" onchange="recalculateAll()" class="qty-input"></td>
+                    <td>m</td>
+                    <td><input type="number" value="332" onchange="recalculateAll()" class="rate-input"></td>
+                    <td class="currency" id="cost-21">£35,856</td>
+                </tr>
+                <tr class="editable">
+                    <td>Steelwork & lintels</td>
+                    <td><input type="number" value="1" onchange="recalculateAll()" class="qty-input"></td>
+                    <td>nr</td>
+                    <td><input type="number" value="56365" onchange="recalculateAll()" class="rate-input"></td>
+                    <td class="currency" id="cost-22">£56,365</td>
+                </tr>
+                <tr class="editable">
+                    <td>Drainage (foul & surface)</td>
+                    <td><input type="number" value="1" onchange="recalculateAll()" class="qty-input"></td>
+                    <td>nr</td>
+                    <td><input type="number" value="20000" onchange="recalculateAll()" class="rate-input"></td>
+                    <td class="currency" id="cost-23">£20,000</td>
+                </tr>
+                <tr class="editable">
+                    <td>Roofing (incl. insulation & coverings)</td>
+                    <td><input type="number" value="390" onchange="recalculateAll()" class="qty-input"></td>
+                    <td>m²</td>
+                    <td><input type="number" value="259.41" onchange="recalculateAll()" class="rate-input"></td>
+                    <td class="currency" id="cost-24">£101,170</td>
+                </tr>
+                <tr class="section-total">
+                    <td colspan="4"><strong>External Works & Roofing Subtotal</strong></td>
+                    <td class="currency"><strong id="subtotal-4">£231,591</strong></td>
+                </tr>
+                
+                <!-- SECTION 5: M&E & FINISHES -->
+                <tr class="section-header">
+                    <td colspan="5">MECHANICAL, ELECTRICAL & FINISHES</td>
+                </tr>
+                <tr class="editable">
+                    <td>Internal finishes (roof/walls)</td>
+                    <td><input type="number" value="1" onchange="recalculateAll()" class="qty-input"></td>
+                    <td>nr</td>
+                    <td><input type="number" value="78094" onchange="recalculateAll()" class="rate-input"></td>
+                    <td class="currency" id="cost-25">£78,094</td>
+                </tr>
+                <tr class="editable">
+                    <td>Plumbing & heating services</td>
+                    <td><input type="number" value="1" onchange="recalculateAll()" class="qty-input"></td>
+                    <td>nr</td>
+                    <td><input type="number" value="10000" onchange="recalculateAll()" class="rate-input"></td>
+                    <td class="currency" id="cost-26">£10,000</td>
+                </tr>
+                <tr class="editable">
+                    <td>Electrical installation & power</td>
+                    <td><input type="number" value="1" onchange="recalculateAll()" class="qty-input"></td>
+                    <td>nr</td>
+                    <td><input type="number" value="10000" onchange="recalculateAll()" class="rate-input"></td>
+                    <td class="currency" id="cost-27">£10,000</td>
+                </tr>
+                <tr class="section-total">
+                    <td colspan="4"><strong>M&E & Finishes Subtotal</strong></td>
+                    <td class="currency"><strong id="subtotal-5">£98,094</strong></td>
+                </tr>
+                
+                <!-- TOTALS -->
+                <tr class="subtotal">
+                    <td colspan="4"><strong>TOTAL WORKS COST</strong></td>
+                    <td class="currency"><strong id="total-works">£560,297</strong></td>
+                </tr>
+                <tr class="editable">
+                    <td><strong>Preliminary site costs & management (10%)</strong></td>
+                    <td colspan="3"></td>
+                    <td class="currency"><strong id="prelims">£56,030</strong></td>
+                </tr>
+                <tr class="editable">
+                    <td><strong>Overheads & Profit (16%)</strong></td>
+                    <td colspan="3"></td>
+                    <td class="currency"><strong id="oandp">£89,647</strong></td>
+                </tr>
+                <tr class="editable">
+                    <td><strong>Professional fees (architects, engineers, PM)</strong></td>
+                    <td colspan="3"></td>
+                    <td class="currency"><strong id="prof-fees">£84,045</strong></td>
+                </tr>
+                <tr class="grand-total">
+                    <td colspan="4"><strong>TOTAL CONSTRUCTION COST</strong></td>
+                    <td class="currency"><strong id="grand-total">£790,019</strong></td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <!-- SUMMARY -->
+        <h2>Cost Summary</h2>
+        <div class="summary">
+            <div class="summary-card">
+                <h3>Gross Internal Area</h3>
+                <div class="summary-value">585 m²</div>
+                <div class="summary-unit">GIA</div>
+            </div>
+            <div class="summary-card">
+                <h3>Total Cost</h3>
+                <div class="summary-value" id="summary-total">£790,019</div>
+                <div class="summary-unit">All-in construction</div>
+            </div>
+            <div class="summary-card">
+                <h3>Cost per m²</h3>
+                <div class="summary-value" id="summary-psm">£1,351</div>
+                <div class="summary-unit">£/m² GIA</div>
+            </div>
+        </div>
+        
+        <!-- NOTES -->
+        <h2>Important Notes</h2>
+        <div class="note">
+            <strong>Shell Cost Only:</strong> This budget covers structural elements, primary M&E routes, and basic envelope. <strong>NOT included:</strong>
+            <ul style="margin: 10px 0 0 20px;">
+                <li>Windows and external doors (approx. £80–150/m² additional)</li>
+                <li>Internal doors and ironmongery</li>
+                <li>Kitchen fitment and appliances</li>
+                <li>Tiling and flooring (approx. £30–60/m²)</li>
+                <li>Internal decoration/painting</li>
+                <li>Landscaping and external works</li>
+            </ul>
+        </div>
+        
+        <div class="note" style="border-left-color: #3b82f6; background: #eff6ff;">
+            <strong>💡 Fit-Out Budget Allowance:</strong> Budget an additional <strong>£200–400/m²</strong> for full fit-out (mid-spec), bringing total to <strong>£707–823k</strong> for completed shell-plus-fit-out project.
+        </div>
+        
+        <!-- FOOTER -->
+        <div class="footer">
+            <p><strong>How to Use This Tool:</strong></p>
+            <ul style="margin: 10px 0 0 20px;">
+                <li>Click on any cost field (Rate or Qty) to edit it</li>
+                <li>Changes calculate automatically</li>
+                <li>Click "Recalculate All" to refresh all totals</li>
+                <li>Click "Reset to Original" to return to the base cost plan</li>
+                <li>Click "Export CSV" to download your edits for external review</li>
+            </ul>
+            
+            <p style="margin-top: 20px;"><strong>Source:</strong> Cost Plan — The Walled Garden, Paignton | 6 May 2026</p>
+            <p style="color: #999; margin-top: 10px;">This cost plan is for budgeting purposes only. Actual costs may vary based on contractor quotes, site conditions, and specification changes.</p>
+        </div>
+    </div>
+    
+    <script>
+        const GIA = 585;
+        
+        // Store original values
+        const original = {};
+        
+        function recalculateAll() {
+            let totalWorks = 0;
+            
+            // Collect all cost rows
+            const costRows = document.querySelectorAll('tr.editable');
+            costRows.forEach((row, index) => {
+                const qtyInput = row.querySelector('.qty-input');
+                const rateInput = row.querySelector('.rate-input');
+                
+                if (qtyInput && rateInput) {
+                    const qty = parseFloat(qtyInput.value) || 0;
+                    const rate = parseFloat(rateInput.value) || 0;
+                    const cost = qty * rate;
+                    
+                    const costCell = row.querySelector('.currency');
+                    if (costCell && !costCell.textContent.includes('Subtotal')) {
+                        costCell.textContent = '£' + cost.toLocaleString('en-GB', {minimumFractionDigits: 0, maximumFractionDigits: 0});
+                        totalWorks += cost;
+                    }
+                }
+            });
+            
+            // Update sections & totals
+            const prelims = totalWorks * 0.10;
+            const oandp = totalWorks * 0.16;
+            const profFees = totalWorks * 0.15; // Approx
+            const grandTotal = totalWorks + prelims + oandp + profFees;
+            
+            document.getElementById('total-works').textContent = '£' + totalWorks.toLocaleString('en-GB', {minimumFractionDigits: 0});
+            document.getElementById('prelims').textContent = '£' + prelims.toLocaleString('en-GB', {minimumFractionDigits: 0});
+            document.getElementById('oandp').textContent = '£' + oandp.toLocaleString('en-GB', {minimumFractionDigits: 0});
+            document.getElementById('prof-fees').textContent = '£' + profFees.toLocaleString('en-GB', {minimumFractionDigits: 0});
+            document.getElementById('grand-total').textContent = '£' + grandTotal.toLocaleString('en-GB', {minimumFractionDigits: 0});
+            
+            // Update header summary
+            document.getElementById('total-display').textContent = '£' + grandTotal.toLocaleString('en-GB', {minimumFractionDigits: 0});
+            const psm = grandTotal / GIA;
+            document.getElementById('cost-per-sqm').textContent = '£' + psm.toLocaleString('en-GB', {minimumFractionDigits: 0});
+            
+            // Update summary cards
+            document.getElementById('summary-total').textContent = '£' + grandTotal.toLocaleString('en-GB', {minimumFractionDigits: 0});
+            document.getElementById('summary-psm').textContent = '£' + psm.toLocaleString('en-GB', {minimumFractionDigits: 0});
+        }
+        
+        function resetToOriginal() {
+            location.reload();
+        }
+        
+        function exportAsCSV() {
+            const table = document.getElementById('costTable');
+            let csv = 'Item,Qty,Unit,Rate,Total\n';
+            
+            table.querySelectorAll('tr.editable').forEach(row => {
+                const cells = row.querySelectorAll('td');
+                if (cells.length >= 5) {
+                    const desc = cells[0].textContent.trim();
+                    const qty = cells[1].querySelector('input')?.value || cells[1].textContent;
+                    const unit = cells[2].textContent;
+                    const rate = cells[3].querySelector('input')?.value || cells[3].textContent;
+                    const total = cells[4].textContent;
+                    
+                    csv += `"${desc}",${qty},${unit},${rate},${total}\n`;
+                }
+            });
+            
+            const blob = new Blob([csv], {type: 'text/csv'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Walled_Garden_Paignton_Cost_Plan.csv';
+            a.click();
+        }
+        
+        // Initialize
+        recalculateAll();
+    </script>
+</body>
+</html>
